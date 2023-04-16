@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!--- primary meta tag-->
+        <title>2WHEELS - Get Quality Bicycle</title>
+        <meta name="title" content="2WHEELS - Get Quality Bicycle" />
+        <meta name="description" content="This is an eCommerce html template made by codewithsadee" />
+
+        <!-- 
+    - favicon
+  -->
+        <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
+        <!-- 
+    - custom css link
+  -->
+        <link rel="stylesheet" href="../userAssets/stylesheets/style.css" />
+
+        <!-- login and signup page css -->
+        <!-- <link rel="stylesheet" href="stylesheets/style1.css">   -->
+
+        <!-- 
+    - google font link
+  -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Mr+De+Haviland&family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!--- preload images-->
+        <link rel="preload" as="image" href="../userAssets/hero-product-1.jpg" />
+        <link rel="preload" as="image" href="../userAssets/hero-product-2.jpg" />
+        <link rel="preload" as="image" href="../userAssets/hero-product-3.jpg" />
+        <link rel="preload" as="image" href="../userAssets/hero-product-4.jpg" />
+        <link rel="preload" as="image" href="../userAssets/hero-product-5.jpg" />
+
+        <!-- Bootstrap CSS -->
+
+        <!-- <script src="/javascripts/validation.js"></script> -->
+
+        <title>Hello, world!</title>
+    </head>
+
+    <script src="../userAssets/javascripts/script.js" defer></script>
+
+    <!-- 
+    - ionicon link
+  -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+    <header class="header" data-header>
+        <div class="container">
+            <a href="#" class="logo">2WHEELS</a>
+
+            <div class="input-wrapper">
+                <input type="search" name="search" placeholder="Search Anything..." class="input-field" />
+
+                <ion-icon name="search-outline" aria-hidden="true"> </ion-icon>
+            </div>
+
+            <div class="header-action">
+                <div><%=name%></div>
+                <div class="dropdown">       
+                        <a href="/login">
+                            <button class="header-action-btn">
+                            <ion-icon name="person-outline" aria-hidden="true" id="user-btn"></ion-icon>
+                        </a>
+                    </button>
+                    <%if(user){%>
+
+                    <div class="dropdown-content" >
+                        <a href="/logout">Logout</a>
+                    </div>
+                    <%}%>
+                
+                </div>
+                <button class="header-action-btn" aria-label="favorite list">
+                    <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+
+                    <span class="btn-badge">0</span>
+                </button>
+
+                <button class="header-action-btn" aria-label="cart">
+                    <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+
+                    <span class="btn-badge">0</span>
+                </button>
+
+                <button class="header-action-btn" aria-label="open menu" data-nav-toggler>
+                    <ion-icon name="menu-outline" aria-hidden="true"></ion-icon>
+                </button>
+            </div>
+        </div>
+    </header>
+</html>

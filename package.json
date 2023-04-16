@@ -1,0 +1,39 @@
+{
+  "name": "2wheels",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.2",
+    "collections": "^5.1.13",
+    "connect-mongo": "^5.0.0",
+    "connect-mongodb-session": "^3.1.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-ejs-layouts": "^2.5.1",
+    "express-fileupload": "^1.4.0",
+    "express-layout": "^0.1.0",
+    "express-session": "^1.17.3",
+    "express-validator": "^6.15.0",
+    "fileupload": "^0.2.1",
+    "http-errors": "~1.6.3",
+    "jquery": "^3.6.4",
+    "jQuery": "^1.7.4",
+    "jsdom": "^21.1.1",
+    "jsonwebtoken": "^9.0.0",
+    "mongodb": "^4.14.0",
+    "mongoose": "^7.0.3",
+    "morgan": "~1.9.1",
+    "nocache": "^3.0.4",
+    "nodemon": "^2.0.22",
+    "twilio": "^4.10.0",
+    "validation": "^0.0.1",
+    "validator": "^13.9.0"
+  }
+}
