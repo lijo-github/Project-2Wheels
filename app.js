@@ -12,6 +12,7 @@ const session = require("express-session");
 const { v4: uuid } = require("uuid");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const connectDB = require("./config/connectDB.js");
 
 //* view engine setup */
 app.set("views", path.join(__dirname, "views"));
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
 //*session handling */
 app.use(
     session({
@@ -35,14 +37,10 @@ app.use("/", indexRouter);
 app.use("/admin", adminRouter);
 
 //*Database connection */
-mongoose
-    .connect(process.env.MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log("Database connected successfully");
-    })
-    .catch((error) => {
-        console.log("Conncection failed!!", error);
-    });
+connectDB()
+mongoose.connection.once("open", ()=>{
+    console.log("Database connected to successfully");
+});
 
 //* catch 404 and forward to error handler */
 app.use(function (req, res, next) {

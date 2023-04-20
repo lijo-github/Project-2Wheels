@@ -1,8 +1,14 @@
 const { body } = require("express-validator");
 const user = require("../model/userModel");
+const Product = require("../model/product.js")
+const Category = require("../model/category.js")
 const bcrypt = require("bcrypt");
+const { category } = require("../controllers/admin-controller");
 
 module.exports = {
+
+  //*signup Helper  */
+
   doSignup: (body) => {
     return new Promise(async (resolve, reject) => {
       try {
@@ -26,12 +32,14 @@ module.exports = {
       }
     });
   },
+
+  //*get mobilenumber Helper  */
+
+
   getmobileNumber: async(mobNumber)=>{
     try{
       const User = await user.findOne({mobile:mobNumber})
-      console.log('******hello******');
       if(User){
-        console.log(mobNumber);
         return User
       }else{
         console.log(User)
@@ -41,7 +49,51 @@ module.exports = {
       console.log('*****erro occured*******');
       console.log(err);
     }
+  },
+  getUser: async(mob)=>{
+    try{
+      const User = await user.findOne({mobile:mob});
+      if(user && User.status){
+        return User;
+
+      }return false;
+    }catch(err){
+      console.log(err);
+    }
+  },
+  findUser: async(id)=>{
+    return await user.findById(id)
+  },
+  getAllProducts: async (userId) => {
+    try {
+      const products = await Product.find({
+        productStatus: "Listed",
+      }).populate("category");
+
+      const categories = await Category.find({ isListed: true });
+
+      // const cartCount = await Cart.findById(userId);
+      // console.log(cartCount);
+
+      return { products, categories };
+    } catch (err) {
+      console.error(err);
+    }
+  },
+  getAllProductsForList: async(categoryId) =>{
+    try{
+      const productsQuery = Product.find({category:categoryId}).populate("category");
+
+      const products = await productsQuery.exec();
+
+      return products;
+    }catch(erer){
+      console.error(err);
+    }
+    
+
   }
+  
 };
 
 

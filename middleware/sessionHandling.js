@@ -1,31 +1,25 @@
 module.exports = {
-  isLoggedIn(req,res,next){
-    if(req.session.loggedIn){
-      console.log('------------------------------------');
-      res.redirect('/')
-    }else{
-      console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-      next()
-    }
-  },
-  isUser(req,res,next){
-    if(req.session.loggedIn){
-      console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
-      next()
-    }else{
-      console.log('*****************************');
-      res.redirect('/')
-    }
-  }
-  ,
-  isloggedInad(req,res,next){
-    if(req.session.isloggedInad){
-      res.admin=req.session.isLoggedIn;
-      console.log('1111111111111111');
-      next()
-    }else{
-      console.log('####################');
-      res.render('../views/admin/adminLogin',{message:false})
-    }
-  }
-}
+    isLoggedIn(req, res, next) {
+        if (req.session.loggedIn) {
+            res.redirect("/");
+        } else {
+            next();
+        }
+    },
+    isUser(req, res, next) {
+        if (req.session.loggedIn) {
+            console.log;
+            next();
+        } else {
+            res.redirect("/");
+        }
+    },
+    isloggedInad(req, res, next) {
+        if (req.session.isloggedInad) {
+            res.admin = req.session.isLoggedIn;
+            next();
+        } else {
+            res.render("../views/admin/adminLogin");
+        }
+    },
+};
