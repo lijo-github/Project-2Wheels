@@ -8,7 +8,7 @@ module.exports = {
     //*get home Page  */
 
     homePage: async (req, res, next) => {
-        let name = req.session.userName;
+        
         let user = req.session.user;
         try {
             const allProductWithCategory = await userHelper.getAllProducts();
@@ -16,9 +16,10 @@ module.exports = {
             const categories = allProductWithCategory.categories;
             if (user) {
                 user.count = await userHelper.getCartCount(user._id);
-                res.render("user/userLandingPage", { name, user, products, categories });
+                res.render("user/userLandingPage", { user, products, categories });
             } else {
-                res.render("user/userLandingPage", { name, user, products, categories });
+                
+                res.render("user/userLandingPage", { user, products, categories });
             }
         } catch (err) {
             console.error(err);
@@ -49,7 +50,6 @@ module.exports = {
                 res.render("../views/user/login", { message: false });
             } else {
                 req.session.user = userData;
-                req.session.userName = userData.name;
                 req.session.loggedIn = true;
                 res.redirect("/");
             }
@@ -68,7 +68,6 @@ module.exports = {
                 bcrypt.compare(password, user.password, (err, result) => {
                     if (result) {
                         req.session.user = user;
-                        req.session.userName = user.name;
                         req.session.loggedIn = true;
                         // console.log(req.session.user);
                         res.redirect("/");
@@ -194,8 +193,7 @@ module.exports = {
                 .verificationChecks.create({ to: `+91${mobNumber}`, code: enteredOTP })
                 .then((verification_check) => {
                     if (verification_check.status === "approved") {
-                        req.session.user = validUser;
-                        req.session.userName = validUser.name;
+                        req.session.user = validUser;;
                         req.session.loggedIn = true;
                         if (req.session.user) {
                             res.redirect("/");
@@ -261,31 +259,23 @@ module.exports = {
     },
     productView: async (req, res) => {
         const user = req.session?.user;
-        const name = req.session.userName;
         
         try {
             
-            if(user && name){
+            if(user){
                 user.count = await userHelper.getCartCount(user._id);
-                
+     
                 var products = await userHelper.getProductDetails(req.params.id);
 
             console.log("product list view success");
 
-            res.render("user/product-view", { user, products, name});
-            }else if(user){
-                
-                var products = await userHelper.getProductDetails(req.params.id);
-
-            console.log("product list view success");
-
-            res.render("user/product-view", { user, products, name });
+            res.render("user/product-view", { user, products});
             }else{
                 var products = await userHelper.getProductDetails(req.params.id);
 
             console.log("product list view success");
 
-            res.render("user/product-view", { user, products, name });
+            res.render("user/product-view", { user, products});
             }
             
             
@@ -297,19 +287,18 @@ module.exports = {
     cartPage: async (req, res) => {
         try {
             let user = req.session.user;
-            let name = req.session.userName;
             user.count = await userHelper.getCartCount(user._id);
 
             const items = await userHelper.getCartProducts(req.session.user._id);
             if (items === null) {
-                res.render("emptyCart", { user });
+                res.render("../views/user/emptyCart", { user});
                 return;
             }
 
             const { cartItems: products, subtotal } = items;
             console.log("cart page loaded");
 
-            res.render("user/cart", { user, products, total: subtotal, name });
+            res.render("user/cart", { user, products, total: subtotal });
         } catch (err) {
             console.log("cart page not loaded ##############");
             res.render("catchError", {
@@ -378,13 +367,11 @@ module.exports = {
     checkOut: async (req, res) => {
         try {
           let user = req.session.user;
-          const name = req.session.user.name
-    
           const items = await userHelper.getCartProducts(req.session.user._id);
           const address = await userHelper.getDefaultAddress(req.session.user._id);
           console.log('adress not get',address);
           const { cartItems: products, subtotal } = items;
-          res.render("../views/user/checkout", { user, products, subtotal, address ,name});
+          res.render("../views/user/checkout", { user, products, subtotal, address});
         } catch (err) {
           console.error(err);
         }
@@ -407,7 +394,8 @@ module.exports = {
       },
       addAddress: async (req, res) => {
         try {
-          res.render("add-address", { user: req.session.user });
+            
+          res.render("../views/user/add-address", { user: req.session.user});
         } catch (err) {
           console.error(err);
         }
@@ -415,7 +403,7 @@ module.exports = {
       selectAddress: async (req, res) => {
         try {
           const address = await userHelper.getAddress(req.session.user._id);
-          res.render("address", { user: req.session.user, address });
+          res.render("../views/user/address", { user: req.session.user, address });
         } catch (err) {
           console.error(err);
         }
@@ -462,9 +450,9 @@ module.exports = {
       },
       orderSuccess: async (req, res) => {
         const user= req.session.user;
-        const name= req.session.user.name;
+        
 
-        res.render("../views/user/placeOrderSuccess", {user, name});
+        res.render("../views/user/placeOrderSuccess", {user});
       },
       viewOrder: async (req, res) => {
         try {

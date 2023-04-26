@@ -295,7 +295,7 @@ const paginatedProducts = productsArray.slice(skip, skip + pageSize);
         try {
           const orders = await adminHelper.getOrderDetails();
           if (orders) {
-            res.render("/admin/order-Management", { orders });
+            res.render("admin/order-Management", { orders });
           }
         } catch (err) {
           console.error(err);

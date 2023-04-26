@@ -79,7 +79,9 @@
             </div>
 
             <div class="header-action">
-                <div><%=name%></div>
+                <% if(user){ %>
+                <div><%=user.name%></div>
+                <% } %>
                 <div class="dropdown">       
                         <a href="/login">
                             <button class="header-action-btn">
