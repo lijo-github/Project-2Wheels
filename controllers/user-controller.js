@@ -2,31 +2,27 @@ const user = require("../model/userModel");
 const userHelper = require("../helpers/user-helper");
 const bcrypt = require("bcrypt");
 const twilioFunctions = require("../config/twilio.js");
+const Cart = require("../model/cart");
 
 module.exports = {
-
     //*get home Page  */
 
-    homePage: async (req, res ,next) => {
+    homePage: async (req, res, next) => {
         let name = req.session.userName;
         let user = req.session.user;
-        try{
+        try {
             const allProductWithCategory = await userHelper.getAllProducts();
-      const products = allProductWithCategory.products;
-      const categories = allProductWithCategory.categories;
-      if(user){
-        res.render("user/userLandingPage", { name, user, products, categories });
-
-      }
-      else{
-        res.render("user/userLandingPage", { name, user, products, categories });
-      }
-
-        
-        }catch(err){
+            const products = allProductWithCategory.products;
+            const categories = allProductWithCategory.categories;
+            if (user) {
+                user.count = await userHelper.getCartCount(user._id);
+                res.render("user/userLandingPage", { name, user, products, categories });
+            } else {
+                res.render("user/userLandingPage", { name, user, products, categories });
+            }
+        } catch (err) {
             console.error(err);
         }
-        
     },
 
     //*get login Page  */
@@ -34,7 +30,7 @@ module.exports = {
     login: (req, res) => {
         if (req.session.user) {
             res.redirect("/");
-        } else res.render("user/login", { message: false,user:false });
+        } else res.render("user/login", { message: false, user: false });
     },
 
     //*get signup Page  */
@@ -43,11 +39,13 @@ module.exports = {
         res.render("user/signup");
     },
 
-     //*post signup Page  */
+    //*post signup Page  */
 
-    postsignup: (req, res) => {
-        userHelper.doSignup(req.body).then((userData) => {
+    postsignup: async (req, res) => {
+        try {
+            const userData = await userHelper.doSignup(req.body);
             if (userData) {
+                console.log(userData);
                 res.render("../views/user/login", { message: false });
             } else {
                 req.session.user = userData;
@@ -55,10 +53,12 @@ module.exports = {
                 req.session.loggedIn = true;
                 res.redirect("/");
             }
-        });
+        } catch (error) {
+            console.log(error);
+            res.status(500).send(error.message);
+        }
     },
-
-     //*post signup Page  */
+    //*post signup Page  */
 
     postLogin: (req, res) => {
         const email = req.body.email;
@@ -73,16 +73,14 @@ module.exports = {
                         // console.log(req.session.user);
                         res.redirect("/");
                     } else {
-                        return res.render("user/login", { message: "Invalid password" ,user:false});
+                        return res.render("user/login", { message: "Invalid password", user: false });
                     }
                 });
-            } else if(user && user.status==false){
+            } else if (user && user.status == false) {
                 console.log("user blocked!");
 
                 res.render("user/login", { message: "You were blocked..!!" });
-            }
-
-             else {
+            } else {
                 console.log("user not found!!");
 
                 res.render("user/login", { message: "user not found!!" });
@@ -90,7 +88,7 @@ module.exports = {
         });
     },
 
-     //*get userlogout Page  */
+    //*get userlogout Page  */
 
     userLogout: (req, res) => {
         req.session.loggedIn = false;
@@ -99,7 +97,7 @@ module.exports = {
         res.redirect("/");
     },
 
-     //*get otp Page  */
+    //*get otp Page  */
 
     otpLogin: (req, res) => {
         if (req.session.user) {
@@ -107,7 +105,7 @@ module.exports = {
         } else res.render("user/otp-login", { message: false });
     },
 
-     //*post signup Page  */
+    //*post signup Page  */
 
     otpLoginPost: async (req, res) => {
         console.log(req.body);
@@ -150,7 +148,7 @@ module.exports = {
         }
     },
 
-     //*post resend Page  */
+    //*post resend Page  */
 
     resendOtp: async (req, res) => {
         if (req.session.loggedIn) {
@@ -182,7 +180,7 @@ module.exports = {
         }
     },
 
-     //*post verify otp  */
+    //*post verify otp  */
 
     verifyOtp: async (req, res) => {
         let mobNumber = req.body.mobile;
@@ -197,7 +195,7 @@ module.exports = {
                 .then((verification_check) => {
                     if (verification_check.status === "approved") {
                         req.session.user = validUser;
-                         req.session.userName=validUser.name
+                        req.session.userName = validUser.name;
                         req.session.loggedIn = true;
                         if (req.session.user) {
                             res.redirect("/");
@@ -220,7 +218,7 @@ module.exports = {
         }
     },
 
-     //*post verify otpforPassword */
+    //*post verify otpforPassword */
 
     verifyOtpforpassword: async (req, res) => {
         try {
@@ -247,23 +245,236 @@ module.exports = {
             console.error(err);
         }
     },
-    listProductCategory: async (req,res)=>{
-        try{
+    listProductCategory: async (req, res) => {
+        try {
             let user = req.session.user;
             const categoryId = req.query.category;
             const products = await userHelper.getAllProductsForList(categoryId);
-            if(user){
-                res.render("productList",{user, products});
-
-            }else{
-                res.render("productList",{user:false, products})
+            if (user) {
+                res.render("productList", { user, products });
+            } else {
+                res.render("productList", { user: false, products });
             }
-
-        }catch(err){
+        } catch (err) {
             console.error(err);
         }
+    },
+    productView: async (req, res) => {
+        const user = req.session?.user;
+        const name = req.session.userName;
         
-    }
+        try {
+            
+            if(user && name){
+                user.count = await userHelper.getCartCount(user._id);
+                
+                var products = await userHelper.getProductDetails(req.params.id);
+
+            console.log("product list view success");
+
+            res.render("user/product-view", { user, products, name});
+            }else if(user){
+                
+                var products = await userHelper.getProductDetails(req.params.id);
+
+            console.log("product list view success");
+
+            res.render("user/product-view", { user, products, name });
+            }else{
+                var products = await userHelper.getProductDetails(req.params.id);
+
+            console.log("product list view success");
+
+            res.render("user/product-view", { user, products, name });
+            }
+            
+            
+        } catch (err) {
+            console.log("errorrrrrrrrrrr");
+            console.error(err);
+        }
+    },
+    cartPage: async (req, res) => {
+        try {
+            let user = req.session.user;
+            let name = req.session.userName;
+            user.count = await userHelper.getCartCount(user._id);
+
+            const items = await userHelper.getCartProducts(req.session.user._id);
+            if (items === null) {
+                res.render("emptyCart", { user });
+                return;
+            }
+
+            const { cartItems: products, subtotal } = items;
+            console.log("cart page loaded");
+
+            res.render("user/cart", { user, products, total: subtotal, name });
+        } catch (err) {
+            console.log("cart page not loaded ##############");
+            res.render("catchError", {
+                message: err.message,
+                user: req.session.user,
+            });
+        }
+    },
+
+    addToCart: async (req, res) => {
+        try {
+            await userHelper.addToCart(req.params.id, req.session.user._id);
+            res.json({
+                status: "success",
+                message: "product added to cart",
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    },
+    changeProductQuantity: async (req, res) => {
+        try {
+            const { userId, prodId, count } = req.body;
+            console.log("got here", userId, prodId, count);
+            await Cart.updateOne(
+                { user: userId, "products.productId": prodId },
+                {
+                    $inc: {
+                        "products.$.quantity": count,
+                    },
+                }
+            );
+
+            res.status(200).json({ error: false, message: "Product quantity has been changed successfully" });
+
+            //   if (!Array.isArray(product)) {
+            //     throw new Error('Invalid product data');
+            //   }
+
+            //   if (product.length < 3) {
+            //     throw new Error('Product data must have at least three elements');
+            //   }
+
+            //   const [userId, productId, count] = product;
+
+            //   console.log(product);
+
+            //   await userHelper.updateQuantity(userId, productId, count);
+
+            //   res.json({ status: "success" });
+        } catch (err) {
+            console.error(err);
+            res.json({ status: "error" });
+        }
+    },
+    removeProductFromCart: async (req, res) => {
+        try {
+            
+            console.log(req.body);
+            await userHelper.removeProductFromCart(req.body);
+            res.json({ status: "success", message: "product added to cart", });
+        } catch (err) {
+            console.error(error);
+        }
+    },
+    checkOut: async (req, res) => {
+        try {
+          let user = req.session.user;
+          const name = req.session.user.name
+    
+          const items = await userHelper.getCartProducts(req.session.user._id);
+          const address = await userHelper.getDefaultAddress(req.session.user._id);
+          console.log('adress not get',address);
+          const { cartItems: products, subtotal } = items;
+          res.render("../views/user/checkout", { user, products, subtotal, address ,name});
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      placeOrderPost: async (req, res) => {
+        try {
+          const { userId, paymentMethod } = req.body;
+    
+          const response = await userHelper.placeOrder(
+            userId,
+            paymentMethod,
+            req.body
+          );
+          console.log(response);
+          res.json({ status: "success" });
+        } catch (err) {
+          console.error(err);
+          res.json({ status: "error" });
+        }
+      },
+      addAddress: async (req, res) => {
+        try {
+          res.render("add-address", { user: req.session.user });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      selectAddress: async (req, res) => {
+        try {
+          const address = await userHelper.getAddress(req.session.user._id);
+          res.render("address", { user: req.session.user, address });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      addAddressPost: async (req, res) => {
+        try {
+          let { userId } = req.body;
+          let address = req.body;
+          await userHelper.addAddressPost(userId, address);
+          res.redirect("/address");
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      select: async (req, res) => {
+        try {
+          await userHelper.updateAddress(req.params.id, req.session.user._id);
+          res.json({ status: "success" });
+        } catch (err) {
+          console.error(err);
+        }
+        // res.json({ status: "success" });
+      },
+    
+      deleteAddress: async (req, res) => {
+        try {
+          await userHelper.deleteAddress(req.params.id);
+          res.json({ status: "success" });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      getOrderDetails: async (req, res) => {
+        try {
+          const orderHistory = await userHelper.getOrderHistory(
+            req.session.user._id
+          );
+    
+          const orderDetails = orderHistory.reverse();
+          res.render("order", { user: req.session.user, orderDetails });
+        } catch (err) {
+          console.log(err);
+        }
+      },
+      orderSuccess: async (req, res) => {
+        const user= req.session.user;
+        const name= req.session.user.name;
+
+        res.render("../views/user/placeOrderSuccess", {user, name});
+      },
+      viewOrder: async (req, res) => {
+        try {
+          const currentOrder = await adminHelper.getSpecificOrder(req.params.id);
+          const { productDetails } = currentOrder;
+          res.render("view-order", { user: req.session.user, productDetails });
+        } catch (err) {
+          console.error(err);
+        }
+      },
 
 
 };

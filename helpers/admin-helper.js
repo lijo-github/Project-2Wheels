@@ -2,6 +2,8 @@ const userSchema = require("../model/userModel");
 const Category = require("../model/category");
 const Product = require("../model/product.js")
 
+const {Order, Address,OderItem} = require("../model/order")
+
 module.exports = {
     adminLogin: (adminData) => {
         return new Promise(async (resolve, reject) => {
@@ -32,7 +34,7 @@ module.exports = {
                 let filter = {};
                 status === "active" ? (filter.status = true) : status === "inactive" ? (filter.status = false) : filter;
                 try {
-                    let users = await userSchema.find({ status: filter.status });
+                    let users = await userSchema.find({ status: filter.status })
                     resolve(users);
                 } catch (err) {
                     console.error(err);
@@ -46,6 +48,12 @@ module.exports = {
                 }
             }
         });
+    },
+
+    getUsercount:async()=>{
+      const count = await userSchema.find({}).countDocuments();
+      return count;
+
     },
     blockUser: async(userId)=>{
         try{
@@ -181,8 +189,21 @@ module.exports = {
       },
       getAllProducts: async () => {
         try {
-          const products = await Product.find({});
+          
+          
+          const products = await Product.find({})
           return products;
+         
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      getProductsCount: async () => {
+        try {
+          
+          const count = await Product.find({}).countDocuments();
+          return count;
+         
         } catch (err) {
           console.error(err);
         }
@@ -238,7 +259,22 @@ module.exports = {
         } catch (err) {
           console.error(err);
         }
-      }
+      },
+      getOrderDetails: async () => {
+        try {
+          const order = await Order.find({})
+            .populate("address")
+            .populate("items.product_id")
+            .exec();
+          if (order.length === 0) {
+            console.log("No orders found for user");
+          } else {
+            return order;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
 
 
     

@@ -57,13 +57,24 @@ module.exports = {
         });
     },
 
-    viewUser: (req, res) => {
+    viewUser: async (req, res) => {
         const status = req.query.status || "";
-
         console.log("data received", status);
+
         try {
-            adminHelper.getAllusers(status).then((users) => {
-                res.render("../views/admin/view-user", { users, adLogErr: false });
+            // const page = parseInt(req.query.page) || 1;
+            // const pageSize = parseInt(req.query.pageSize) || 5;
+            // const skip = (page - 1) * pageSize;
+            // const count = await adminHelper.getUsercount();
+            // const totalPages = Math.ceil(count / pageSize);
+            // const currentPage = page > totalPages ? totalPages : page;
+           const users = await adminHelper.getAllusers(status);
+            // const paginatedUsers = users.slice(skip, skip + pageSize);
+
+            res.render("../views/admin/view-user", {
+                users,
+                adLogErr: false,
+                
             });
         } catch (err) {
             console.error(err);
@@ -191,15 +202,14 @@ module.exports = {
                 const productFound = await adminHelper.addProducts(productData);
                 if (productFound) {
                     req.session.productUploaded = true;
-                    console.log("$$$$$$$$$$$$$$$$$");
+
                     res.redirect("/admin/add-products");
                     return;
                 }
                 req.session.productFound = true;
-                console.log("@@@@@@@@@@@@@@@");
+
                 res.redirect("/admin/add-products");
             } catch (err) {
-                console.log("!!!!!!!!!!!!!!!!!!!!!");
                 console.error(err);
             }
         } catch (err) {
@@ -212,14 +222,30 @@ module.exports = {
 
     getAllProducts: async (req, res) => {
         try {
-            var products = await adminHelper.getAllProducts();
+            // var products = await adminHelper.getAllProducts();
+            const products = await adminHelper.getAllProducts();
+        const page = parseInt(req.query.page) || 1;
+        const pageSize = parseInt(req.query.pageSize) || 4;
+        const skip = (page - 1) * pageSize;
+        const count = await adminHelper.getProductsCount();
+        const totalPages = Math.ceil(count / pageSize);
+        const currentPage = page > totalPages ? totalPages : page;
+        const productsArray = Array.from(products);
+const paginatedProducts = productsArray.slice(skip, skip + pageSize);
+       
+
+        res.render("admin/products", {
+            products: paginatedProducts,
+            currentPage,
+            totalPages,
+            pageSize,
+            page,
+            
+        });
         } catch (err) {
             console.error(err);
         }
-
-        res.render("admin/products", {
-            products,
-        });
+        
     },
     editProduct: async (req, res) => {
         let product;
@@ -230,43 +256,49 @@ module.exports = {
             res.redirect("/admin");
             console.error(err);
         }
-      
     },
     editProductPost: async (req, res) => {
-      try {
-        const files = req.files;
-        const results = await Promise.all(
-          files.map((file) => cloudinary.uploader.upload(file.path))
-        ); 
-        const productData = req.body;
-  
-        const colorCode = productData.productColor;
-        const rgb = convert.hex.rgb(colorCode);
-        const colorName = convert.rgb.keyword(rgb);
-        productData.productColor = colorName;
-  
-        if (results) {
-          const productImages = results.map((file) => {
-            return file.secure_url;
-          });
-          productData.productImages = productImages;
+        try {
+            const files = req.files;
+            const results = await Promise.all(files.map((file) => cloudinary.uploader.upload(file.path)));
+            const productData = req.body;
+
+            const colorCode = productData.productColor;
+            const rgb = convert.hex.rgb(colorCode);
+            const colorName = convert.rgb.keyword(rgb);
+            productData.productColor = colorName;
+
+            if (results) {
+                const productImages = results.map((file) => {
+                    return file.secure_url;
+                });
+                productData.productImages = productImages;
+            }
+            await adminHelper.updateProducts(productData, req.params.id);
+            res.redirect("/admin/products");
+        } catch (err) {
+            console.error(err);
+            req.session.productUploadError = true;
+
+            res.redirect("/admin/edit-product");
         }
-        await adminHelper.updateProducts(productData, req.params.id);
-        res.redirect("/admin/products");
-      } catch (err) {
-        console.error(err);
-        req.session.productUploadError = true;
-  
-        res.redirect("/admin/edit-product");
-      }
     },
-    unlistPorduct: async(req,res)=>{
-      try{
-        await adminHelper.unlistProduct(req.params.id);
-        res.redirect("/admin/products");
-      }catch(err){
-        console.error(err);
-      }
+    unlistPorduct: async (req, res) => {
+        try {
+            await adminHelper.unlistProduct(req.params.id);
+            res.redirect("/admin/products");
+        } catch (err) {
+            console.error(err);
+        }
     },
-    
+    orderDetails: async (req, res) => {
+        try {
+          const orders = await adminHelper.getOrderDetails();
+          if (orders) {
+            res.render("/admin/order-Management", { orders });
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
 };

@@ -30,7 +30,7 @@
             </div>
 
             <div class="d-grid">
-              <button class="btn btn-primary">Create category</button>
+              <button class="btn btn-primary" onclick="addCategory()">Create category</button>
             </div>
           </form>
         </div>
@@ -197,3 +197,44 @@
 </script>
 
 <%-include('../partials/admin-footer.ejs')-%>
+<script>
+  
+  function addCategory() {
+    // Get the form data
+    const form = document.querySelector("form");
+    const formData = new FormData(form);
+  
+    // Send a POST request to the server with the form data
+    fetch("/admin/add-category", {
+      method: "POST",
+      body: formData,
+    })
+      .then((result)=> {
+        if (result.ok) {
+          // Show Sweet Alert success message
+          Swal.fire({
+            title: "Success!",
+            text: "New Category Added",
+            icon: "success",
+          }).then( ()=> {
+            // Reload the page to show the newly added product
+            location.reload();
+          });
+        } else {
+          // Show Sweet Alert error message
+          Swal.fire({
+            title: "Error!",
+            text: "Failed to add category.",
+            icon: "error",
+          });
+        }
+      })
+      .catch((error)=> {
+        console.log(error);
+      });
+  }
+  
+  </script>
+  
+  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>

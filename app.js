@@ -39,7 +39,7 @@ app.use("/admin", adminRouter);
 //*Database connection */
 connectDB()
 mongoose.connection.once("open", ()=>{
-    console.log("Database connected to successfully");
+    console.log("Database connected successfully");
 });
 
 //* catch 404 and forward to error handler */

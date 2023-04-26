@@ -303,12 +303,16 @@
                             </li>
                         </ul>
                     </div>
-                    
+
                     <ul class="grid-list product-list" data-filter="all">
                         <% products.forEach(function (product) { %>
                         <li class="accessory">
                             <div class="product-card">
-                                <a href="/product-view/<%=product._id%>" class="card-banner img-holder has-before" style="--width: 300; --height: 300">
+                                <a
+                                    href="/product-view/<%=product._id%>"
+                                    class="card-banner img-holder has-before"
+                                    style="--width: 300; --height: 300"
+                                >
                                     <img
                                         src="<%= product.productImage[0] %>"
                                         width="300"
@@ -344,12 +348,17 @@
                                 </a>
 
                                 <div class="card-content">
-                                    <h3 class="h3"><%= product.productModel%>
-                                        <a href="/product-view/<%=product._id%>" class="card-title"><%= product.productName.slice(0,35) %>...</a>
+                                    <h3 class="h3">
+                                        <%= product.productModel%>
+                                        <a href="/product-view/<%=product._id%>" class="card-title"
+                                            ><%= product.productName.slice(0,35) %>...</a
+                                        >
                                     </h3>
 
                                     <div class="card-price">
-                                        <a href="/productsList?category=<%=product.category._id%>"class="price" value="21"><%=product.category.CategoryName %></a> 
+                                        <a href="/productsList?category=<%=product.category._id%>" class="price" value="21"
+                                            ><%=product.category.CategoryName %></a
+                                        >
                                     </div>
                                     <span class="text"><%=product.reviews%></span>
                                 </div>
@@ -357,152 +366,8 @@
                         </li>
                         <% }) %>
                     </ul>
-                    
                 </div>
             </section>
-
-            <!-- 
-          - #BLOG
-        -->
-
-            <!-- <section class="section blog" id="blog" aria-label="blog">
-                <div class="container">
-                    <div class="title-wrapper">
-                        <h2 class="h2 section-title">Explore our blog</h2>
-
-                        <a href="#" class="btn-link">
-                            <span class="span">View All</span>
-
-                            <ion-icon name="arrow-forward" aria-hidden="true"></ion-icon>
-                        </a>
-                    </div>
-
-                    <ul class="grid-list">
-                        <li>
-                            <div class="blog-card">
-                                <div class="card-banner img-holder" style="--width: 374; --height: 243">
-                                    <img
-                                        src="../userAssets/images/blog-1.jpg"
-                                        width="374"
-                                        height="243"
-                                        loading="lazy"
-                                        alt="Unique products that will impress your home in 2022."
-                                        class="img-cover"
-                                    />
-
-                                    <a href="#" class="card-btn">
-                                        <span class="span">Read more</span>
-
-                                        <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
-                                    </a>
-                                </div>
-
-                                <div class="card-content">
-                                    <h3 class="h3">
-                                        <a href="#" class="card-title"
-                                            >Unique products that will impress your home in 2022.</a
-                                        >
-                                    </h3>
-
-                                    <ul class="card-meta-list">
-                                        <li class="card-meta-item">
-                                            <time class="card-meta-text" datetime="2022-09-27">November 27, 2022</time>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <a href="#" class="card-meta-text">Admin</a>
-                                        </li>
-
-                                        <li class="card-meta-item">in <a href="#" class="card-meta-text">deco</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="blog-card">
-                                <div class="card-banner img-holder" style="--width: 374; --height: 243">
-                                    <img
-                                        src="../userAssets/images/blog-2.jpg"
-                                        width="374"
-                                        height="243"
-                                        loading="lazy"
-                                        alt="Navy Blue & White Striped Area Rugs"
-                                        class="img-cover"
-                                    />
-
-                                    <a href="#" class="card-btn">
-                                        <span class="span">Read more</span>
-
-                                        <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
-                                    </a>
-                                </div>
-
-                                <div class="card-content">
-                                    <h3 class="h3">
-                                        <a href="#" class="card-title">Navy Blue & White Striped Area Rugs</a>
-                                    </h3>
-
-                                    <ul class="card-meta-list">
-                                        <li class="card-meta-item">
-                                            <time class="card-meta-text" datetime="2022-09-25">November 25, 2022</time>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <a href="#" class="card-meta-text">Admin</a>
-                                        </li>
-
-                                        <li class="card-meta-item">in <a href="#" class="card-meta-text">deco</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="blog-card">
-                                <div class="card-banner img-holder" style="--width: 374; --height: 243">
-                                    <img
-                                        src="../userAssets/images/blog-3.jpg"
-                                        width="374"
-                                        height="243"
-                                        loading="lazy"
-                                        alt="Woodex White Coated Staircase Floating"
-                                        class="img-cover"
-                                    />
-
-                                    <a href="#" class="card-btn">
-                                        <span class="span">Read more</span>
-
-                                        <ion-icon name="add-outline" aria-hidden="true"></ion-icon>
-                                    </a>
-                                </div>
-
-                                <div class="card-content">
-                                    <h3 class="h3">
-                                        <a href="#" class="card-title">Woodex White Coated Staircase Floating</a>
-                                    </h3>
-
-                                    <ul class="card-meta-list">
-                                        <li class="card-meta-item">
-                                            <time class="card-meta-text" datetime="2022-09-18">November 18, 2022</time>
-                                        </li>
-
-                                        <li class="card-meta-item">
-                                            <a href="#" class="card-meta-text">Admin</a>
-                                        </li>
-
-                                        <li class="card-meta-item">in <a href="#" class="card-meta-text">deco</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </section> -->
-
-            <!-- 
-          - #NEWSLETTER
-        -->
 
             <section class="section newsletter" aria-label="newsletter">
                 <div class="container">

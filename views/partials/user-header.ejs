@@ -17,12 +17,14 @@
         <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml" />
         <!-- 
     - custom css link
+   
   -->
         <link rel="stylesheet" href="../userAssets/stylesheets/style.css" />
 
         <!-- login and signup page css -->
         <!-- <link rel="stylesheet" href="stylesheets/style1.css">   -->
 
+   
         <!-- 
     - google font link
   -->
@@ -44,7 +46,14 @@
 
         <!-- <script src="/javascripts/validation.js"></script> -->
 
+
+
+
         <title>Hello, world!</title>
+
+       
+
+
     </head>
 
     <script src="../userAssets/javascripts/script.js" defer></script>
@@ -55,9 +64,13 @@
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
+     <!-- custom css js link-->
+    
+
+
     <header class="header" data-header>
         <div class="container">
-            <a href="#" class="logo">2WHEELS</a>
+            <a href="/" class="logo">2WHEELS</a>
 
             <div class="input-wrapper">
                 <input type="search" name="search" placeholder="Search Anything..." class="input-field" />
@@ -82,15 +95,22 @@
                 
                 </div>
                 <button class="header-action-btn" aria-label="favorite list">
-                    <ion-icon name="heart-outline" aria-hidden="true"></ion-icon>
+                    <a href="/error">
+                    <ion-icon name="heart-outline" aria-hidden="true"></ion-icon></a>
 
                     <span class="btn-badge">0</span>
                 </button>
 
                 <button class="header-action-btn" aria-label="cart">
-                    <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon>
+                    <a href="/cart">
+                    <ion-icon name="bag-handle-outline" aria-hidden="true"></ion-icon></a>
 
-                    <span class="btn-badge">0</span>
+                    <% if(user) { %>
+                        <span class="btn-badge"><%= user.count %></span>
+                      <% } else { %>
+                        <span class="btn-badge">0</span>
+                      <% } %>
+                      
                 </button>
 
                 <button class="header-action-btn" aria-label="open menu" data-nav-toggler>

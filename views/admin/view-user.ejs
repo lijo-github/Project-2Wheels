@@ -1,3 +1,11 @@
+<!-- Data Table -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+<script type="text/javascript" charset="utf8"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Data Table -->
 <%-include('../partials/admin-header.ejs')-%>
 
 <main>
@@ -7,16 +15,16 @@
         <h2 class="content-title card-title">Users List.</h2>
         <p>User Management.</p>
       </div>
-      <div>
+      <!-- <div>
         <input
           type="text"
           placeholder="Search order ID"
           class="form-control bg-white"
         />
-      </div>
+      </div> -->
     </div>
     <div class="card mb-4">
-      <header class="card-header">
+      <!-- <header class="card-header">
         <div class="row gx-3">
           <div class="col-lg-4 col-md-6 me-auto">
             <input type="text" placeholder="Search..." class="form-control" />
@@ -40,11 +48,11 @@
             </select>
           </div>
         </div>
-      </header>
+      </header> -->
       <!-- card-header end// -->
       <div class="card-body">
         <div class="table-responsive">
-          <table class="table table-hover">
+          <table class="table table-hover" id="productsTable">
             <thead>
               <tr>
                 <th>No</th>
@@ -77,25 +85,10 @@
                 <td class="text-end">
                   <a
                     href="/admin/block-user/<%= user._id %>"
-                    class="btn btn-md rounded font-sm"
-                    >Block</a
+                    class="btn btn-md rounded font-sm block-btn"  
+                    id="btn-block">Block</a
                   >
-                  <%#--
-                  <div class="dropdown">
-                    <a
-                      href="#"
-                      data-bs-toggle="dropdown"
-                      class="btn btn-light rounded btn-sm font-sm"
-                    >
-                      <i class="material-icons md-more_horiz"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">View detail</a>
-                      <a class="dropdown-item" href="#">Edit info</a>
-                      <a class="dropdown-item text-danger" href="#">Delete</a>
-                    </div>
-                  </div>
-                  --%>
+                
                 </td>
                 <% } else { %>
                 <td>
@@ -106,25 +99,10 @@
                 <td class="text-end">
                   <a
                     href="/admin/unblock-user/<%= user._id %>"
-                    class="btn btn-md rounded font-sm"
+                    class="btn btn-md rounded font-sm" id="btn-unblock"
                     >Unblock</a
                   >
-                  <%#--
-                  <div class="dropdown">
-                    <a
-                      href="#"
-                      data-bs-toggle="dropdown"
-                      class="btn btn-light rounded btn-sm font-sm"
-                    >
-                      <i class="material-icons md-more_horiz"></i>
-                    </a>
-                    <div class="dropdown-menu">
-                      <a class="dropdown-item" href="#">View detail</a>
-                      <a class="dropdown-item" href="#">Edit info</a>
-                      <a class="dropdown-item text-danger" href="#">Delete</a>
-                    </div>
-                  </div>
-                  --%>
+                  
                 </td>
                 <% } %>
               </tr>
@@ -137,23 +115,22 @@
       <!-- card-body end// -->
     </div>
     <!-- card end// -->
-    <div class="pagination-area mt-15 mb-50">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-start">
-          <li class="page-item active"><a class="page-link" href="#">01</a></li>
-          <li class="page-item"><a class="page-link" href="#">02</a></li>
-          <li class="page-item"><a class="page-link" href="#">03</a></li>
-          <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-          <li class="page-item"><a class="page-link" href="#">16</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#"
-              ><i class="material-icons md-chevron_right"></i
-            ></a>
-          </li>
-        </ul>
-      </nav>
-    </div>
+    
   </section>
 </main>
 
 <%-include('../partials/admin-footer.ejs')-%>
+
+
+<script>
+    $(document).ready( function () {
+      $('#productsTable').DataTable();
+});
+</script>
+
+<!-- data table cdn -->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+<script src="/assets/js/vendors/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap4.min.js"></script>
+<!-- data table cdn -->

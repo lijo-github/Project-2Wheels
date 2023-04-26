@@ -1,0 +1,253 @@
+<%- include('../partials/customHeader.ejs') -%>
+<%-include('../partials/user-header.ejs')-%>
+
+
+  <section>
+                          
+    <main class="main">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            Product View 
+          </li>
+        </ol>
+      </div> 
+        <div class="page-content mt-3">
+          <div class="container">
+            <div class="product-details-top">
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="product-gallery product-gallery-vertical">
+                    <div class="row">
+                      <figure class="product-main-image">
+                        <img
+                          id="product-zoom"
+                          src="<%= products.productImage[0] %>"
+                          data-zoom-image="<%= products.productImage[0] %>"
+                          alt="product image"
+                        />
+      
+                        <a
+                          href="#"
+                          id="btn-product-gallery"
+                          class="btn-product-gallery"
+                        >
+                          <i class="icon-arrows"></i>
+                        </a>
+                      </figure>
+      
+                      <div id="product-zoom-gallery" class="product-image-gallery">
+                        <a
+                          class="product-gallery-item active"
+                          href="#"
+                          data-image="<%= products.productImage[0] %>"
+                          data-zoom-image="<%= products.productImage[0] %>"
+                        >
+                          <img
+                            src="<%= products.productImage[0] %>"
+                            alt="product side"
+                          />
+                        </a>
+      
+                        <a
+                          class="product-gallery-item"
+                          href="#"
+                          data-image="<%= products.productImage[1] %>"
+                          data-zoom-image="<%= products.productImage[1] %>"
+                        >
+                          <img
+                            src="<%= products.productImage[1] %>"
+                            alt="product cross"
+                          />
+                        </a>
+      
+                        <a
+                          class="product-gallery-item"
+                          href="#"
+                          data-image="<%= products.productImage[2] %>"
+                          data-zoom-image="<%= products.productImage[2] %>"
+                        >
+                          <img
+                            src="<%= products.productImage[2] %>"
+                            alt="product with model"
+                          />
+                        </a>
+      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="col-md-6">
+                  <div class="product-details">
+                    <h1 class="product-cat"><%= products.productModel %></h1>
+                    <h1 class="product-title"><%= products.productName %></h1>
+      
+                    <div class="ratings-container">
+                      <div class="ratings">
+                        <div class="ratings-val" style="width: 80%"></div>
+                      </div>
+                      <a
+                        class="ratings-text"
+                        href="#product-review-link"
+                        id="review-link"
+                        >( 2 Reviews )</a
+                      >
+                    </div>
+      
+                    <div class="product-price">
+                      &#x20B9;<%= products.productPrice %>
+                    </div>
+      
+                    <div class="product-content">
+                      <p><%= products.productDescription %></p>
+                    </div>
+      
+                    
+              </div><!-- End .details-filter-row -->
+      
+              <div class="product-details-action">
+                <a href="#" class="btn-cart" id="add-to-cart" data-user-id="<%=user?._id%>" data-product-id="<%=products._id %>"><span>add to cart</span></a>
+
+      
+                  <div class="details-action-wrapper">
+                      <a href="#" class=" btn-cart" title="Wishlist"><span>Add to
+                              Wishlist</span></a>
+                     
+                  </div><!-- End .product-cat -->
+                   
+                  <div class="social-icons social-icons-sm m-5">
+                    
+                      <span class="social-label">Share:</span>
+                      <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                              class="icon-facebook-f"></i></a>
+                      <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                              class="icon-twitter"></i></a>
+                      <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                              class="icon-instagram"></i></a>
+                      
+                  </div>
+              </div><!-- End .product-details-footer -->
+          </div><!-- End .product-details -->
+      </div><!-- End .col-md-6 -->
+      </div><!-- End .row -->
+      </div><!-- End .product-details-top -->
+      </div><!-- End .container -->
+      </div><!-- End .page-content -->
+      </main><!-- End .main -->
+      
+      
+      
+      
+        <!-- End .modal -->
+      </div>
+      <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+      <!-- Mobile Menu -->
+      <div class="mobile-menu-overlay"></div>
+      <!-- End .mobil-menu-overlay -->
+      
+      <div class="mobile-menu-container mobile-menu-light">
+        <div class="mobile-menu-wrapper">
+          <span class="mobile-menu-close"><i class="icon-close"></i></span>
+      
+          <form action="#" method="get" class="mobile-search">
+            <label for="mobile-search" class="sr-only">Search</label>
+            <input
+              type="search"
+              class="form-control"
+              name="mobile-search"
+              id="mobile-search"
+              placeholder="Search in..."
+              required
+            />
+            <button class="btn btn-primary" type="submit">
+              <i class="icon-search"></i>
+            </button>
+          </form>
+      
+          <ul class="nav nav-pills-mobile nav-border-anim" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="mobile-menu-link"
+                data-toggle="tab"
+                href="#mobile-menu-tab"
+                role="tab"
+                aria-controls="mobile-menu-tab"
+                aria-selected="true"
+                >Menu</a
+              >
+            </li>
+          </ul>
+      
+          <div class="tab-content">
+            <div
+              class="tab-pane fade show active"
+              id="mobile-menu-tab"
+              role="tabpanel"
+              aria-labelledby="mobile-menu-link"
+            >
+              <nav class="mobile-nav">
+                <ul class="mobile-menu">
+                  <li class="active">
+                    <a href="/">Home</a>
+                  </li>
+                  <li class="active">
+                    
+                </ul>
+              </nav>
+              
+              <!-- End .mobile-nav -->
+            </div>
+            <!-- .End .tab-pane -->
+      
+          <div class="social-icons">
+            <a href="#" class="social-icon" target="_blank" title="Facebook"
+              ><i class="icon-facebook-f"></i
+            ></a>
+            <a href="#" class="social-icon" target="_blank" title="Twitter"
+              ><i class="icon-twitter"></i
+            ></a>
+            <a href="#" class="social-icon" target="_blank" title="Instagram"
+              ><i class="icon-instagram"></i
+            ></a>
+            <a href="#" class="social-icon" target="_blank" title="Youtube"
+              ><i class="icon-youtube"></i
+            ></a>
+          </div>
+          <!-- End .social-icons -->
+        </div>
+        <!-- End .mobile-menu-wrapper -->
+      </div>
+      <!-- End .mobile-menu-container -->
+      
+      
+      </section>
+
+
+    <!-- Main JS File -->
+    
+
+    
+    <script src="/userAssets/customAsset/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/jquery.hoverIntent.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/jquery.waypoints.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/superfish.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/owl.carousel.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/customAsset/assets/js/jquery.elevateZoom.min.js"></script>
+    <script src="/userAssets/customAsset/assets/js/bootstrap-input-spinner.js"></script>
+    <script src="/userAssets/customAsset/assets/js/jquery.magnific-popup.min.js"></script>
+     <script src="/userAssets/customAsset/assets/js/jquery.countdown.min.js"></script>
+    <!-- Main JS File -->
+    <script src="/userAssets/customAsset/assets/js/main.js"></script>
+    <script src="/userAssets/customAsset/assets/js/demos/demo-2.js"></script>
+
+
+
+<%-include('../partials/user-footer.ejs')-%>
+  
+
+
+

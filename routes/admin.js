@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express();
 const session = require("express-session");
-const upload = require("../config/storage.js")
+const upload = require("../config/storage.js");
 const adminController = require("../controllers/admin-controller");
 const {isLoggedIn,isUser,isloggedInad} = require("../middleware/sessionHandling")
 router.set("view engine", "ejs");
@@ -10,7 +10,7 @@ router.set("view engine", "ejs");
 // router.get("/",isLoggedIn, adminController.adminPage);
 
 //* get admin dashboard *//
-router.get("/dashbord", isloggedInad, adminController.dashboard)
+router.get("/dashbord", isloggedInad, adminController.dashboard);
 
 //* get/post admin loginpage *//
 router.get("/",isloggedInad, adminController.adminlogin);
@@ -24,25 +24,37 @@ router.get("/view-user",isloggedInad, adminController.viewUser);
 
 //* get/post block/unblock user *//
 router.get("/block-user/:id",isLoggedIn, adminController.blockUser);
-router.get("/unblock-user/:id",isLoggedIn, adminController.unblockUser)
+router.get("/unblock-user/:id",isLoggedIn, adminController.unblockUser);
 
 //* get addbanner *//
-router.get("/add-banner",isloggedInad,adminController.addBanner)
+router.get("/add-banner",isloggedInad,adminController.addBanner);
 
 //* get/post category *//
 router.get("/category",isloggedInad,adminController.category);
-router.post("/add-category",isloggedInad, adminController.addCategory)
+router.post("/add-category",isloggedInad, adminController.addCategory);
+router.get("/delete-category/:id",isloggedInad,adminController.deleteCategory);
+router.post("/edit-category/:id",adminController.editCategory);
+router.get("/list-category/:id", isloggedInad, adminController.listCategory)
 
 //* get/post add-products *//
 router.get("/add-products",isloggedInad, adminController.addProducts);
-router.post("/add-products",upload.array("productImage",4), adminController.addProductsPost)
+router.post("/add-products",upload.array("productImage",4), adminController.addProductsPost);
+
+//* getall products *//
 router.get("/products",isloggedInad, adminController.getAllProducts);
 
+//* edit product *//
 router.get("/edit-product/:id",isloggedInad, adminController.editProduct);
 
-router.post("/edited-product/:id",upload.array("productImage",4), adminController.editProductPost)
+router.post("/edited-product/:id",upload.array("productImage",4), adminController.editProductPost);
 
 
 router.get("/unlist-product/:id",isloggedInad,adminController.unlistPorduct);
+
+
+//* order-Management *//
+router.get("/order-Management", isloggedInad, adminController.orderDetails)
+
+
 
 module.exports = router;

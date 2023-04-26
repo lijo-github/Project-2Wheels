@@ -1,219 +1,237 @@
 <%-include('../partials/admin-header.ejs')-%>
 <section class="content-main">
-  <div class="row">
-    <form
-      action="/admin/add-products"
-      method="post"
-      enctype="multipart/form-data"
-    >
-      <div class="col-9">
-        <div class="content-header">
-          <h2 class="content-title">Add New Product.</h2>
-        </div>
-      </div>
-      <div class="col-xl">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="mb-4">
-              <label for="product_brand" class="form-label">Model</label>
-              <input
-                type="text"
-                placeholder="Type here"
-                class="form-control"
-                id="product_brand"
-                name="productModel"
-                required
-              />
+    <div class="row">
+        <form action="/admin/add-products" method="post" enctype="multipart/form-data">
+            <div class="col-9">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Product.</h2>
+                </div>
             </div>
-            <div class="col-xl mb-4">
-              <label for="product_title" class="form-label"
-                >Product title</label
-              >
-              <input
-                type="text"
-                placeholder="Type here"
-                class="form-control"
-                id="product_title"
-                name="productName"
-                required
-              />
+            <div class="col-xl">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label for="product_brand" class="form-label">Model</label>
+                            <input
+                                type="text"
+                                placeholder="Type here"
+                                class="form-control"
+                                id="product_brand"
+                                name="productModel"
+                                required
+                            />
+                        </div>
+                        <div class="col-xl mb-4">
+                            <label for="product_title" class="form-label">Product title</label>
+                            <input
+                                type="text"
+                                placeholder="Type here"
+                                class="form-control"
+                                id="product_title"
+                                name="productName"
+                                required
+                            />
+                        </div>
+                        <%/*
+                        <div class="row gx-3">
+                            <div class="col-md-4 mb-3">
+                                <label for="product_sku" class="form-label">Product ID</label>
+                                <input
+                                    type="text"
+                                    placeholder="Type here"
+                                    class="form-control"
+                                    id="product_sku"
+                                    name="productID"
+                                    required
+                                />
+                            </div>
+                            */%>
+                            <div class="col-md-4 mb-3">
+                                <label for="Color">Product Color</label>
+                                <input
+                                    class="jscolor form-control"
+                                    type="text"
+                                    placeholder="Type here"
+                                    id="color product_color"
+                                    name="productColor"
+                                />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="product_size" class="form-label">Quantity</label>
+                                <input
+                                    type="number"
+                                    placeholder="Type here"
+                                    class="form-control"
+                                    id="product_size"
+                                    min="0"
+                                    name="productQuantity"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card col-xl mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label">Description</label>
+                            <textarea
+                                placeholder="Type here"
+                                class="form-control"
+                                rows="4"
+                                name="productDescription"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div>
+                            <label class="form-label">Images</label>
+                            <input
+                                class="form-control"
+                                type="file"
+                                name="productImage"
+                                accept="image/jpeg,image/png,image/jpg"
+                                onchange="previewImage(event)"
+                            />
+                            <img class="preview" style="width: 300px; height: inherit" />
+                            <input
+                                class="form-control"
+                                type="file"
+                                name="productImage"
+                                accept="image/jpeg,image/png,image/jpg"
+                                onchange="previewImage(event)"
+                            />
+                            <img class="preview" style="width: 300px; height: inherit" />
+                            <input
+                                class="form-control"
+                                type="file"
+                                name="productImage"
+                                accept="image/jpeg,image/png,image/jpg"
+                                onchange="previewImage(event)"
+                            />
+                            <img class="preview" style="width: 300px; height: inherit" />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <%/*
-            <div class="row gx-3">
-              <div class="col-md-4 mb-3">
-                <label for="product_sku" class="form-label">Product ID</label>
-                <input
-                  type="text"
-                  placeholder="Type here"
-                  class="form-control"
-                  id="product_sku"
-                  name="productID"
-                  required
-                />
-              </div>
-              */%>
-              <div class="col-md-4 mb-3">
-                <label for="Color">Product Color</label>
-                <input
-                  class="jscolor form-control"
-                  type="text"
-                  placeholder="Type here"
-                  id="color product_color"
-                  name="productColor"
-                />
-              </div>
-              <div class="col-md-4 mb-3">
-                <label for="product_size" class="form-label">Quantity</label>
-                <input
-                  type="number"
-                  placeholder="Type here"
-                  class="form-control"
-                  id="product_size"
-                  min="0"
-                  name="productQuantity"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- card end// -->
-        <div class="card col-xl mb-4">
-          <div class="card-body">
-            <div>
-              <label class="form-label">Description</label>
-              <textarea
-                placeholder="Type here"
-                class="form-control"
-                rows="4"
-                name="productDescription"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-        <!-- card end// -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <div>
-              <label class="form-label">Images</label>
-              <input
-                class="form-control"
-                type="file"
-                name="productImage"
-                accept="image/jpeg,image/png,image/jpg"
-                onchange="previewImage(event)"
-              />
-              <img class="preview" style="width: 300px; height: inherit" />
-              <input
-                class="form-control"
-                type="file"
-                name="productImage"
-                accept="image/jpeg,image/png,image/jpg"
-                onchange="previewImage(event)"
-              />
-              <img class="preview" style="width: 300px; height: inherit" />
-              <input
-                class="form-control"
-                type="file"
-                name="productImage"
-                accept="image/jpeg,image/png,image/jpg"
-                onchange="previewImage(event)"
-              />
-              <img class="preview" style="width: 300px; height: inherit" />
-              <!-- <input
-                class="form-control"
-                type="file"
-                name="productImage"
-                accept="image/jpeg,image/png,image/jpg"
-                onchange="previewImage(event)"
-              />
-              <img class="preview" style="width: 300px; height: inherit" /> -->
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card mb-4">
-          <div class="card-body">
-            <div class="mb-4">
-              <label class="form-label">Price</label>
-              <input
-                type="number"
-                placeholder="Type here"
-                class="form-control"
-                name="productPrice"
-                min="0"
-                required
-              />
-            </div>
-            <div class="mb-4">
-              <label class="form-label">Status</label>
-              <select class="form-select">
-                <option>Published</option>
-                <option>Draft</option>
-              </select>
-            </div>
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label">Price</label>
+                            <input
+                                type="number"
+                                placeholder="Type here"
+                                class="form-control"
+                                name="productPrice"
+                                min="0"
+                                required
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Status</label>
+                            <select class="form-select">
+                                <option>Published</option>
+                                <option>Draft</option>
+                            </select>
+                        </div>
 
-            <hr />
-            <h5 class="mb-3">Categories</h5>
-            <% availCategory.forEach(function(category, index) { %>
-            <div class="form-check">
-              <input
-                class="form-check-input"
-                type="radio"
-                name="Category"
-                id="category-<%= index %>"
-                value="<%= category._id %>"
-              />
-              <label class="form-check-label" for="category-<%= index %>">
-                <%= category.CategoryName %>
-              </label>
+                        <hr />
+                        <h5 class="mb-3">Categories</h5>
+                        <% availCategory.forEach(function(category, index) { %>
+                        <div class="form-check">
+                            <input
+                                class="form-check-input"
+                                type="radio"
+                                name="Category"
+                                id="category-<%= index %>"
+                                value="<%= category._id %>"
+                            />
+                            <label class="form-check-label" for="category-<%= index %>">
+                                <%= category.CategoryName %>
+                            </label>
+                        </div>
+                        <% }) %>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div>
+                    <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button>
+                    <button class="btn btn-md rounded font-sm hover-up" onclick="addProduct()">Publish</button><br />
+                    <% if (productFound) { %>
+                    <label class="text-center" style="color: rgb(180, 17, 17)">Product listed already!</label>
+                    <% } %> <% if (productUploaded) { %>
+                    <label class="text-center" style="color: rgb(22, 131, 22)">Product Successfully Uploaded</label>
+                    <% } %> <% if (productUploadedErr) { %>
+                    <label class="text-center" style="color: rgb(22, 131, 22)">Product Not Uploaded</label>
+                    <% } %>
+                </div>
             </div>
-            <% }) %>
-          </div>
-        </div>
-        <!-- card end// -->
-        <div>
-          <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">
-            Save to draft
-          </button>
-          <button class="btn btn-md rounded font-sm hover-up">Publish</button
-          ><br />
-          <% if (productFound) { %>
-          <label class="text-center" style="color: rgb(180, 17, 17)"
-            >Product listed already!</label
-          >
-          <% } %> <% if (productUploaded) { %>
-          <label class="text-center" style="color: rgb(22, 131, 22)"
-            >Product Successfully Uploaded</label
-          >
-          <% } %> <% if (productUploadedErr) { %>
-          <label class="text-center" style="color: rgb(22, 131, 22)"
-            >Product Not Uploaded</label
-          >
-          <% } %>
-        </div>
-      </div>
-    </form>
-  </div>
+        </form>
+    </div>
 </section>
 
-<!-- <script defer src="https://cdn.crop.guide/loader/l.js?c=KMVWFY"></script> -->
+<script defer src="https://cdn.crop.guide/loader/l.js?c=KMVWFY"></script>
+
 <script>
-  function previewImage(event) {
-    var input = event.target;
+    function previewImage(event) {
+        var input = event.target;
 
-    var preview = input.nextElementSibling;
+        var preview = input.nextElementSibling;
 
-    if (input.files && input.files[0]) {
-      var reader = new FileReader();
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-      reader.onload = function () {
-        preview.src = reader.result;
-      };
+            reader.onload = function () {
+                preview.src = reader.result;
+            };
 
-      reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(input.files[0]);
+        }
     }
-  }
 </script>
 
 <%-include('../partials/admin-footer.ejs')-%>
+<script>
+    function addProduct() {
+        
+        // Get the form data
+        const form = document.querySelector("form");
+        const formData = new FormData(form);
+
+        // Send a POST request to the server with the form data
+        fetch("/admin/add-products", {
+            method: "POST",
+            body: formData,
+        })
+            .then(function (response) {
+                if (response.ok) {
+                    // Show Sweet Alert success message
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Your product has been added.",
+                        icon: "success",
+                    }).then(function () {
+                        // Reload the page to show the newly added product
+                        location.reload();
+                    });
+                } else {
+                    // Show Sweet Alert error message
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Failed to add product.",
+                        icon: "error",
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+</script>
+
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
