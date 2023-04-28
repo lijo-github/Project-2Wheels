@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const twilioFunctions = require("../config/twilio.js");
 const Cart = require("../model/cart");
 
+
 module.exports = {
     //*get home Page  */
 
@@ -14,12 +15,15 @@ module.exports = {
             const allProductWithCategory = await userHelper.getAllProducts();
             const products = allProductWithCategory.products;
             const categories = allProductWithCategory.categories;
+            const banners = await userHelper.getListedBanner();
+            
+
             if (user) {
                 user.count = await userHelper.getCartCount(user._id);
-                res.render("user/userLandingPage", { user, products, categories });
+                res.render("user/userLandingPage", { user, products, categories, banners });
             } else {
                 
-                res.render("user/userLandingPage", { user, products, categories });
+                res.render("user/userLandingPage", { user, products, categories , banners });
             }
         } catch (err) {
             console.error(err);
@@ -104,7 +108,7 @@ module.exports = {
         } else res.render("user/otp-login", { message: false });
     },
 
-    //*post signup Page  */
+    //*post signup Page  *//
 
     otpLoginPost: async (req, res) => {
         console.log(req.body);
@@ -184,7 +188,6 @@ module.exports = {
     verifyOtp: async (req, res) => {
         let mobNumber = req.body.mobile;
         console.log(req.body);
-        console.log("$$$$$$$$$$$$$", mobNumber);
         try {
             const validUser = await userHelper.getmobileNumber(mobNumber);
             const enteredOTP = req.body.code;
@@ -280,7 +283,6 @@ module.exports = {
             
             
         } catch (err) {
-            console.log("errorrrrrrrrrrr");
             console.error(err);
         }
     },
@@ -296,11 +298,9 @@ module.exports = {
             }
 
             const { cartItems: products, subtotal } = items;
-            console.log("cart page loaded");
 
             res.render("user/cart", { user, products, total: subtotal });
         } catch (err) {
-            console.log("cart page not loaded ##############");
             res.render("catchError", {
                 message: err.message,
                 user: req.session.user,

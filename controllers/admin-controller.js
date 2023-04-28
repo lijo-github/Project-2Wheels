@@ -111,6 +111,55 @@ module.exports = {
             res.redirect("/admin");
         }
     },
+    addBannerpost: async(req,res)=>{
+        try{
+            const { path } = req.file;
+            const result = await cloudinary.uploader.upload(path);
+
+            const bannerData = req.body;
+            if(result){
+                const Image = result.secure_url;
+                bannerData.Image = Image;
+            }
+            await adminHelper.addBanner(bannerData);
+            res.redirect("/admin/banner-list");
+        }catch(err){
+            console.error(err);
+            req.session.productUploadError = true;
+            res.redirect("/admin/edit-product");
+        }
+
+    },
+    viewBanner: async(req,res)=>{
+        try{
+            const banners = await adminHelper.getAllBanner();
+            res.render("admin/banner-list",{banners});
+
+        }catch(err){
+            console.error(err);
+        }
+
+    },
+    removeBanner: async(req,res)=>{
+
+        try{
+            await adminHelper.removeBanner(req.params.id);
+            res.json({status:"success"});
+
+        }catch(err){
+            console.error(err);
+        }
+    },
+    ListBanner: async(req,res)=>{
+
+        try{
+            await adminHelper.listBanner(req.params.id);
+            res.json({status:"sucess"});
+        }catch(err){
+            console.error(err);
+        }
+    },
+
     category: async (req, res) => {
         try {
             const viewCategory = await adminHelper.getAllCategory();
@@ -300,5 +349,6 @@ const paginatedProducts = productsArray.slice(skip, skip + pageSize);
         } catch (err) {
           console.error(err);
         }
-      }
+      },
+      
 };

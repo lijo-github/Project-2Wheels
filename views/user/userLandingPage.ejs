@@ -117,17 +117,42 @@
           - #HERO
         -->
 
-            <section class="section hero" id="home" aria-label="home">
-                <div class="container">
-                    <img
-                        src="../userAssets/images/SALE-D-Home-H01.jpg"
-                        width="285"
-                        height="396"
-                        alt="Art Deco Home"
-                        class="img-cover"
-                        style="margin-bottom: 30px"
-                    />
+            <!-- Hero Section Begin -->
+
+            <section class="hero">
+                <div class="hero__slider owl-carousel owl-theme">
+                    <% banners.forEach(function (banner) { %>
+                    <div class="hero__item" style="background-image: url('<%=banner.image %>')">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-7 col-md-8">
+                                    <div class="hero__text">
+                                        <h2><%=banner.title %></h2>
+                                        <p><%=banner.description %></p>
+                                        <a href="#" class="primary-btn">Shop now <i class="fa fa-long-arrow-right"></i></a>
+                                        <div class="hero__social">
+                                            <a href="#"><i class="fa fa-facebook"></i></a>
+                                            <a href="#"><i class="fa fa-twitter"></i></a>
+                                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                                            <a href="#"><i class="fa fa-instagram"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% }) %>
                 </div>
+            </section>
+
+            <!-- Hero Section End -->
+
+            <section>
+                <div class="container">
+                    <h2 class="section-title">Categories</h2>
+                </div>
+            </section>
+            <section>
                 <div class="container">
                     <ul class="hero-list">
                         <li>
@@ -144,10 +169,10 @@
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="#" class="card-title">Explore with Us</a>
+                                        <a href="#" class="card-title">Bikes</a>
                                     </h3>
 
-                                    <p class="card-text">Bicycles</p>
+                                    <p class="card-text">Explore with Us</p>
                                 </div>
                             </div>
                         </li>
@@ -166,10 +191,10 @@
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="#" class="card-title">Go eco Friendly</a>
+                                        <a href="#" class="card-title">E-Bikes</a>
                                     </h3>
 
-                                    <p class="card-text">E-Bikes</p>
+                                    <p class="card-text">Go eco Friendly</p>
                                 </div>
                             </div>
                         </li>
@@ -196,49 +221,9 @@
                             </div>
                         </li>
 
-                        <li class="colspan-2">
-                            <!-- <div class="hero-card">
-                                <figure class="card-banner img-holder" style="--width: 580; --height: 213">
-                                    <img
-                                        src="../userAssets/images/hero-product-4.jpg"
-                                        width="580"
-                                        height="213"
-                                        alt="Wood Eggs"
-                                        class="img-cover"
-                                    />
-                                </figure>
+                        <li class="colspan-2"></li>
 
-                                <div class="card-content">
-                                    <h3>
-                                        <a href="#" class="card-title">Wood Eggs</a>
-                                    </h3>
-
-                                    <p class="card-text">Decoration</p>
-                                </div>
-                            </div> -->
-                        </li>
-
-                        <li class="colspan-2">
-                            <!-- <div class="hero-card">
-                                <figure class="card-banner img-holder" style="--width: 580; --height: 213">
-                                    <img
-                                        src="../userAssets/images/hero-product-5.jpg"
-                                        width="580"
-                                        height="213"
-                                        alt="Table Wood Pine"
-                                        class="img-cover"
-                                    />
-                                </figure>
-
-                                <div class="card-content">
-                                    <h3>
-                                        <a href="#" class="card-title">Table Wood Pine</a>
-                                    </h3>
-
-                                    <p class="card-text">Furniture</p>
-                                </div>
-                            </div> -->
-                        </li>
+                        <li class="colspan-2"></li>
                     </ul>
                 </div>
             </section>

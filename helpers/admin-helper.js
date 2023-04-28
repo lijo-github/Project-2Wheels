@@ -1,7 +1,7 @@
 const userSchema = require("../model/userModel");
 const Category = require("../model/category");
 const Product = require("../model/product.js")
-
+const Banner = require("../model/banner")
 const {Order, Address,OderItem} = require("../model/order")
 
 module.exports = {
@@ -272,6 +272,47 @@ module.exports = {
             return order;
           }
         } catch (err) {
+          console.error(err);
+        }
+      },
+
+      addBanner: async(data)=>{
+        try{
+          const newBanner = new Banner({
+            headline: data.headline,
+            image: data.Image,
+            category: data.Category,
+            additionalInfo: data.productDescription,
+          })
+          await newBanner.save();
+
+        }catch(err){
+          console.error(err);
+        }
+        
+      },
+      getAllBanner: async()=>{
+        try{
+          const banners = await Banner.find({}).populate("category");
+          return banners;
+
+        }catch(err){
+          console.error(err);
+        }
+      },
+      removeBanner: async(id)=>{
+        try{
+          const banners = await Banner.findByIdAndUpdate(id,{status:false},{new:true});
+          return banners;
+        }catch(err){
+          console.error(err);
+        }
+      },
+      listBanner: async(id) =>{
+        try{
+          const banner = await Banner.findByIdAndUpdate(id,{status:true},{new:true});
+          return banner
+        }catch(err){
           console.error(err);
         }
       },
