@@ -311,7 +311,11 @@ module.exports = {
       listBanner: async(id) =>{
         try{
           const banner = await Banner.findByIdAndUpdate(id,{status:true},{new:true});
+<<<<<<< HEAD
           return banner;
+=======
+          return banner
+>>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
         }catch(err){
           console.error(err);
         }

@@ -34,10 +34,17 @@ router.post("/add-banner",isloggedInad,upload.single("productImage"),adminContro
 router.get("/banner-list",isloggedInad, adminController.viewBanner);
 
 //* remove banner *//
+<<<<<<< HEAD
 router.get("/remove-banner/:id",isloggedInad, adminController.removeBanner);
 
 //* list banner *//
 router.get("/list-banner/:id",isloggedInad, adminController.ListBanner)
+=======
+router.get("/remove-banner/:id", isloggedInad,adminController.removeBanner);
+
+//* list banner *//
+router.get("/list-banner/:id", isloggedInad,adminController.ListBanner);
+>>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
 
 //* get/post category *//
 router.get("/category",isloggedInad,adminController.category);

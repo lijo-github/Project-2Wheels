@@ -140,20 +140,37 @@ module.exports = {
         }
 
     },
+<<<<<<< HEAD
 
     removeBanner: async(req,res)=>{
         try{
             await adminHelper.removeBanner(req.params.id);
             res.json({status:"success"});
+=======
+    removeBanner: async(req,res)=>{
+
+        try{
+            await adminHelper.removeBanner(req.params.id);
+            res.json({status:"success"});
+
+>>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
         }catch(err){
             console.error(err);
         }
     },
+<<<<<<< HEAD
 
     ListBanner: async(req,res)=>{
         try{
             await adminHelper.listBanner(req.params.id);
             res.json({status:"success"})
+=======
+    ListBanner: async(req,res)=>{
+
+        try{
+            await adminHelper.listBanner(req.params.id);
+            res.json({status:"sucess"});
+>>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
         }catch(err){
             console.error(err);
         }

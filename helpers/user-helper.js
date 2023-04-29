@@ -99,7 +99,11 @@ module.exports = {
   //*banner list  *//
   getListedBanner: async()=>{
     try{
+<<<<<<< HEAD
         const banners = await Banner.find({ status: true}, {image:1 ,_id:0,headline:1, additionalInfo:1});
+=======
+        const banners = await Banner.find({ status: true}, {image:1 ,_id:0});
+>>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
         return banners;
     }catch(err){
         console.error(err);
