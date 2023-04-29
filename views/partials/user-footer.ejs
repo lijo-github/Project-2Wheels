@@ -134,4 +134,25 @@
     </div>
 
   </div>
+  <script>
+    $(document).ready(function(){
+      $(".hero__slider").owlCarousel({
+        autoplay:true,
+        autoplayTimeout:6000,
+        loop:true,
+        margin:0,
+        responsive:{
+          0:{
+            items:1
+          },
+          768:{
+            items:1
+          },
+          992:{
+            items:1
+          }
+        }
+      });
+    });
+  </script>
 </footer>

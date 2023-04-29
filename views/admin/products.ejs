@@ -91,7 +91,8 @@
             >
             <% if (product.productStatus === 'Listed') { %>
             <a
-              href="/admin/unlist-product/<%= product._id %>"
+              href=""
+              onclick="unlistProduct('<%= product._id %>');event.preventDefault();"
               class="btn btn-danger font-sm " 
               >Unlist</a
             >

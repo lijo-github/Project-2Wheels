@@ -26,8 +26,18 @@ router.get("/view-user",isloggedInad, adminController.viewUser);
 router.get("/block-user/:id",isLoggedIn, adminController.blockUser);
 router.get("/unblock-user/:id",isLoggedIn, adminController.unblockUser);
 
-//* get addbanner *//
+//* get/post addbanner *//
 router.get("/add-banner",isloggedInad,adminController.addBanner);
+router.post("/add-banner",isloggedInad,upload.single("productImage"),adminController.addBannerpost);
+
+//* view banner *//
+router.get("/banner-list",isloggedInad, adminController.viewBanner);
+
+//* remove banner *//
+router.get("/remove-banner/:id",isloggedInad, adminController.removeBanner);
+
+//* list banner *//
+router.get("/list-banner/:id",isloggedInad, adminController.ListBanner)
 
 //* get/post category *//
 router.get("/category",isloggedInad,adminController.category);
@@ -54,6 +64,8 @@ router.get("/unlist-product/:id",isloggedInad,adminController.unlistPorduct);
 
 //* order-Management *//
 router.get("/order-Management", isloggedInad, adminController.orderDetails)
+
+router.get("/view-order")
 
 
 

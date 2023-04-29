@@ -2,6 +2,7 @@ const user = require("../model/userModel");
 const Product = require("../model/product.js")
 const Category = require("../model/category.js")
 const Cart = require("../model/cart.js")
+const Banner = require("../model/banner")
 const bcrypt = require("bcrypt");
 const {Order,Address, OrderItem}= require("../model/order.js")
 
@@ -95,6 +96,15 @@ module.exports = {
     
 
   },
+  //*banner list  *//
+  getListedBanner: async()=>{
+    try{
+        const banners = await Banner.find({ status: true}, {image:1 ,_id:0,headline:1, additionalInfo:1});
+        return banners;
+    }catch(err){
+        console.error(err);
+    }
+},
   getProductDetails: async (proId) => {
     try {
       const product = await Product.findById(proId);
