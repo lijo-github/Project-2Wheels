@@ -23,8 +23,8 @@
                       <figure class="product-main-image">
                         <img
                           id="product-zoom"
-                          src="<%= products.productImage[0] %>"
-                          data-zoom-image="<%= products.productImage[0] %>"
+                          src="<%= products?.productImage[0] %>"
+                          data-zoom-image="<%= products?.productImage[0] %>"
                           alt="product image"
                         />
       
@@ -41,11 +41,11 @@
                         <a
                           class="product-gallery-item active"
                           href="#"
-                          data-image="<%= products.productImage[0] %>"
-                          data-zoom-image="<%= products.productImage[0] %>"
+                          data-image="<%= products?.productImage[0] %>"
+                          data-zoom-image="<%= products?.productImage[0] %>"
                         >
                           <img
-                            src="<%= products.productImage[0] %>"
+                            src="<%= products?.productImage[0] %>"
                             alt="product side"
                           />
                         </a>
@@ -53,11 +53,11 @@
                         <a
                           class="product-gallery-item"
                           href="#"
-                          data-image="<%= products.productImage[1] %>"
-                          data-zoom-image="<%= products.productImage[1] %>"
+                          data-image="<%= products?.productImage[1] %>"
+                          data-zoom-image="<%= products?.productImage[1] %>"
                         >
                           <img
-                            src="<%= products.productImage[1] %>"
+                            src="<%= products?.productImage[1] %>"
                             alt="product cross"
                           />
                         </a>
@@ -65,11 +65,11 @@
                         <a
                           class="product-gallery-item"
                           href="#"
-                          data-image="<%= products.productImage[2] %>"
-                          data-zoom-image="<%= products.productImage[2] %>"
+                          data-image="<%= products?.productImage[2] %>"
+                          data-zoom-image="<%= products?.productImage[2] %>"
                         >
                           <img
-                            src="<%= products.productImage[2] %>"
+                            src="<%= products?.productImage[2] %>"
                             alt="product with model"
                           />
                         </a>
@@ -108,11 +108,17 @@
               </div><!-- End .details-filter-row -->
       
               <div class="product-details-action">
-                <a href="#" class="btn-cart" id="add-to-cart" data-user-id="<%=user?._id%>" data-product-id="<%=products._id %>"><span>add to cart</span></a>
+                <% if (products.isInCart) { %>
+                  <a href="/cart" class="btn-cart" id="view-cart" ><span>view cart</span></a>
+            
+                <% }else{ %>
+                  <a href="#" class="btn-cart" id="add-to-cart" data-user-id="<%=user?._id%>" data-product-id="<%=products._id %>"><span>add to cart</span></a>
 
-      
+                 <%}%>
                   <div class="details-action-wrapper">
-                      <a href="#" class=" btn-cart" title="Wishlist"><span>Add to
+                      <a href="#" class=" btn-cart" title="Wishlist"
+                      onclick="AddToWishList('<%=products?._id%>','<%=user?._id%>');event.preventDefault();"
+                      ><span>Add to
                               Wishlist</span></a>
                      
                   </div><!-- End .product-cat -->
@@ -120,11 +126,11 @@
                   <div class="social-icons social-icons-sm m-5">
                     
                       <span class="social-label">Share:</span>
-                      <a href="#" class="social-icon" title="Facebook" target="_blank"><i
+                      <a href="https://www.facebook.com/" class="social-icon" title="Facebook" target="_blank"><i
                               class="icon-facebook-f"></i></a>
-                      <a href="#" class="social-icon" title="Twitter" target="_blank"><i
+                      <a href="https://twitter.com/" class="social-icon" title="Twitter" target="_blank"><i
                               class="icon-twitter"></i></a>
-                      <a href="#" class="social-icon" title="Instagram" target="_blank"><i
+                      <a href="https://www.instagram.com/" class="social-icon" title="Instagram" target="_blank"><i
                               class="icon-instagram"></i></a>
                       
                   </div>

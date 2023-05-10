@@ -5,9 +5,27 @@ const convert = require("color-convert");
 module.exports = {
     //*get home Page  */
 
-    dashboard: (req, res) => {
-        if (req.session.admin) {
-            res.render("admin/adminLandingPage");
+    dashboard: async (req, res) => {
+        // if (req.session.admin) {
+        //     res.render("admin/adminLandingPage");
+        // } else {
+        //     res.redirect("admin/login");
+        // }
+
+        let admin = req.admin;
+
+        if (admin) {
+            const orders = await adminHelper.getOrderDetails();
+            const orderCount = orders.length;
+            const products = await adminHelper.getAllProducts();
+            const productsCount = products.length;
+            const users = await adminHelper.getAllusers();
+            const usersCount = users.length;
+            res.render("admin/dashboard", {
+                orderCount,
+                productsCount,
+                usersCount,
+            });
         } else {
             res.redirect("admin/login");
         }
@@ -15,9 +33,15 @@ module.exports = {
 
     //*get admin loginPage  */
 
-    adminlogin: (req, res) => {
+    adminlogin: async (req, res) => {
         if (req.session.isloggedInad) {
-            res.render("../views/admin/adminLandingPage", { adLogErr: false });
+            const orders = await adminHelper.getOrderDetails();
+            const orderCount = orders.length;
+            const products = await adminHelper.getAllProducts();
+            const productsCount = products.length;
+            const users = await adminHelper.getAllusers();
+            const usersCount = users.length;
+            res.render("../views/admin/adminLandingPage", { orderCount, productsCount, usersCount, adLogErr: false });
         } else {
             res.redirect("/admin");
         }
@@ -68,13 +92,12 @@ module.exports = {
             // const count = await adminHelper.getUsercount();
             // const totalPages = Math.ceil(count / pageSize);
             // const currentPage = page > totalPages ? totalPages : page;
-           const users = await adminHelper.getAllusers(status);
+            const users = await adminHelper.getAllusers(status);
             // const paginatedUsers = users.slice(skip, skip + pageSize);
 
             res.render("../views/admin/view-user", {
                 users,
                 adLogErr: false,
-                
             });
         } catch (err) {
             console.error(err);
@@ -111,71 +134,48 @@ module.exports = {
             res.redirect("/admin");
         }
     },
-    addBannerpost: async(req,res)=>{
-        try{
+    addBannerpost: async (req, res) => {
+        try {
             const { path } = req.file;
             const result = await cloudinary.uploader.upload(path);
 
             const bannerData = req.body;
-            if(result){
+            if (result) {
                 const Image = result.secure_url;
                 bannerData.Image = Image;
             }
             await adminHelper.addBanner(bannerData);
             res.redirect("/admin/banner-list");
-        }catch(err){
+        } catch (err) {
             console.error(err);
             req.session.productUploadError = true;
             res.redirect("/admin/edit-product");
         }
-
     },
-    viewBanner: async(req,res)=>{
-        try{
+    viewBanner: async (req, res) => {
+        try {
             const banners = await adminHelper.getAllBanner();
-            res.render("admin/banner-list",{banners});
-
-        }catch(err){
+            res.render("admin/banner-list", { banners });
+        } catch (err) {
             console.error(err);
         }
-
     },
-<<<<<<< HEAD
-
-    removeBanner: async(req,res)=>{
-        try{
+    removeBanner: async (req, res) => {
+        try {
             await adminHelper.removeBanner(req.params.id);
-            res.json({status:"success"});
-=======
-    removeBanner: async(req,res)=>{
-
-        try{
-            await adminHelper.removeBanner(req.params.id);
-            res.json({status:"success"});
-
->>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
-        }catch(err){
+            res.json({ status: "success" });
+        } catch (err) {
             console.error(err);
         }
     },
-<<<<<<< HEAD
-
-    ListBanner: async(req,res)=>{
-        try{
+    ListBanner: async (req, res) => {
+        try {
             await adminHelper.listBanner(req.params.id);
-            res.json({status:"success"})
-=======
-    ListBanner: async(req,res)=>{
-
-        try{
-            await adminHelper.listBanner(req.params.id);
-            res.json({status:"sucess"});
->>>>>>> 0b7da8e43902f1241da174055d35b7e32691b06d
-        }catch(err){
+            res.json({ status: "sucess" });
+        } catch (err) {
             console.error(err);
         }
     },
-
     category: async (req, res) => {
         try {
             const viewCategory = await adminHelper.getAllCategory();
@@ -289,28 +289,25 @@ module.exports = {
         try {
             // var products = await adminHelper.getAllProducts();
             const products = await adminHelper.getAllProducts();
-        const page = parseInt(req.query.page) || 1;
-        const pageSize = parseInt(req.query.pageSize) || 4;
-        const skip = (page - 1) * pageSize;
-        const count = await adminHelper.getProductsCount();
-        const totalPages = Math.ceil(count / pageSize);
-        const currentPage = page > totalPages ? totalPages : page;
-        const productsArray = Array.from(products);
-const paginatedProducts = productsArray.slice(skip, skip + pageSize);
-       
+            const page = parseInt(req.query.page) || 1;
+            const pageSize = parseInt(req.query.pageSize) || 4;
+            const skip = (page - 1) * pageSize;
+            const count = await adminHelper.getProductsCount();
+            const totalPages = Math.ceil(count / pageSize);
+            const currentPage = page > totalPages ? totalPages : page;
+            const productsArray = Array.from(products);
+            const paginatedProducts = productsArray.slice(skip, skip + pageSize);
 
-        res.render("admin/products", {
-            products: paginatedProducts,
-            currentPage,
-            totalPages,
-            pageSize,
-            page,
-            
-        });
+            res.render("admin/products", {
+                products: paginatedProducts,
+                currentPage,
+                totalPages,
+                pageSize,
+                page,
+            });
         } catch (err) {
             console.error(err);
         }
-        
     },
     editProduct: async (req, res) => {
         let product;
@@ -356,15 +353,74 @@ const paginatedProducts = productsArray.slice(skip, skip + pageSize);
             console.error(err);
         }
     },
+
     orderDetails: async (req, res) => {
         try {
-          const orders = await adminHelper.getOrderDetails();
-          if (orders) {
-            res.render("admin/order-Management", { orders });
-          }
+            const Orders = await adminHelper.getOrderDetails();
+            if (Orders) {
+                const orders = Orders.reverse();
+                res.render("admin/order-management", { orders });
+            }
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
-      
+    },
+    viewOrder: async (req, res) => {
+        try {
+            const SpecificOrder = await adminHelper.getSpecificOrder(req.params.id);
+            if (SpecificOrder) {
+                const { order, productDetails } = SpecificOrder;
+                res.render("admin/order-details", { order, productDetails });
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    },
+    updateOrderStatus: async (req, res) => {
+        try {
+            const valid = await adminHelper.updateOrderStatus(req.body.orderId, req.body.status);
+            if (!valid) {
+                return res.json({ error: "error" });
+            }
+            res.json({ status: "success" });
+        } catch (err) {
+            console.error(err);
+        }
+    },
+
+    addCoupon: async (req, res) => {
+        try {
+            console.log(req.body);
+            res.render("admin/add-coupons");
+        } catch (err) {
+            console.error(err);
+        }
+    },
+
+    addCouponPost: async (req, res) => {
+        try {
+            await adminHelper.generatecoupon(req.body);
+            res.json('status:"success"');
+        } catch (err) {
+            console.error(err);
+        }
+    },
+
+    removeCoupon: async (req, res) => {
+        try {
+            await adminHelper.removeCoupon(req.body.id);
+            res.json('status:"success"');
+        } catch (err) {
+            console.error(err);
+        }
+    },
+
+    viewCoupon: async (req, res) => {
+        try {
+            const coupons = await adminHelper.getCoupons();
+            res.render("admin/view-coupons", { coupons });
+        } catch (err) {
+            console.error(err);
+        }
+    },
 };

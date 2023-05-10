@@ -24,7 +24,20 @@ const userSchema = new mongoose.Schema({
         default: false,
     },
     status: { type: Boolean, default: true },
-});
+    wallet: {
+        type: Number,
+        default: 0,
+      },
+      addresses: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Address",
+        },
+      ],
+  },
+  {timestamps:true}
+
+);
 
 const user = mongoose.model("users", userSchema);
 

@@ -159,7 +159,7 @@ function submitCoupon(code, discount, expiryDate, maxDiscount) {
       maxDiscount: maxDiscount,
     },
     success: (response) => {
-      if (response.status) {
+      if (response) {
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -196,7 +196,7 @@ let removeCoupon = (couponId) => {
         },
         method: "post",
         success: (response) => {
-          if (response.status) {
+          if (response) {
             Swal.fire({
               title: "Removed!",
               text: "Coupon has been removed.",
@@ -257,4 +257,5 @@ function createReport() {
     },
   });
 }
+
 

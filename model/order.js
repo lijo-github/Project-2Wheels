@@ -10,6 +10,9 @@ const OrderItemSchema = new mongoose.Schema({
     ref: "Product",
     required: true,
   },
+  productName: {
+    type: String,
+  },
   quantity: {
     type: Number,
     required: true,
@@ -43,7 +46,7 @@ const OrderSchema = new mongoose.Schema({
   },
   payment_method: {
     type: String,
-    enum: ["upi", "paypal", "cash_on_delivery","stripe"],
+    enum: ["cash_on_delivery", "online_payment", "wallet"],
     required: true,
   },
   address: {
@@ -55,6 +58,13 @@ const OrderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  refund: String,
+  return_status: {
+    type: String,
+    enum: ["pending", "approved", "rejected"],
+    default: "pending",
+  },
+  return_reason: String,
   items: [OrderItemSchema],
 });
 

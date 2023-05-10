@@ -1,11 +1,17 @@
+
+
+<head>
+    <%-include('../partials/user-header.ejs')-%>
+</head>
+
 <%-include('../partials/customHeader.ejs') -%>
 
-
 <body>
+    
     <main class="main">
-        <div class="page-header text-center" style="background-image: url('assets/images/page-header-bg.jpg')">
+        <div class="page-header text-center" style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')">
             <div class="container">
-                <h1 class="page-title">My Account<span>Shop</span></h1>
+                <h1 class="page-title" style="font-weight: 500; color:rgb(0, 0, 0);">My Account<span>Shop</span></h1>
             </div>
             <!-- End .container -->
         </div>
@@ -45,7 +51,7 @@
                                         class="nav-link"
                                         id="tab-orders-link"
                                         data-toggle="tab"
-                                        href="#tab-orders"
+                                        href="/order"
                                         role="tab"
                                         aria-controls="tab-orders"
                                         aria-selected="false"
@@ -58,7 +64,7 @@
                                         class="nav-link"
                                         id="tab-address-link"
                                         data-toggle="tab"
-                                        href="#tab-address"
+                                        href="/address"
                                         role="tab"
                                         aria-controls="tab-address"
                                         aria-selected="false"
@@ -236,4 +242,6 @@
     </main>
     <!-- End .main -->
 </body>
+
+<%-include('../partials/user-footer.ejs')-%>
 

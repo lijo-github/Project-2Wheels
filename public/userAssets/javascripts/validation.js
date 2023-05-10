@@ -14,6 +14,8 @@ $(document).ready(function () {
     "Minimum 5 characters without space"
   );
   $("#login").validate({
+    // other options
+  errorClass: "error",
     rules: {
       email: {
         required: true,
@@ -57,6 +59,8 @@ $(document).ready(function () {
     "Minimum 5 characters without space"
   );
   $("#signup").validate({
+    // other options
+  errorClass: "error",
     rules: {
       name: {
         required: true,

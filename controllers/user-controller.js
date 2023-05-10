@@ -1,29 +1,29 @@
 const user = require("../model/userModel");
 const userHelper = require("../helpers/user-helper");
+const adminHelper = require("../helpers/admin-helper");
 const bcrypt = require("bcrypt");
 const twilioFunctions = require("../config/twilio.js");
 const Cart = require("../model/cart");
-
+const instance = require("../config/paymentGateway.js");
+const CryptoJS = require("crypto-js");
+require("dotenv").config();
 
 module.exports = {
     //*get home Page  */
 
     homePage: async (req, res, next) => {
-        
         let user = req.session.user;
         try {
             const allProductWithCategory = await userHelper.getAllProducts();
             const products = allProductWithCategory.products;
             const categories = allProductWithCategory.categories;
             const banners = await userHelper.getListedBanner();
-            
-
             if (user) {
                 user.count = await userHelper.getCartCount(user._id);
+                user.wish = await userHelper.countWish(user._id);
                 res.render("user/userLandingPage", { user, products, categories, banners });
             } else {
-                
-                res.render("user/userLandingPage", { user, products, categories , banners });
+                res.render("user/userLandingPage", { user, products, categories, banners });
             }
         } catch (err) {
             console.error(err);
@@ -41,17 +41,26 @@ module.exports = {
     //*get signup Page  */
 
     getsignup: (req, res) => {
-        res.render("user/signup");
+        try{
+
+            let user = req.session.user;
+        res.render("user/signup",{user});
+        }catch(err){
+            console.error(err);
+            res.render("../views/user/catchError")
+        }
+        
     },
 
     //*post signup Page  */
 
     postsignup: async (req, res) => {
         try {
+            let user = req.session.user;
             const userData = await userHelper.doSignup(req.body);
             if (userData) {
                 console.log(userData);
-                res.render("../views/user/login", { message: false });
+                res.render("../views/user/login", { message: false, user });
             } else {
                 req.session.user = userData;
                 req.session.loggedIn = true;
@@ -103,9 +112,16 @@ module.exports = {
     //*get otp Page  */
 
     otpLogin: (req, res) => {
-        if (req.session.user) {
-            res.redirect("/login");
-        } else res.render("user/otp-login", { message: false });
+        let user = req.session.user;
+        try{          
+            if (user) {
+                res.redirect("/login");
+            } else res.render("user/otp-login", { message: false , user}); 
+        }catch(err){
+            console.error(err);
+            res.render("../views/user/catchError")
+        }
+        
     },
 
     //*post signup Page  *//
@@ -196,7 +212,7 @@ module.exports = {
                 .verificationChecks.create({ to: `+91${mobNumber}`, code: enteredOTP })
                 .then((verification_check) => {
                     if (verification_check.status === "approved") {
-                        req.session.user = validUser;;
+                        req.session.user = validUser;
                         req.session.loggedIn = true;
                         if (req.session.user) {
                             res.redirect("/");
@@ -262,26 +278,25 @@ module.exports = {
     },
     productView: async (req, res) => {
         const user = req.session?.user;
-        
+
         try {
-            
-            if(user){
+            if (user) {
                 user.count = await userHelper.getCartCount(user._id);
-     
+
+                user.wish = await userHelper.countWish(user._id);
+
                 var products = await userHelper.getProductDetails(req.params.id);
 
-            console.log("product list view success");
+                console.log("product list view success");
 
-            res.render("user/product-view", { user, products});
-            }else{
+                res.render("user/product-view", { user, products });
+            } else {
                 var products = await userHelper.getProductDetails(req.params.id);
 
-            console.log("product list view success");
+                console.log("product list view success");
 
-            res.render("user/product-view", { user, products});
+                res.render("user/product-view", { user, products });
             }
-            
-            
         } catch (err) {
             console.error(err);
         }
@@ -293,7 +308,7 @@ module.exports = {
 
             const items = await userHelper.getCartProducts(req.session.user._id);
             if (items === null) {
-                res.render("../views/user/emptyCart", { user});
+                res.render("../views/user/emptyCart", { user });
                 return;
             }
 
@@ -308,9 +323,9 @@ module.exports = {
         }
     },
 
-    addToCart: async (req, res) => {
+    addToCart: async (req , res) => {
         try {
-            await userHelper.addToCart(req.params.id, req.session.user._id);
+            await userHelper.addToCart(req.params.id , req.session.user._id);
             res.json({
                 status: "success",
                 message: "product added to cart",
@@ -356,113 +371,309 @@ module.exports = {
     },
     removeProductFromCart: async (req, res) => {
         try {
-            
             console.log(req.body);
             await userHelper.removeProductFromCart(req.body);
-            res.json({ status: "success", message: "product added to cart", });
+            res.json({ status: "success", message: "product added to cart" });
         } catch (err) {
             console.error(error);
+            res.render("../views/user/catchError", { message: err.message, user: req.session.user });
         }
     },
     checkOut: async (req, res) => {
         try {
-          let user = req.session.user;
-          const items = await userHelper.getCartProducts(req.session.user._id);
-          const address = await userHelper.getDefaultAddress(req.session.user._id);
-          console.log('adress not get',address);
-          const { cartItems: products, subtotal } = items;
-          res.render("../views/user/checkout", { user, products, subtotal, address});
+            let user = req.session.user;
+            const items = await userHelper.getCartProducts(req.session.user._id);
+            if (!items) {
+                res.json({ items });
+                return;
+            }
+            const address = await userHelper.getDefaultAddress(req.session.user._id);
+            console.log("adress not get", address);
+            const { cartItems: products, subtotal } = items;
+            res.render("../views/user/checkout", { user, products, subtotal, address });
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
-      placeOrderPost: async (req, res) => {
+    },
+    placeOrderPost: async (req, res) => {
         try {
-          const { userId, paymentMethod } = req.body;
-    
-          const response = await userHelper.placeOrder(
-            userId,
-            paymentMethod,
-            req.body
-          );
-          console.log(response);
-          res.json({ status: "success" });
+            const { userId, paymentMethod, totalAmount, couponCode } = req.body;
+
+            const response = await userHelper.placeOrder(userId, paymentMethod, totalAmount, couponCode, req.body);
+            if (response.payment_method == "cash_on_delivery") {
+                res.json({ codstatus: "success" });
+            } else if (response.payment_method == "online_payment") {
+                // const order = generatePaymenetGateway(response);
+                const paymentOptions = {
+                    amount: response.total_amount * 100,
+                    currency: "INR",
+                    receipt: "" + response._id,
+                    payment_capture: 1,
+                };
+
+                const order = await instance.orders.create(paymentOptions);
+                res.json(order);
+            } else if (response.payment_method == "wallet") {
+                res.json({ codstatus: "success" });
+            }
         } catch (err) {
-          console.error(err);
-          res.json({ status: "error" });
+            console.error(err);
+            res.json({ status: "error" });
         }
-      },
-      addAddress: async (req, res) => {
+    },
+    addAddress: async (req, res) => {
         try {
-            
-          res.render("../views/user/add-address", { user: req.session.user});
+            res.render("../views/user/add-address", { user: req.session.user });
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
-      selectAddress: async (req, res) => {
+    },
+    selectAddress: async (req, res) => {
         try {
-          const address = await userHelper.getAddress(req.session.user._id);
-          res.render("../views/user/address", { user: req.session.user, address });
+            const address = await userHelper.getAddress(req.session.user._id);
+            res.render("../views/user/address", { user: req.session.user, address });
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
-      addAddressPost: async (req, res) => {
+    },
+    addAddressPost: async (req, res) => {
         try {
-          let { userId } = req.body;
-          let address = req.body;
-          await userHelper.addAddressPost(userId, address);
-          res.redirect("/address");
+            let { userId } = req.body;
+            let address = req.body;
+            await userHelper.addAddressPost(userId, address);
+            res.redirect("/address");
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
-      select: async (req, res) => {
+    },
+    select: async (req, res) => {
         try {
-          await userHelper.updateAddress(req.params.id, req.session.user._id);
-          res.json({ status: "success" });
+            await userHelper.updateAddress(req.params.id, req.session.user._id);
+            res.json({ status: "success" });
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
         // res.json({ status: "success" });
-      },
-    
-      deleteAddress: async (req, res) => {
-        try {
-          await userHelper.deleteAddress(req.params.id);
-          res.json({ status: "success" });
-        } catch (err) {
-          console.error(err);
-        }
-      },
-      getOrderDetails: async (req, res) => {
-        try {
-          const orderHistory = await userHelper.getOrderHistory(
-            req.session.user._id
-          );
-    
-          const orderDetails = orderHistory.reverse();
-          res.render("order", { user: req.session.user, orderDetails });
-        } catch (err) {
-          console.log(err);
-        }
-      },
-      orderSuccess: async (req, res) => {
-        const user= req.session.user;
-        
+    },
 
-        res.render("../views/user/placeOrderSuccess", {user});
-      },
-      viewOrder: async (req, res) => {
+    deleteAddress: async (req, res) => {
         try {
-          const currentOrder = await adminHelper.getSpecificOrder(req.params.id);
-          const { productDetails } = currentOrder;
-          res.render("view-order", { user: req.session.user, productDetails });
+            await userHelper.deleteAddress(req.params.id);
+            res.json({ status: "success" });
         } catch (err) {
-          console.error(err);
+            console.error(err);
         }
-      },
+    },
+    getOrderDetails: async (req, res) => {
+        try {
+            const orderHistory = await userHelper.getOrderHistory(req.session.user._id);
 
+            const orderDetails = orderHistory.reverse();
+            console.log(orderDetails);
+            res.render("../views/user/order", { user: req.session.user, orderDetails });
+        } catch (err) {
+            res.render("catchError"),
+                {
+                    message: err.message,
+                    user: req.session.user,
+                };
+        }
+    },
+    orderSuccess: async (req, res) => {
+        const user = req.session.user;
 
+        res.render("../views/user/placeOrderSuccess", { user });
+    },
+    viewOrder: async (req, res) => {
+        try {
+            const currentOrder = await adminHelper.getSpecificOrder(req.params.id);
+            const { productDetails, order } = currentOrder;
+            res.render("../views/user/view-order", { user: req.session.user, productDetails, order });
+        } catch (err) {
+            console.error(err);
+        }
+    },
+    orderFailed: async (req, res) => {
+        try {
+            res.render("../views/user/payment-failure", { user: req.session.user });
+        } catch (err) {
+            res.render("../views/user/catchError", { message: err.message, user: req.session.user });
+        }
+    },
+
+    removeOrder: async (req, res) => {
+        try {
+            console.log(req.body.arguments);
+            await userHelper.cancelOrder(req.body.arguments);
+
+            console.log(req.body.arguments[0]);
+            res.json({ status: "success" });
+        } catch (err) {
+            console.log("order cancel error");
+            res.render("../views/user/catchError", {
+                message: err.message,
+                user: req.session.uesr,
+            });
+        }
+    },
+    returnOrder: async (req, res) => {
+        try {
+            await userHelper.returnOrder(req.body.orderId, req.body.reason);
+            res.json({ status: "success" });
+        } catch (err) {
+            res.render("catchError", { message: err.message, user: req.session.user });
+        }
+    },
+
+    verifyPayment: async (req, res) => {
+        try {
+            const order = req.body;
+            const payment = req.body;
+
+            console.log("payment gettttttttttttttttt", payment);
+
+            const razorpayOrderId = req.body["payment[razorpay_order_id]"];
+            const razorpayPaymentId = req.body["payment[razorpay_payment_id]"];
+            const razorpaySecret = process.env.KEY_SECRET;
+            const razorpaySignature = req.body["payment[razorpay_signature]"];
+
+            // Concatenate order_id and payment_id
+            const message = razorpayOrderId + "|" + razorpayPaymentId;
+
+            // Generate a HMAC SHA256 hash of the message using the secret key
+            const generatedSignature = CryptoJS.HmacSHA256(message, razorpaySecret).toString(CryptoJS.enc.Hex);
+
+            // Compare the generated signature with the received signature
+            if (razorpaySignature === generatedSignature) {
+                await userHelper.changeOnlinePaymentStatus(req.body["order[receipt]"], req.session.user._id);
+                res.json({ status: "success" });
+            } else {
+                res.json({ error: "error" });
+            }
+            console.log(payment);
+            console.log(order);
+        } catch (err) {
+            console.error(err);
+            res.render("../views/user/catchError", {
+                message: err?.message,
+                user: req.session.user,
+            });
+        }
+    },
+
+    getAllCoupons: async (req, res) => {
+        try {
+            const coupons = await userHelper.getCoupons(req.session.user._id);
+            res.render("../views/user/all-coupons", { user: req.session.user, coupons });
+        } catch (err) {
+            res.render("../views/user/catchError", { message: err.message, user: req.session.user });
+        }
+    },
+
+    applyCoupon: async (req, res) => {
+        try {
+            const { code, total } = req.body;
+            const response = await userHelper.applyCoupon(code, total, req.session.user._id);
+            res.json(response);
+        } catch (err) {
+            res.render("catchError", { message: err.message, user: req.session.user });
+        }
+    },
+    search: async (req, res) => {
+        try {
+            const search = req.query.search;
+            const products = await userHelper.searchQuery(search, req.session.user?.id);
+            console.log(products);
+            res.render("../views/user/productList", { user: req.session.user, products });
+        } catch (err) {
+            res.render("../views/user/catchError", { message: err?.message, user: req.session.user });
+        }
+    },
+    addToWishList: async (req, res) => {
+        try {
+            const response = await userHelper.addToWishListUpdate(req.session.user._id, req.body.product_id);
+            if (!response) {
+                res.json({ error: true });
+                return;
+            } else if (response === "removed") {
+                res.json({ removeSuccess: true });
+                return;
+            }
+            res.json({ success: true });
+        } catch (err) {
+            res.render("../views/user/catchError", {
+                message: err?.message,
+                user: req.session.uesr,
+            });
+        }
+    },
+    wishList: async (req, res) => {
+        try {
+            const showList = await userHelper.showWishList(req.session.user._id);
+            res.render("../views/user/wishlist", { user: req.session.user, showList });
+        } catch (err) {
+            console.error(err);
+            res.render("../views/user/catchError", { message: err?.message, user: req.session.user });
+        }
+    },
+
+    getWishListCount: async (req, res) => {
+        try {
+            let user = req.session.user;
+            // retrieve currently authenticated user
+            let count = await userHelper.countWish(user._id);
+            //count items in wishlist for user
+            res.json({ count: count });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send("Internal server error");
+        }
+    },
+    getCartCount: async (req, res) => {
+        try {
+            let user = req.session.user; // retrieve currently authenticated user
+            let count = await userHelper.getCartCount(user._id); // count items in cart for user
+            res.json({ count: count });
+        } catch (error) {
+            console.error(error);
+            res.status(500).send("Internal server error");
+        }
+    },
+
+    removeProdctFromWishLIst: async (req, res) => {
+        try {
+            await userHelper.removeProdctFromWishLIst(req.session.user._id, req.body.product);
+            res.json({
+                status: "success",
+                message: "product added to cart",
+            });
+        } catch (err) {
+            res.render("catchError", {
+                message: err.message,
+                user: req.session.user,
+            });
+        }
+    },
+    addToCartFromWish: async (req, res) => {
+        try {
+            const response = await userHelper.addToCartFromWish(req.params.id, req.session.user._id);
+            if (response) {
+                res.json({
+                    status: "success",
+                    message: "product added to cart",
+                });
+            } else {
+                res.json({
+                    error: "error",
+                    message: "product not added to cart",
+                });
+            }
+        } catch (err) {
+            console.error(err);
+            res.render("catchError", {
+                message: err.message,
+                user: req.session.user,
+            });
+        }
+    },
 };

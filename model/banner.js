@@ -7,7 +7,9 @@ const bannerSchema = new mongoose.Schema({
   },
   image: {
     type: String,
-    required: true,
+  },
+  video: {
+    type: String,
   },
   category: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,9 +21,9 @@ const bannerSchema = new mongoose.Schema({
   status: {
     type: Boolean,
     default: true,
-  }
+  },
 });
 
 const Banner = mongoose.model("Banner", bannerSchema);
 
-module.exports= Banner;
+module.exports = Banner;

@@ -1,0 +1,127 @@
+<%-include('../partials/customHeader.ejs') -%>
+ <%-include('../partials/user-header.ejs') -%>
+<section>
+  <main class="main">
+    <div
+      class="page-header text-center"
+      style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')"
+    >
+      <div class="container">
+        <h1 class="page-title" style="font-weight: 500; color:rgb(0, 0, 0);">Wishlist<span>Shop</span></h1>
+      </div>
+      <!-- End .container -->
+    </div>
+    <!-- End .page-header -->
+    <nav aria-label="breadcrumb" class="breadcrumb-nav">
+      <div class="container">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="/">Home</a></li>
+          <li class="breadcrumb-item"><a href="/">Shop</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Wishlist</li>
+        </ol>
+      </div>
+      <!-- End .container -->
+    </nav>
+    <!-- End .breadcrumb-nav -->
+
+    <div class="page-content">
+      <div class="container">
+        <table class="table table-wishlist table-mobile">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Price</th>
+              <th>Stock Status</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% showList.forEach(element => { %>
+            <tr>
+              <td class="product-col">
+                <div class="product">
+                  <figure class="product-media">
+                    <a href="#">
+                      <img
+                        src="<%=element?.productId?.productImage[0]%>"
+                        alt="Product image"
+                      />
+                    </a>
+                  </figure>
+
+                  <h3 class="product-title">
+                    <a href="#"><%=element?.productId?.productName%></a>
+                  </h3>
+                  <!-- End .product-title -->
+                </div>
+                <!-- End .product -->
+              </td>
+              <td class="price-col">$<%=element?.productId?.productPrice%></td>
+              <% if (element?.productId?.productQuantity>0) { %>
+              <td class="stock-col"><span class="in-stock">In stock</span></td>
+              <td class="action-col">
+                <a
+                  class="btn btn-block btn-outline-primary-2"
+                  onclick="addToCartFromWish(' <%=user?._id%>','<%=element.productId._id %>');event.preventDefault();"
+                >
+                  <i class="icon-cart-plus"></i>Add to Cart
+                </a>
+              </td>
+              <% }else {%>
+              <td class="stock-col">
+                <span class="text-danger">Out of stock</span>
+              </td>
+
+              <% }%>
+
+              <td class="remove-col">
+                <a
+                  class="btn-remove"
+                  onclick="removeFromWishList('<%=element.productId._id %>');event.preventDefault();"
+                  ><i class="icon-close"></i
+                ></a>
+              </td>
+            </tr>
+            <% }) %>
+          </tbody>
+        </table>
+        <!-- End .table table-wishlist -->
+        <div class="wishlist-share">
+          <div class="social-icons social-icons-sm mb-2">
+            <label class="social-label">Share on:</label>
+            <a
+              href="https://www.facebook.com/"
+              class="social-icon"
+              title="Facebook"
+              target="_blank"
+              ><i class="icon-facebook-f"></i
+            ></a>
+            <a
+              href="https://twitter.com/"
+              class="social-icon"
+              title="Twitter"
+              target="_blank"
+              ><i class="icon-twitter"></i
+            ></a>
+            <a
+              href="https://www.instagram.com/"
+              class="social-icon"
+              title="Instagram"
+              target="_blank"
+              ><i class="icon-instagram"></i
+            ></a>
+          </div>
+          <!-- End .soial-icons -->
+        </div>
+        <!-- End .wishlist-share -->
+      </div>
+      <!-- End .container -->
+    </div>
+    <!-- End .page-content -->
+  </main>
+  <!-- End .main -->
+</section>
+
+<%-include('../partials/user-footer.ejs') -%>

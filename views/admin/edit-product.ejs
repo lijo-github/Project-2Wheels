@@ -56,12 +56,13 @@
               </div>
               */%>
               <div class="col-md-4 mb-3">
+                <label for="product_color" class="form-label">Color</label>
+
                 <input
                   class="jscolor form-control"
                   type="text"
                   id="color product_color"
                   name="productColor"
-                  style="background-color:<%=product.color-%>"
                 />
               </div>
               <div class="col-md-4 mb-3">
@@ -111,26 +112,29 @@
                 class="form-control"
                 type="file"
                 name="productImage"
-                accept="image/jpeg,image/png"
+                accept=",image/png,image/jpeg,image/jpg"
+                onchange="previewImage(event)"
+                multiple
               />
+             
+              <img class="preview" style="width: 300px; height: inherit" />
               <input
                 class="form-control"
                 type="file"
                 name="productImage"
                 accept="image/jpeg,image/png"
+                onchange="previewImage(event)"
+                multiple
               />
+              <img class="preview" style="width: 300px; height: inherit" />
               <input
                 class="form-control"
                 type="file"
                 name="productImage"
                 accept="image/jpeg,image/png"
+                onchange="previewImage(event)"
               />
-              <input
-                class="form-control"
-                type="file"
-                name="productImage"
-                accept="image/jpeg,image/png"
-              />
+              <img class="preview" style="width: 300px; height: inherit" />
             </div>
           </div>
         </div>
@@ -190,9 +194,6 @@
         </div>
         <!-- card end// -->
         <div>
-          <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">
-            Save to draft
-          </button>
           <button class="btn btn-md rounded font-sm hover-up" onclick="editProduct()">Publish</button
           ><br />
 
@@ -206,6 +207,23 @@
     </form>
   </div>
 </section>
+<script>
+  function previewImage(event) {
+    var input = event.target;
+
+    var preview = input.nextElementSibling;
+
+    if (input.files && input.files[0,1,2]) {
+      var reader = new FileReader();
+
+      reader.onload = function () {
+        preview.src = reader.result;
+      };
+
+      reader.readAsDataURL(input.files[0,1,2]);
+    }
+  }
+</script>
 
 <script defer src="https://cdn.crop.guide/loader/l.js?c=KMVWFY"></script>
 
@@ -251,6 +269,5 @@
   
   </script>
   
-  <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+  
 
