@@ -72,149 +72,303 @@ function removeCartProduct(cartId, productId, productName) {
     });
 }
 
-function changeQuantity(userId, prodId, count) {
-    console.log("called change quantity");
+// function changeQuantity(userId, prodId, count , quantity , productQuantity,) {
 
-    $.ajax({
-        url: "/change-product-quantity",
-        type: "post",
-        data: {
-            userId: userId,
-            prodId: prodId,
-            count: count,
-        },
-    })
-        .done((res) => {
-            console.log(document.getElementById(`${prodId}`).innerHTML);
-            document.getElementById(`${prodId}`).innerHTML =
-                parseInt(document.getElementById(`${prodId}`).innerHTML) + count;
-            location.reload();
-        })
-        .fail((err) => {});
-    // if (parseInt(arguments[3]) + parseInt(arguments[2]) == 0) {
-    //   Swal.fire({
-    //     title: "Are you sure,want to remove?",
-    //     icon: "question",
-    //     showCancelButton: true,
-    //     confirmButtonText: "Yes, remove it!",
-    //     cancelButtonText: "Cancel",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       $.ajax({
-    //         url: "/change-product-quantity",
-    //         method: "post",
-    //         data: {
-    //           product: arguments,
-    //         },
-    //         success: (response) => {
-    //           if (response) {
-    //             Swal.fire({
-    //               title: `Product removed from cart!`,
-    //               icon: "success",
-    //               timer: 4000,
-    //             }).then((result) => {
-    //               location.reload();
-    //             });
-    //           }
-    //         },
-    //       });
-    //     }
-    //   });
-    // } else {
-    //   $.ajax({
-    //     url: "/change-product-quantity",
-    //     method: "post",
-    //     data: {
-    //       product: arguments,
-    //     },
-    //     success: (response) => {
-    //       location.reload();
-    //     },
-    //   });
-    // }
+//     $.ajax({
+//         url: "/change-product-quantity",
+//         type: "post",
+//         data: {
+//             userId: userId,
+//             prodId: prodId,
+//             count: count,
+//             quantity: quantity,
+//             productQuantity: productQuantity
+
+//         },
+//     })
+//         .done((res) => {
+//             // console.log(document.getElementById(`${prodId}`).innerHTML);
+//             document.getElementById(`${prodId}`).innerHTML =
+//                 parseInt(document.getElementById(`${prodId}`).innerHTML) + count;
+//             location.reload();
+//         })
+//         .fail((err) => {});
+//     // if (parseInt(arguments[3]) + parseInt(arguments[2]) == 0) {
+//     //   Swal.fire({
+//     //     title: "Are you sure,want to remove?",
+//     //     icon: "question",
+//     //     showCancelButton: true,
+//     //     confirmButtonText: "Yes, remove it!",
+//     //     cancelButtonText: "Cancel",
+//     //   }).then((result) => {
+//     //     if (result.isConfirmed) {
+//     //       $.ajax({
+//     //         url: "/change-product-quantity",
+//     //         method: "post",
+//     //         data: {
+//     //           product: arguments,
+//     //         },
+//     //         success: (response) => {
+//     //           if (response) {
+//     //             Swal.fire({
+//     //               title: `Product removed from cart!`,
+//     //               icon: "success",
+//     //               timer: 4000,
+//     //             }).then((result) => {
+//     //               location.reload();
+//     //             });
+//     //           }
+//     //         },
+//     //       });
+//     //     }
+//     //   });
+//     // } else {
+//     //   $.ajax({
+//     //     url: "/change-product-quantity",
+//     //     method: "post",
+//     //     data: {
+//     //       product: arguments,
+//     //     },
+//     //     success: (response) => {
+//     //       location.reload();
+//     //     },
+//     //   });
+//     // }
+// }
+
+// function changeQuantity() {
+//   // console.log(arguments);
+//   // console.log(prodId);
+//   // console.log(count);
+//   // console.log(quantity,'quantityyy');
+//   // console.log(productQuantity,'productQuantityyyy');
+//   // console.log(cartId,'cartIdddd');
+//   // console.log(productId,'productIddd');
+//   if (parseInt(arguments[3]) + parseInt(arguments[2]) == 0) {
+//     Swal.fire({
+//       title: `Are you sure you want to remove product from the cart?`,
+//       icon: "question",
+//       showCancelButton: true,
+//       confirmButtonText: "Yes, remove it!",
+//       cancelButtonText: "Cancel",
+//     }).then((result) => {
+//       if (result) {
+//         $.ajax({
+//           url: "/remove-product-from-cart",
+
+//           data: {
+//             cart: arguments [0],
+//             product: arguments[1],
+//           },
+//           method: "post",
+//           success: (response) => {
+//             if (response) {
+//               Swal.fire({
+//                 title: `Product removed from cart!`,
+//                 icon: "success",
+//                 timer: 4000,
+//               }).then((result) => {
+//                 window.location.reload()
+//               });
+//             }
+//           },
+//         });
+//       }
+//     });
+//   }
+
+//   // else if (arguments [3]  == 2) {
+//   //   console.log(arguments[4],'productQuantityyyyyy');
+//   //   Swal.fire({
+//   //     title: `Sorry, product is out of stock!`,
+//   //     icon: "warning",
+//   //   });
+//   // }
+
+//   else {
+//     $.ajax({
+//       url: "/change-product-quantity",
+//       type: "post",
+//       data: {
+//         userId: arguments [0],
+//         prodId:  arguments [1],
+//         count: arguments [2],
+//         quantity: arguments [3],
+//         // productQuantity: productQuantity,
+//         // productName: productName,
+//         // cart: cartId,
+//       },
+//     })
+//       .done((res) => {
+//         document.getElementById(`${arguments [1]}`).innerHTML =
+//           parseInt(document.getElementById(`${arguments [1]}`).innerHTML) + arguments [2];
+//         location.reload();
+//       })
+//       .fail((err) => {});
+//   }
+// }
+
+function changeQuantity(userId,productId, quantityChange, currentQuantity,a) {
+  console.log(quantityChange);
+  console.log(currentQuantity,'current');
+    if (parseInt(a) + parseInt(quantityChange) === 0) {
+        Swal.fire({
+            title: "Are you sure you want to remove?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "Yes, remove it!",
+            cancelButtonText: "Cancel",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "/change-product-quantity",
+                    method: "post",
+                    data: {
+                      user_id:userId,
+                        productId: productId,
+                        quantityChange: quantityChange,
+                        currentQuantity: currentQuantity,
+                    },
+                    success: (response) => {
+                        if (response) {
+                            Swal.fire({
+                                title: `Product removed from cart!`,
+                                icon: "success",
+                                timer: 4000,
+                            }).then(() => {
+                                location.reload();
+                            });
+                        }
+                    },
+                });
+            }
+        });
+    } else {
+        $.ajax({
+            url: "/change-product-quantity",
+            method: "post",
+            data: {
+              user_id: userId,
+                productId: productId,
+                quantityChange: quantityChange,
+                currentQuantity: currentQuantity,
+            },
+
+            success: (response) => {
+                if (response.status) {
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        title: "Out of stock!",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                    return;
+                }
+            },
+        });
+    }
 }
 
 function cancelOrder(orderId) {
-  Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3cc75c",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, Cancel The Order!",
-      input: "text", // Add a text input field for cancel reason
-      inputPlaceholder: "Enter cancel reason", // Placeholder for the input field
-  }).then((result) => {
-      if (result.isConfirmed) {
-          const cancelReason = result.value; // Get the value entered in the input field
-          $.ajax({
-              url: "/cancelOrder",
-              data: {
-                  arguments:orderId ,
-                  cancelReason: cancelReason, // Pass the cancel reason as data in the Ajax request
-              },
-              method: "post",
-              success: (response) => {
-                  if (response.status) {
-                      Swal.fire({
-                          title: `Cancelled`,
-                          icon: "success",
-                          timer: 4000,
-                      }).then((response) => {
-                          if (response.isConfirmed) {
-                              location.reload();
-                          }
-                      });
-                  }
-              },
-          });
-      }
-  });
-}
-
-
-
-function returnOrder(orderId) {
     Swal.fire({
-        icon: "warning",
-        title: "Are you sure",
+        title: "Are you sure?",
         text: "You won't be able to revert this!",
-        showDenyButton: true,
-        confirmButtonText: "Yes, Return",
-        denyButtonText: `No`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3cc75c",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Cancel The Order!",
+        input: "text", // Add a text input field for cancel reason
+        inputPlaceholder: "Enter cancel reason", // Placeholder for the input field
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                title: "Reason for returning",
-                input: "text",
-                inputValue: "",
-                showCancelButton: true,
-                confirmButtonText: "Save Changes",
-                cancelButtonText: "Cancel",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const return_reason = result.value;
-                    $.ajax({
-                        url: "/returnOrder",
-                        method: "put",
-                        data: {
-                            orderId: orderId,
-                            reason: return_reason,
-                        },
-                        success: (response) => {
-                            if (response.status) {
-                                Swal.fire("Returned!", "", "success").then(() => {
-                                    location.reload();
-                                });
-                            } else {
-                                Swal.fire("The Product Return validity expired", "", "warning").then(() => {});
+            const cancelReason = result.value; // Get the value entered in the input field
+            $.ajax({
+                url: "/cancelOrder",
+                data: {
+                    arguments: orderId,
+                    cancelReason: cancelReason, // Pass the cancel reason as data in the Ajax request
+                },
+                method: "post",
+                success: (response) => {
+                    if (response.status) {
+                        Swal.fire({
+                            title: `Cancelled`,
+                            icon: "success",
+                            timer: 4000,
+                        }).then((response) => {
+                            if (response.isConfirmed) {
+                                location.reload();
                             }
-                        },
-                    });
-                }
+                        });
+                    }
+                },
             });
         }
+    });
+}
+
+function returnOrder(orderId) {
+    retrieveWalletAmount(function (walletAmount) {
+        Swal.fire({
+            icon: "warning",
+            title: "Are you sure",
+            text: `You won't be able to revert this! Your wallet balance is ${walletAmount}`,
+            showDenyButton: true,
+            confirmButtonText: "Yes, Return",
+            denyButtonText: `No`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Reason for returning",
+                    input: "text",
+                    inputValue: "",
+                    showCancelButton: true,
+                    confirmButtonText: "Save Changes",
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const return_reason = result.value;
+                        $.ajax({
+                            url: "/returnOrder",
+                            method: "put",
+                            data: {
+                                orderId: orderId,
+                                reason: return_reason,
+                            },
+                            success: (response) => {
+                                if (response.status) {
+                                    Swal.fire("Returned!", "", "success").then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire("The Product Return validity expired", "", "warning").then(() => {});
+                                }
+                            },
+                        });
+                    }
+                });
+            }
+        });
+    });
+}
+
+function retrieveWalletAmount(callback) {
+    $.ajax({
+        url: "/getWalletAmount",
+        method: "get",
+        success: (response) => {
+            if (response.status) {
+                callback(response.amount);
+            } else {
+                callback(null);
+            }
+        },
     });
 }
 
@@ -295,158 +449,158 @@ function checkOut() {
 
 function AddToWishList(id, user_id) {
     if (!user_id) {
-      window.location.href = "/login";
-      return;
+        window.location.href = "/login";
+        return;
     }
     // Make an AJAX request to add the product to the wishlist
     $.ajax({
-      type: "post",
-      url: `/wishlist/add/`,
-      data: {
-        product_id: id,
-      },
-      success: function (response) {
-        if (response.removeSuccess) {
-          // If the product was already in the wishlist and was removed, show a Sweet Alert with a trash popup
-          Swal.fire({
-            icon: "success",
-            title: "Product removed from wishlist",
-            html: '<div class="trash-popup"><i class="fas fa-trash"></i></div>',
-            showConfirmButton: false,
-            timer: 2000,
-            onOpen: function () {
-              // Animate the trash popup
-              anime({
-                targets: ".trash-popup",
-                scale: [0.5, 1],
-                opacity: [0, 1],
-                easing: "easeOutCirc",
-                duration: 800,
-              });
-            },
-          }).then(() => {
-            location.reload();
-          });
-        } else {
-          // If the product was added to the wishlist, show a Sweet Alert with a heart popup
-          Swal.fire({
-            icon: "success",
-            title: "Product added to wishlist",
-            html: '<div class="heart-popup"><i class="fas fa-heart"></i></div>',
-            showConfirmButton: false,
-            timer: 2000,
-            onOpen: function () {
-              // Animate the heart popup
-              anime({
-                targets: ".heart-popup",
-                scale: [0.5, 1],
-                opacity: [0, 1],
-                easing: "easeOutCirc",
-                duration: 800,
-              });
-            },
-          }).then(() => {
-            location.reload();
-          });
-        }
-      },
-      error: function (xhr, status, error) {
-        // If the request fails, show an error message
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Something went wrong!",
-        });
-      },
-    });
-  }
-
-  function addToCartFromWish(user_id, product_id) {
-    if (user_id) {
-      $.ajax({
-        url: `/add-to-cartFromWishL/${product_id}`,
-        method: "PUT",
+        type: "post",
+        url: `/wishlist/add/`,
+        data: {
+            product_id: id,
+        },
         success: function (response) {
-          if (response.status) {
-            Swal.fire({
-              title: "Product added to cart!",
-              icon: "success",
-              showConfirmButton: false,
-              timer: 4000,
-            }).then(() => {
-              location.reload();
-            });
-          } else {
-            Swal.fire({
-              title: "Out of stock!",
-              icon: "error",
-              showConfirmButton: false,
-              timer: 4000,
-            });
-          }
-        },
-        error: function (error) {
-          console.log(error);
-        },
-      });
-    } else {
-      // User is not logged in, redirect to login page
-      window.location.href = "/login";
-    }
-  }
-
-  function removeFromWishList(product_id) {
-    Swal.fire({
-      title: `Are you sure you want to remove?`,
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonText: "Yes, remove it!",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $.ajax({
-          url: "/remove-product-from-wishList",
-          data: {
-            product: product_id,
-          },
-          method: "delete",
-          success: (response) => {
-            if (response) {
-              Swal.fire({
-                title: `Product removed !`,
-                icon: "success",
-                showConfirmButton: false,
-                timer: 2000,
-              }).then(() => {
-                location.reload();
-              });
+            if (response.removeSuccess) {
+                // If the product was already in the wishlist and was removed, show a Sweet Alert with a trash popup
+                Swal.fire({
+                    icon: "success",
+                    title: "Product removed from wishlist",
+                    html: '<div class="trash-popup"><i class="fas fa-trash"></i></div>',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    onOpen: function () {
+                        // Animate the trash popup
+                        anime({
+                            targets: ".trash-popup",
+                            scale: [0.5, 1],
+                            opacity: [0, 1],
+                            easing: "easeOutCirc",
+                            duration: 800,
+                        });
+                    },
+                }).then(() => {
+                    location.reload();
+                });
+            } else {
+                // If the product was added to the wishlist, show a Sweet Alert with a heart popup
+                Swal.fire({
+                    icon: "success",
+                    title: "Product added to wishlist",
+                    html: '<div class="heart-popup"><i class="fas fa-heart"></i></div>',
+                    showConfirmButton: false,
+                    timer: 2000,
+                    onOpen: function () {
+                        // Animate the heart popup
+                        anime({
+                            targets: ".heart-popup",
+                            scale: [0.5, 1],
+                            opacity: [0, 1],
+                            easing: "easeOutCirc",
+                            duration: 800,
+                        });
+                    },
+                }).then(() => {
+                    location.reload();
+                });
             }
-          },
-        });
-      }
+        },
+        error: function (xhr, status, error) {
+            // If the request fails, show an error message
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Something went wrong!",
+            });
+        },
     });
-  }
+}
+
+function addToCartFromWish(user_id, product_id) {
+    if (user_id) {
+        $.ajax({
+            url: `/add-to-cartFromWishL/${product_id}`,
+            method: "PUT",
+            success: function (response) {
+                if (response.status) {
+                    Swal.fire({
+                        title: "Product added to cart!",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 4000,
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Out of stock!",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 4000,
+                    });
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    } else {
+        // User is not logged in, redirect to login page
+        window.location.href = "/login";
+    }
+}
+
+function removeFromWishList(product_id) {
+    Swal.fire({
+        title: `Are you sure you want to remove?`,
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, remove it!",
+        cancelButtonText: "Cancel",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: "/remove-product-from-wishList",
+                data: {
+                    product: product_id,
+                },
+                method: "delete",
+                success: (response) => {
+                    if (response) {
+                        Swal.fire({
+                            title: `Product removed !`,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 2000,
+                        }).then(() => {
+                            location.reload();
+                        });
+                    }
+                },
+            });
+        }
+    });
+}
 
 // Example client-side code to update cart and wishlist counts
 function updateCounts() {
-  // Update cart count
-  $.get("/cart/count", function (data) {
-    let cartCount = data.count;
-    $(".cart-badge").html(cartCount);
-  });
+    // Update cart count
+    $.get("/cart/count", function (data) {
+        let cartCount = data.count;
+        $(".cart-badge").html(cartCount);
+    });
 
-  // Update wishlist count
-  $.get("/wishlist/count", function (data) {
-    let wishlistCount = data.count;
-    $(".wishlist-count").html(wishlistCount);
-  });
+    // Update wishlist count
+    $.get("/wishlist/count", function (data) {
+        let wishlistCount = data.count;
+        $(".wishlist-count").html(wishlistCount);
+    });
 }
 
 // Call updateCounts function on page load and after adding/removing items from cart or wishlist
 $(document).ready(function () {
-  updateCounts();
+    updateCounts();
 });
 
 $(document).on("cartUpdated wishlistUpdated", function () {
-  updateCounts();
+    updateCounts();
 });

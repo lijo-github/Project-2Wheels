@@ -67,12 +67,11 @@
             <div class="input-wrapper">
                 <form action="/product-search/?search"  method="get" onsubmit="return validateForm()">
                 <input type="search" name="search" placeholder="Search Anything..." class="input-field"  id="product-search"/>
-                
-
                 <button type="submit">
-                <ion-icon name="search-outline" aria-hidden="true" > </ion-icon></button>
+                <ion-icon name="search-outline" aria-hidden="true" ></ion-icon></button>
+            </form>
             </div>
-        </form>
+       
 
             <div class="header-action">
                 <% if(user){ %>
@@ -97,6 +96,10 @@
                             <a href="/address">address</a>
                         </div>
                         <div  >
+                            <a href="/wallet">wallet</a>
+                        </div>
+
+                        <div  >
                             <a href="/logout">Logout</a>
                         </div>
                         
@@ -109,8 +112,14 @@
                 
                 </div>
                 <button class="header-action-btn" aria-label="favorite list">
+                    <% if(user) {%>
                     <a href="/wishlist">
                     <ion-icon name="heart-outline" aria-hidden="true"></ion-icon></a>
+                    <% }else {%>
+
+                        <a href="/login">
+                            <ion-icon name="heart-outline" aria-hidden="true"></ion-icon></a>
+                        <% } %>
 
                 <% if(user) {%>
                     <span class="wishlist-count btn-badge"><%= user.wish %></span>
@@ -120,8 +129,15 @@
                 </button>
 
                 <button class="header-action-btn" aria-label="cart">
+                    <% if(user) {%>
                     <a href="/cart">
                     <ion-icon name="bag-handle-outline" aria-hidden="true" id="cart-badge"></ion-icon></a>
+                    <% }else{ %>
+
+                        <a href="/login">
+                            <ion-icon name="bag-handle-outline" aria-hidden="true" id="cart-badge"></ion-icon></a>
+
+                    <% } %>
 
                     <% if(user) { %>
                         <span class="cart-badge btn-badge"><%= user.count %></span>
@@ -147,6 +163,7 @@ function validateForm() {
     } else {
       return true;
     }
+
   }</script>
 
   

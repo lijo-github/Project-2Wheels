@@ -8,6 +8,7 @@ const Wishlist = require("../model/wishlist.js")
 const bcrypt = require("bcrypt");
 const { Order, Address, OrderItem } = require("../model/order.js");
 const moment = require("moment/moment");
+const { body } = require("express-validator");
 
 module.exports = {
     //*signup Helper  */
@@ -34,6 +35,15 @@ module.exports = {
                 reject(err);
             }
         });
+    },
+
+    updatePassword: async (id, newPassword) => {
+      try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await user.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+      } catch (err) {
+        console.error(err);
+      }
     },
 
     //*get mobilenumber Helper  */
@@ -82,6 +92,15 @@ module.exports = {
             console.error(err);
         }
     },
+    getProductQuantity: async(productId)=> {
+        const product = await Product.findById(productId);
+        if (product && product.productQuantity !== null) {
+          return product.productQuantity;
+        }
+        return 0;
+      },
+
+
     getAllProductsForList: async (categoryId, sort, userId) => {
         try {
             let sortOption = { productPrice: -1 };
@@ -215,18 +234,63 @@ module.exports = {
             throw new Error("Error getting cart products");
         }
     },
-    addToCart: async (productId, userId) => {
-        const isProductExist = await Cart.findOne({
-            user: userId,
-            "products.productId": productId,
-        });
+    // addToCart: async (productId, userId) => {
+    //     const isProductExist = await Cart.findOne({
+    //         user: userId,
+    //         "products.productId": productId,
+    //     });
 
-        if (isProductExist) {
-            await Cart.updateOne({ user: userId, "products.productId": productId }, { $inc: { "products.$.quantity": 1 } });
-        } else {
-            await Cart.updateOne({ user: userId }, { $push: { products: { productId, quantity: 1 } } }, { upsert: true });
+    //     if (isProductExist) {
+    //         await Cart.updateOne({ user: userId, "products.productId": productId }, { $inc: { "products.$.quantity": 1 } });
+    //     } else {
+    //         await Cart.updateOne({ user: userId }, { $push: { products: { productId, quantity: 1 } } }, { upsert: true });
+    //     }
+    // },
+    addToCart: async (productId, userId) => {
+        try {
+          // Find the product
+          const product = await Product.findById(productId);
+          if (!product) {
+            return { success: false, error: "Product not found." };
+          }
+      
+          // Check if the product quantity is sufficient
+          if (product.productQuantity <= 0) {
+            return { success: false, error: "Product out of stock." };
+          }
+      
+          // Decrease the product quantity by 1 and save the updated product
+          product.productQuantity -= 1;
+          await product.save();
+      
+          // Add the product to the user's cart
+          const cart = await Cart.findOne({ user: userId });
+          if (cart) {
+            // If the cart already exists, update the quantity of the existing product
+            const existingProduct = cart.products.find((p) => p.productId.toString() === productId);
+            if (existingProduct) {
+              existingProduct.quantity += 1;
+            } else {
+              // If the product doesn't exist in the cart, add it with quantity 1
+              cart.products.push({ productId, quantity: 1 });
+            }
+            await cart.save();
+          } else {
+            // If the cart doesn't exist, create a new cart and add the product
+            const newCart = new Cart({
+              user: userId,
+              products: [{ productId, quantity: 1 }],
+            });
+            await newCart.save();
+          }
+      
+          return { success: true };
+        } catch (error) {
+          console.error(error);
+          return { success: false, error: "An error occurred while adding the product to the cart." };
         }
-    },
+      },
+      
     updateQuantity: async (userId, productId, count) => {
         try {
           const cart = await Cart.findOne({ user: userId });
@@ -267,9 +331,9 @@ module.exports = {
             await cart.save();
           }
     
-          // await Product.findByIdAndUpdate(productId, {
-          //   $set: { productQuantity: updatedProductQuantity },
-          // });
+          await Product.findByIdAndUpdate(productId, {
+            $set: { productQuantity: updatedProductQuantity },
+          });
     
           return true;
         } catch (err) {
@@ -277,36 +341,71 @@ module.exports = {
           return false;
         }
       },
-      removeProductFromCart: async ({ cart, product }) => {
+    //   removeProductFromCart: async ({ cart, product }) => {
+    //     try {
+    //       const cartDoc = await Cart.findOne({ user: cart }); // Find the cart document
+    //       if (!cartDoc) {
+    //         throw new Error("Cart not found");
+    //       }
+    //       // Find the product document
+    //       const productDoc = await Product.findById(product);
+    //       console.log(productDoc);
+    //       if (!productDoc) {
+    //         throw new Error("Product not found");
+    //       }
+    
+    //        // Find the index of the product in the cart
+    //       const productIndex = cartDoc.products.findIndex(
+    //         (p) => p.productId.toString() === product
+    //       );
+    //       // console.log(productIndex);
+    
+    //       if (productIndex === -1) {
+    //         throw new Error("Product not found in cart");
+    //       }
+    //       // Remove the product from the cart
+    //       cartDoc.products.splice(productIndex, 1);
+    //       await cartDoc.save();
+    //       return;
+    //     } catch (err) {
+    //       console.error(err);
+    //     }
+    //   },
+    removeProductFromCart: async ({ cart, product }) => {
         try {
           const cartDoc = await Cart.findOne({ user: cart }); // Find the cart document
           if (!cartDoc) {
             throw new Error("Cart not found");
           }
+      
           // Find the product document
           const productDoc = await Product.findById(product);
-          console.log(productDoc);
           if (!productDoc) {
             throw new Error("Product not found");
           }
-    
-          // // Find the index of the product in the cart
+      
+          // Find the index of the product in the cart
           const productIndex = cartDoc.products.findIndex(
             (p) => p.productId.toString() === product
           );
-          // console.log(productIndex);
-    
+      
           if (productIndex === -1) {
             throw new Error("Product not found in cart");
           }
+      
+          // Update the product quantity and save the updated product
+          productDoc.productQuantity += cartDoc.products[productIndex].quantity;
+          await productDoc.save();
+      
           // Remove the product from the cart
           cartDoc.products.splice(productIndex, 1);
           await cartDoc.save();
-          return;
         } catch (err) {
           console.error(err);
+          throw new Error("An error occurred while removing the product from the cart.");
         }
       },
+      
     addToCartFromWish: async (productId, userId) => {
         // Find product
         const product = await Product.findById(productId);
@@ -497,7 +596,7 @@ module.exports = {
 
                 if (User.wallet >= subtotal) {
                     User.wallet -= parseInt(subtotal);
-                    await user.save();
+                    await User.save();
                     status = "Placed";
                     var paymentStatus = "paid";
                 } else {
@@ -683,6 +782,7 @@ module.exports = {
             console.error(err);
         }
     },
+    
     applyCoupon: async (couponCode, totalAmount, userId) => {
         try {
             const coupon = await Coupon.findOne({ code: couponCode });
@@ -739,8 +839,39 @@ module.exports = {
             return null;
         } catch (err) {
             console.error(err);
+            
         }
     },
+
+    sortQuery: async (sort, userId) => {
+        try {
+          let sortOption = { productPrice: -1 }; // Default sort by productPrice in ascending order
+    
+          if (sort === "price-desc") {
+            sortOption = { productPrice: 1 }; // Sort by productPrice in descending order
+          }
+    
+          const products = await Product.find({})
+            .populate("category")
+            .sort(sortOption);
+          if (products.length > 0) {
+            const cart = await Cart?.findOne({ user: userId });
+    
+            if (cart) {
+              for (const product of products) {
+                const isProductInCart = cart.products.some((prod) =>
+                  prod.productId.equals(product._id)
+                );
+                product.isInCart = isProductInCart; // Add a boolean flag to indicate if the product is in the cart
+              }
+            }
+            return products;
+          }
+          return null;
+        } catch (err) {
+          console.error(err);
+        }
+      },
 
     addToWishListUpdate: async (userId, productId) => {
         try {
@@ -816,6 +947,16 @@ module.exports = {
           return productCount;
         } catch (err) {
           console.error(err);
+        }
+      },
+
+      getUserWalletAmount: async(userId) =>{
+        try {
+          const User = await user.findOneAndUpdate(userId);
+          return User.wallet;
+        } catch (err) {
+          console.error(err);
+          throw new Error('Error getting user wallet amount');
         }
       },
 

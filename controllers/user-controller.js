@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const twilioFunctions = require("../config/twilio.js");
 const Cart = require("../model/cart");
 const instance = require("../config/paymentGateway.js");
+const { generateInvoice } = require("../config/pdfKit")
 const CryptoJS = require("crypto-js");
 require("dotenv").config();
 
@@ -18,12 +19,13 @@ module.exports = {
             const products = allProductWithCategory.products;
             const categories = allProductWithCategory.categories;
             const banners = await userHelper.getListedBanner();
+            const productQuantity = await userHelper.getProductQuantity();
             if (user) {
                 user.count = await userHelper.getCartCount(user._id);
                 user.wish = await userHelper.countWish(user._id);
-                res.render("user/userLandingPage", { user, products, categories, banners });
+                res.render("user/userLandingPage", { user, products, categories, banners, productQuantity });
             } else {
-                res.render("user/userLandingPage", { user, products, categories, banners });
+                res.render("user/userLandingPage", { user, products, categories, banners, productQuantity });
             }
         } catch (err) {
             console.error(err);
@@ -41,15 +43,13 @@ module.exports = {
     //*get signup Page  */
 
     getsignup: (req, res) => {
-        try{
-
+        try {
             let user = req.session.user;
-        res.render("user/signup",{user});
-        }catch(err){
+            res.render("user/signup", { user });
+        } catch (err) {
             console.error(err);
-            res.render("../views/user/catchError")
+            res.render("../views/user/catchError");
         }
-        
     },
 
     //*post signup Page  */
@@ -113,15 +113,14 @@ module.exports = {
 
     otpLogin: (req, res) => {
         let user = req.session.user;
-        try{          
+        try {
             if (user) {
                 res.redirect("/login");
-            } else res.render("user/otp-login", { message: false , user}); 
-        }catch(err){
+            } else res.render("user/otp-login", { message: false, user });
+        } catch (err) {
             console.error(err);
-            res.render("../views/user/catchError")
+            res.render("../views/user/catchError");
         }
-        
     },
 
     //*post signup Page  *//
@@ -130,15 +129,14 @@ module.exports = {
         console.log(req.body);
         const mobNumber = req.body.mobile;
         try {
-            console.log("++++++++++++");
+            
             const validUser = await userHelper.getmobileNumber(mobNumber);
             if (validUser !== undefined && validUser !== false) {
                 console.log(validUser);
                 twilioFunctions
                     .generateOTP(mobNumber, "sms")
                     .then((verification) => {
-                        console.log(req.body);
-                        console.log("=============");
+                       
                         res.render("../views/user/verify-otp-forPassword", {
                             loginErr: false,
                             user: false,
@@ -234,13 +232,62 @@ module.exports = {
             console.error(err);
         }
     },
+    
+    //* get forgopassword *//
+
+    forgotPassword: (req, res) => {
+        res.render("../views/user/forgotpassword", { otpErr: false, loginErr: false, user: false });
+    },
+
+    //*post forgotPassword */
+
+    forgotPasswordPost:async (req, res) => {
+       
+        const mobNumber = req.body.mobile;
+        try {
+            
+            const validUser = await userHelper.getUser(mobNumber);
+            if (validUser) {
+               
+                twilioFunctions
+                    .generateOTP(mobNumber, "sms")
+                    .then((verification) => {
+                        console.log(req.body);
+                       
+                        res.render("../views/user/verify-otp-forgotpassword", {
+                            loginErr: false,
+                            user: false,
+                            mobile: mobNumber,
+                            message: false,
+                        });
+                        console.log(verification.status);
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                        res.render("../views/user/forgotpassword", { otpErr: true, loginErr: false, user: false, block: false });
+                    });
+            } else if (validUser == undefined) {
+                res.render("../views/user/forgotpassword", {
+                    otpErr: false,
+                    block: false,
+                    loginErr: true,
+                    user: false,
+                    message: false,
+                });
+            } else {
+                res.render("../views/user/otp-login", { otpErr: false, block: true, loginErr: false, user: false });
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    },
 
     //*post verify otpforPassword */
 
     verifyOtpforpassword: async (req, res) => {
         try {
-            const mobileNum = req.body.mobile;
-            const user = await userHelper.getUser(mobileNum);
+            const mobNumber = req.body.mobile;
+            const user = await userHelper.getUser(mobNumber);
             const enteredOTP = req.body.code;
             twilioFunctions.client.verify.v2
                 .services(twilioFunctions.verifySid)
@@ -249,28 +296,44 @@ module.exports = {
                     if (verification_check.status === "approved") {
                         req.session.user = user;
                         console.log(user);
-                        res.render("change-password");
+                        res.render("../views/user/changePassword",{user:false, Err:false,});
                     } else {
-                        res.render("verify-otp-forPassword", { loginErr: true, user: false, mobile: mobileNum });
+                        res.render("../views/user/verify-otp-forgotpassword", { loginErr: true, user: false, mobile: mobNumber });
                     }
                 })
                 .catch((error) => {
                     console.error(error);
-                    res.render("verify-otp-forPassword", { loginErr: true, user: false, mobile: mobileNum });
+                    res.render("../views/user/verify-otp-forgotpassword", { loginErr: true, user: false, mobile: mobNumber });
                 });
         } catch (err) {
             console.error(err);
         }
     },
+
+    changePassword: async(req,res)=>{
+
+        try{
+            const user = req.session.user;
+            await userHelper.updatePassword(user._id,req.body.changedPassword);
+            req.session.loggedIn = true;
+            res.redirect("/",)
+        }catch(err){
+            res.render("../views/user/changePassword",{Err: true, user: false})
+            console.log(err);
+        }
+    },
+
+    
+
     listProductCategory: async (req, res) => {
         try {
             let user = req.session.user;
-            const categoryId = req.query.category;
-            const products = await userHelper.getAllProductsForList(categoryId);
+            const { category: categoryId, sort } = req.query;
+            const products = await userHelper.getAllProductsForList(categoryId, sort, user?._id);
             if (user) {
-                res.render("productList", { user, products });
+                res.render("../views/user/productList", { user, products });
             } else {
-                res.render("productList", { user: false, products });
+                res.render("../views/user/productList", { user: false, products });
             }
         } catch (err) {
             console.error(err);
@@ -278,6 +341,7 @@ module.exports = {
     },
     productView: async (req, res) => {
         const user = req.session?.user;
+        const productQuantity = await userHelper.getProductQuantity();
 
         try {
             if (user) {
@@ -289,13 +353,13 @@ module.exports = {
 
                 console.log("product list view success");
 
-                res.render("user/product-view", { user, products });
+                res.render("user/product-view", { user, products, productQuantity });
             } else {
                 var products = await userHelper.getProductDetails(req.params.id);
 
                 console.log("product list view success");
 
-                res.render("user/product-view", { user, products });
+                res.render("user/product-view", { user, products, productQuantity });
             }
         } catch (err) {
             console.error(err);
@@ -323,9 +387,9 @@ module.exports = {
         }
     },
 
-    addToCart: async (req , res) => {
+    addToCart: async (req, res) => {
         try {
-            await userHelper.addToCart(req.params.id , req.session.user._id);
+            await userHelper.addToCart(req.params.id, req.session.user._id);
             res.json({
                 status: "success",
                 message: "product added to cart",
@@ -334,36 +398,69 @@ module.exports = {
             console.error(err);
         }
     },
-    changeProductQuantity: async (req, res) => {
+
+    getProductQuantityController: async (req, res) => {
         try {
-            const { userId, prodId, count } = req.body;
-            console.log("got here", userId, prodId, count);
-            await Cart.updateOne(
-                { user: userId, "products.productId": prodId },
-                {
-                    $inc: {
-                        "products.$.quantity": count,
-                    },
-                }
-            );
+            const { productId } = req.body;
 
-            res.status(200).json({ error: false, message: "Product quantity has been changed successfully" });
+            const currentQuantity = await userHelper.getProductQuantity(productId);
+            res.json({ quantity: currentQuantity });
+        } catch (err) {
+            console.log(err);
+        }
+    },
 
-            //   if (!Array.isArray(product)) {
-            //     throw new Error('Invalid product data');
-            //   }
+    // changeProductQuantity: async (req, res) => {
+    //     try {
+    //         const { userId, prodId, count } = req.body;
+    //         console.log("got here", userId, prodId, count);
+    //         await Cart.updateOne(
+    //             { user: userId, "products.productId": prodId },
+    //             {
+    //                 $inc: {
+    //                     "products.$.quantity": count,
+    //                 },
+    //             }
+    //         );
 
-            //   if (product.length < 3) {
-            //     throw new Error('Product data must have at least three elements');
-            //   }
+    //         res.status(200).json({ error: false, message: "Product quantity has been changed successfully" });
 
-            //   const [userId, productId, count] = product;
+    //         //   if (!Array.isArray(product)) {
+    //         //     throw new Error('Invalid product data');
+    //         //   }
 
-            //   console.log(product);
+    //         //   if (product.length < 3) {
+    //         //     throw new Error('Product data must have at least three elements');
+    //         //   }
 
-            //   await userHelper.updateQuantity(userId, productId, count);
+    //         //   const [userId, productId, count] = product;
 
-            //   res.json({ status: "success" });
+    //         //   console.log(product);
+
+    //         //   await userHelper.updateQuantity(userId, productId, count);
+
+    //         //   res.json({ status: "success" });
+    //     } catch (err) {
+    //         console.error(err);
+    //         res.json({ status: "error" });
+    //     }
+    // },
+    changeProductQuantity: async (req, res) => {
+        // let user = req.session.user;
+        let user_id = req.body.user_id;
+        const productId = req.body.productId;
+        const count = req.body.quantityChange;
+        console.log(user_id);
+        console.log(productId);
+        console.log(count);
+
+        try {
+            const response = await userHelper.updateQuantity(user_id, productId, count);
+            if (response === false) {
+                res.json({ error: "success" });
+                return;
+            }
+            res.json({ status: "success" });
         } catch (err) {
             console.error(err);
             res.json({ status: "error" });
@@ -583,12 +680,31 @@ module.exports = {
         try {
             const search = req.query.search;
             const products = await userHelper.searchQuery(search, req.session.user?.id);
-            console.log(products);
-            res.render("../views/user/productList", { user: req.session.user, products });
+            console.log(products, "nulllllllllllllllllll");
+            if (products) {
+                res.render("../views/user/productList", { user: req.session.user, products });
+            } else {
+                res.render("../views/user/productNotFound", { message: err?.message, user: req.session.user });
+            }
         } catch (err) {
-            res.render("../views/user/catchError", { message: err?.message, user: req.session.user });
+            res.render("../views/user/productNotFound", { message: err?.message, user: req.session.user });
         }
     },
+
+    filterProducts: async (req, res) => {
+        try {
+            const { sort } = req.query;
+            console.log(sort);
+            const products = await userHelper.sortQuery(sort, req.session.user?._id);
+            res.render("../views/user/productList", { user: req.session.user, products });
+        } catch (err) {
+            res.render("../views/user/catchError", {
+                message: err?.message,
+                user: req.session.user,
+            });
+        }
+    },
+
     addToWishList: async (req, res) => {
         try {
             const response = await userHelper.addToWishListUpdate(req.session.user._id, req.body.product_id);
@@ -674,6 +790,45 @@ module.exports = {
                 message: err.message,
                 user: req.session.user,
             });
+        }
+    },
+    downloadInvoice: async (req, res) => {
+        try {
+          const order_id = req.params.id;
+          console.log(order_id);
+          // Generate the PDF invoice
+          const order = await adminHelper.getSpecificOrder(order_id);
+    
+          const { order: invoiceData, productDetails } = order;
+          console.log(order,'order getttttttttttt');
+
+          const invoicePath = await generateInvoice(invoiceData, productDetails);
+          
+    
+          // Download the generated PDF
+          res.download(invoicePath, (err) => {
+            if (err) {
+              console.error("Failed to download invoice:", err);
+              res.render("../views/user/catchError", {
+                message: err.message,
+                user: req.session.user,
+              });
+            }
+          });
+        } catch (error) {
+          console.error("Failed to download invoice:", error);
+          res.render("catchError", {
+            
+            user: req.session.user,
+          });
+        }
+      },
+    getwallet: async (req, res) => {
+        try {
+            const wallet = await userHelper.getUserWalletAmount();
+            res.render("../views/user/wallet", { user: req.session.user, wallet });
+        } catch (err) {
+            console.error(err);
         }
     },
 };

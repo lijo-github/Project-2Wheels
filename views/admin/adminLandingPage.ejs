@@ -1,185 +1,169 @@
 <%-include('../partials/admin-header.ejs')-%>
-        <section class="content-main">
-            <div class="content-header">
-                <div>
-                    <h2 class="content-title card-title">Dashboard </h2>
-                    <p>Whole data about your business here</p>
-                </div>
-                <div>
-                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
-                </div>
+<section class="content-main">
+    <div class="content-header">
+      <div>
+        <h2 class="content-title card-title">Dashboard.</h2>
+        <p>Whole data about 2 Wheels business here</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="card card-body mb-4">
+          <article class="icontext">
+            <span class="icon icon-sm rounded-circle bg-primary-light"
+              ><i class="text-primary material-icons md-monetization_on"></i
+            ></span>
+            <div class="text">
+              <h6 class="mb-1 card-title">Total Revenue</h6>
+              <span>&#x20B9;<%=totalRevenue%></span>
+              <span class="text-sm"> Shipping fees are not included </span>
             </div>
-            <div class="row">
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Revenue</h6>
-                                <span>$13,456.5</span>
-                                <span class="text-sm">
-                                    Shipping fees are not included
-                                </span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Orders</h6> <span>53.668</span>
-                                <span class="text-sm">
-                                    Excluding orders in transit
-                                </span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span>9.856</span>
-                                <span class="text-sm">
-                                    In 19 Categories
-                                </span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Monthly Earning</h6> <span>$6,982</span>
-                                <span class="text-sm">
-                                    Based in your local time.
-                                </span>
-                            </div>
-                        </article>
-                    </div>
-                </div>
+          </article>
+        </div>
+      </div>
+  
+      <div class="col-lg-3">
+        <div class="card card-body mb-4">
+          <article class="icontext">
+            <span class="icon icon-sm rounded-circle bg-success-light"
+              ><i class="text-success material-icons md-local_shipping"></i
+            ></span>
+            <div class="text">
+              <h6 class="mb-1 card-title">Orders</h6>
+              <span><%=orderCount%></span>
+              <br>
+              <span class="text-sm"> Excluding orders in transit </span>
             </div>
-            <div class="row">
-                <div class="col-xl-8 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Sale statistics</h5>
-                            <canvas id="myChart" height="120px"></canvas>
-                        </article>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <div class="card mb-4">
-                                <article class="card-body">
-                                    <h5 class="card-title">Recent activities</h5>
-                                    <ul class="verti-timeline list-unstyled font-sm">
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>Today</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Lorem ipsum dolor sit amet consectetur
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list active">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl animation-fade-right"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>17 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Debitis nesciunt voluptatum dicta reprehenderit
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>13 May</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Accusamus voluptatibus voluptas.
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>05 April</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        At vero eos et accusamus et iusto odio dignissi
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="event-list">
-                                            <div class="event-timeline-dot">
-                                                <i class="material-icons md-play_circle_outline font-xxl"></i>
-                                            </div>
-                                            <div class="media">
-                                                <div class="me-3">
-                                                    <h6><span>26 Mar</span> <i class="material-icons md-trending_flat text-brand ml-15 d-inline-block"></i></h6>
-                                                </div>
-                                                <div class="media-body">
-                                                    <div>
-                                                        Responded to need “Volunteer Activities
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </article>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-lg-12">
-                    <div class="card mb-4">
-                        <article class="card-body">
-                            <h5 class="card-title">Revenue Base on Area</h5>
-                            <canvas id="myChart2" height="217"></canvas>
-                        </article>
-                    </div>
-                </div>
+          </article>
+        </div>
+      </div>
+  
+      <div class="col-lg-3">
+        <div class="card card-body mb-4">
+          <article class="icontext">
+            <span class="icon icon-sm rounded-circle bg-warning-light"
+              ><i class="text-warning material-icons md-qr_code"></i
+            ></span>
+            <div class="text">
+              <h6 class="mb-1 card-title">Products Instock</h6>
+              <span><%=productsCount%></span>
+              <br>
+              <span class="text-sm"> In 3 Categories </span>
             </div>
-            
-            <div class="pagination-area mt-30 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
+          </article>
+        </div>
+      </div>
+  
+      <div class="col-lg-3">
+        <div class="card card-body mb-4">
+          <article class="icontext">
+            <span class="icon icon-sm rounded-circle bg-info-light"
+              ><i class="text-info material-icons md-shopping_basket"></i
+            ></span>
+            <div class="text">
+              <h6 class="mb-1 card-title">Number of Customers</h6>
+              <span><%=usersCount%></span>
+              <br>
+              <br>
+              <span class="text-sm"> </span>
             </div>
-        </section> <!-- content-main end// -->
+          </article>
+        </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-xl-8 col-lg-12">
+        <div class="card mb-4">
+          <article class="card-body">
+            <h5 class="card-title">Payment statistics</h5>
+            <canvas id="myGraph" height="120px"></canvas>
+          </article>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-12">
+        <div class="card mb-4">
+          <article class="card-body">
+            <h5 class="card-title">Order statistics</h5>
+            <canvas id="myPie" height="100px"></canvas>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- content-main end// -->
         <%-include('../partials/admin-footer.ejs')-%>
+
+        <script>
+            $(document).ready(function() {
+      // Bar Chart
+const ctx1 = document.getElementById('myGraph').getContext('2d');
+var categorie = ["COD", "ONLINE PAYMENTS", "WALLET"];
+var count = ['<%=paymentStatitics?.cash_on_delivery%>', '<%=paymentStatitics?.online_payment%>', '<%=paymentStatitics?.wallet%>'];
+var barColors = ["#e74c3c", "#2ecc71", "#3498db"];
+new Chart(ctx1, {
+  type: "polarArea",
+  data: {
+    labels: categorie,
+    datasets: [{
+    
+      data: count,
+      backgroundColor: barColors,
+      borderWidth: 1,
+      datalabels: {
+        align: 'end',
+        anchor: 'end',
+        color: 'black',
+        font: {
+          weight: 'bold'
+        },
+        formatter: function(value, context) {
+          return value;
+        }
+      }
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "e shopee Product Statistics"
+    },
+    legend: {
+      display: false
+    }
+  }
+});
+
+
+
+// Pie Chart
+const ctx2 = document.getElementById('myPie').getContext('2d');
+let orderStatus = ["Delivered", "Placed", "Cancelled", "Shipped", "Returned"];
+let orderCount = [ '<%= orderData?.Delivered %>', '<%= orderData?.Placed %>', '<%= orderData?.Cancelled %>', '<%= orderData?.Shipped %>', '<%= orderData?.Returned %>' ];
+var pieColors = [
+  "#e74c3c",
+  "#2ecc71",
+  "#3498db",
+  "#f1c40f",
+  "#9b59b6"
+]; // Updated color palette
+new Chart(ctx2, {
+  type: "pie",
+  data: {
+    labels: orderStatus,
+    datasets: [{
+      backgroundColor: pieColors,
+      data: orderCount
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "e shopee Order Statistics"
+    }
+  }
+});
+  } );
+
+</script>
+        

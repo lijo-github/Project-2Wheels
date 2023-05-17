@@ -153,6 +153,7 @@
                     <ul class="hero-list">
                         <li>
                             <div class="hero-card">
+                                <a href="productsList?category=643e8f350fda9b9932ff9a8f">
                                 <figure class="card-banner img-holder" style="--width: 285; --height: 396">
                                     <img
                                         src="../userAssets/images/hero-product-1.jpg"
@@ -160,20 +161,23 @@
                                         height="396"
                                         alt="Art Deco Home"
                                         class="img-cover"
+                                        
                                     />
                                 </figure>
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="#" class="card-title">Bikes</a>
+                                        <a href="productsList?category=643e8f350fda9b9932ff9a8f" class="card-title">Bikes</a>
                                     </h3>
 
                                     <p class="card-text">Explore with Us</p>
                                 </div>
                             </div>
+                        </a>
                         </li>
 
                         <li class="colspan-2">
+                            <a href="productsList?category=6444050b4b70b989687b0a34">
                             <div class="hero-card">
                                 <figure class="card-banner img-holder" style="--width: 568; --height: 389">
                                     <img
@@ -187,15 +191,17 @@
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="#" class="card-title">E-Bikes</a>
+                                        <a href="productsList?category=6444050b4b70b989687b0a34" class="card-title">E-Bikes</a>
                                     </h3>
 
                                     <p class="card-text">Go eco Friendly</p>
                                 </div>
                             </div>
+                        </a>
                         </li>
 
                         <li>
+                            <a href="productsList?category=6444051b4b70b989687b0a39">
                             <div class="hero-card">
                                 <figure class="card-banner img-holder" style="--width: 285; --height: 396">
                                     <img
@@ -209,12 +215,13 @@
 
                                 <div class="card-content">
                                     <h3>
-                                        <a href="#" class="card-title">Accessories</a>
+                                        <a href="productsList?category=6444051b4b70b989687b0a39" class="card-title">Accessories</a>
                                     </h3>
 
                                     <p class="card-text">Decoration</p>
                                 </div>
                             </div>
+                        </a>
                         </li>
 
                         <li class="colspan-2"></li>
@@ -224,38 +231,7 @@
                 </div>
             </section>
 
-            <!-- 
-          - #ABOUT
-        -->
-
-            <section class="section about" id="about" aria-label="about">
-                <div class="container">
-                    <h2 class="section-title">2Wheels Store</h2>
-
-                    <p class="section-text">
-                        When you start with a portrait and search for a pure form, a clear volume, through successive
-                        eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the
-                        same process in reverse, one finishes with the portrait.
-                    </p>
-
-                    <div class="about-card">
-                        <figure class="card-banner img-holder" style="--width: 1170; --height: 450">
-                            <img
-                                src="../userAssets/images/about-banner.jpg"
-                                width="1170"
-                                height="450"
-                                loading="lazy"
-                                alt="Woodex promo"
-                                class="img-cover"
-                            />
-                        </figure>
-
-                        <button class="play-btn" aria-label="play video">
-                            <ion-icon name="play-circle-outline" aria-hidden="true"></ion-icon>
-                        </button>
-                    </div>
-                </div>
-            </section>
+           
 
             <!-- 
           - #PRODUCTS
@@ -272,15 +248,15 @@
                             </li>
 
                             <li class="filter-btn-item">
-                                <button class="filter-btn" data-filter-btn="accessory">Accessory</button>
+                                <button class="filter-btn" data-filter-btn="accessory" ><a href="productsList?category=6444051b4b70b989687b0a39">Accessory</a> </button>
                             </li>
 
                             <li class="filter-btn-item">
-                                <button class="filter-btn" data-filter-btn="decoration">E-bikes</button>
+                                <button class="filter-btn" data-filter-btn="decoration"><a href="productsList?category=6444050b4b70b989687b0a34">E-bikes</a></button>
                             </li>
 
                             <li class="filter-btn-item">
-                                <button class="filter-btn" data-filter-btn="furniture">Bikes</button>
+                                <button class="filter-btn" data-filter-btn="furniture"><a href="productsList?category=643e8f350fda9b9932ff9a8f">Bikes</a> </button>
                             </li>
                         </ul>
                     </div>
@@ -326,6 +302,9 @@
                                             </button>
                                         </li>
                                     </ul>
+                                    <% if (product.productQuantity==0) { %>
+                                    <div class="card-badge">Out of Stock</div>
+                                    <% }%>
                                 </a>
 
                                 <div class="card-content">
@@ -349,6 +328,39 @@
                     </ul>
                 </div>
             </section>
+
+             <!-- 
+          - #ABOUT
+        -->
+
+        <section class="section about" id="about" aria-label="about">
+            <div class="container">
+                <h2 class="section-title">2Wheels Store</h2>
+
+                <p class="section-text">
+                    When you start with a portrait and search for a pure form, a clear volume, through successive
+                    eliminations, you arrive inevitably at the egg. Likewise, starting with the egg and following the
+                    same process in reverse, one finishes with the portrait.
+                </p>
+
+                <div class="about-card">
+                    <figure class="card-banner img-holder" style="--width: 1170; --height: 450">
+                        <img
+                            src="../userAssets/images/about-banner.jpg"
+                            width="1170"
+                            height="450"
+                            loading="lazy"
+                            alt="Woodex promo"
+                            class="img-cover"
+                        />
+                    </figure>
+
+                    <button class="play-btn" aria-label="play video">
+                        <ion-icon name="play-circle-outline" aria-hidden="true"></ion-icon>
+                    </button>
+                </div>
+            </div>
+        </section>
 
             <section class="section newsletter" aria-label="newsletter">
                 <div class="container">

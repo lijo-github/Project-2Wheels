@@ -1,502 +1,277 @@
-<%-include('../partials/user-header.ejs')-%>
 
-<main class="main">
-  <div
-    class="page-header text-center"
-    style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')"
-  >
-    <div class="container">
-      <h1 class="page-title">
-        <%=products[0].category.CategoryName%><span>Shop</span>
-      </h1>
-    </div>
-    <!-- End .container -->
-  </div>
-  <!-- End .page-header -->
-  <nav aria-label="breadcrumb" class="breadcrumb-nav mb-2">
-    <div class="container">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="#">Shop</a></li>
-        <li class="breadcrumb-item active" aria-current="page">List</li>
-      </ol>
-    </div>
-    <!-- End .container -->
-  </nav>
-  <!-- End .breadcrumb-nav -->
+<%-include("../partials/productListHeader.ejs")  %>
+    
+    <%-include('../partials/user-header.ejs') %>
+    <section class="shop spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="shop__sidebar">
+                        
+                        <div class="shop__sidebar__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    <li>
+                                                        <a href="productsList?category=643e8f350fda9b9932ff9a8f">Bikes</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="productsList?category=6444050b4b70b989687b0a34">E-Bikes</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="productsList?category=6444051b4b70b989687b0a39"
+                                                            >Accessories</a
+                                                        >
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="shop__product__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__left">
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__right">
+                                    <p>Sort by Price:</p>
+                                    <select
+                                        name="sortby"
+                                        id="sortby"
+                                        class="form-control"
+                                        class="form-select"
+                                        onchange="handleChange(event)"
+                                    >
+                                        <option value="">Low To High</option>
+                                        <option value="">$0 - $55</option>
+                                        <option value="">$55 - $100</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-  <div class="page-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-9">
-          <div class="toolbox">
-            <div class="toolbox-left">
-              <div class="toolbox-info">Showing <span></span> Products</div>
-              <!-- End .toolbox-info -->
+                    <div class="row">
+                        <% products.forEach(function (product,index){ %>
+
+                        <div class="col-lg-4 col-md-6 col-sm-6">
+                            <div class="product__item">
+                                <div class="product__item__pic set-bg" data-setbg="img/product/product-14.jpg">
+                                    <ul class="">
+                                        <li>
+                                            <a href="/product-view/<%=product._id%>"
+                                                ><img src="<%= product?.productImage[0] %>" alt=""
+                                            /></a>
+                                        </li>
+                                        <!-- <li>
+                                            <a href="#"><img src="<%= product?.productImage[1] %>" alt="" /> <span>Compare</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><img src="<%= product?.productImage[2] %>" alt="" /></a>
+                                        </li> -->
+                                    </ul>
+                                </div>
+
+                                <div class="product__item__text">
+                                    <h6><%= product.productName%></h6>
+                                    <% if (product.productQuantity==0) { %>
+                                    <div class="add-cart" style="color: red">Out of Stock</div>
+                                    <% }else{%> <% if (product?.isInCart) { %>
+                                    <a href="/cart" class="add-cart">view Cart</a>
+                                    <% }else{ %>
+
+                                    <a
+                                        href="#"
+                                        class="add-cart"
+                                        onclick="addToCart('<%=product?._id %>', '<%=user?._id %>'); return false;"
+                                        >+ Add To Cart</a
+                                    >
+                                    <%}%> <%}%>
+                                    <div class="rating">
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                    </div>
+                                    <h5><%= product.productPrice %></h5>
+                                    <!-- <div class="product__color__select">
+                                        <label for="pc-40">
+                                            <input type="radio" id="pc-40" />
+                                        </label>
+                                        <label class="active black" for="pc-41">
+                                            <input type="radio" id="pc-41" />
+                                        </label>
+                                        <label class="grey" for="pc-42">
+                                            <input type="radio" id="pc-42" />
+                                        </label>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <%})%>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                                <a class="active" href="#">1</a>
+                                <a href="#">2</a>
+                                <a href="#">3</a>
+                                <span>...</span>
+                                <a href="#">21</a>
+                            </div>
+                        </div>
+                    </div> -->
+                </div>
             </div>
-            <!-- End .toolbox-left -->
-
-            <div class="toolbox-right">
-              <div class="toolbox-sort">
-                <label for="sortby">Sort by:</label>
-                <div class="select-custom">
-                  <select name="sortby" id="sortby" class="form-control">
-                    <option value="popularity" selected="selected">
-                      Most Popular
-                    </option>
-                    <option value="rating">Most Rated</option>
-                    <option value="date">Date</option>
-                  </select>
-                </div>
-              </div>
-              <!-- End .toolbox-sort -->
-            </div>
-            <!-- End .toolbox-right -->
-          </div>
-          <!-- End .toolbox -->
-          <% products.forEach(function (product,index){ %>
-
-          <div class="products mb-3">
-            <div class="product product-list">
-              <div class="row">
-                <div class="col-6 col-lg-3">
-                  <figure class="product-media">
-                    <span class="product-label label-new">New</span>
-                    <a href="/product-view/<%=product._id%>">
-                      <img
-                        src="<%= product.productImage[0] %>"
-                        alt="Product image"
-                        class="product-image"
-                      />
-                    </a>
-                  </figure>
-                  <!-- End .product-media -->
-                </div>
-                <!-- End .col-sm-6 col-lg-3 -->
-
-                <div class="col-6 col-lg-3 order-lg-last">
-                  <div class="product-list-action">
-                    <div class="product-price">
-                      &#8377;<%= product.productPrice%>
-                    </div>
-                    <!-- End .product-price -->
-                    <div class="ratings-container">
-                      <div class="ratings">
-                        <div class="ratings-val" style="width: 20%"></div>
-                        <!-- End .ratings-val -->
-                      </div>
-                      <!-- End .ratings -->
-                      <span class="ratings-text">( 2 Reviews )</span>
-                    </div>
-                    <!-- End .rating-container -->
-
-                    <!-- End .product-action -->
-
-                    <a
-                      href="#"
-                      class="btn-product btn-cart"
-                      id="cart"
-                      data-product-id="<%=product?._id %>"
-                      data-user-id="<%=user?._id %>"
-                      ><span>add to cart</span></a
-                    >
-                  </div>
-                  <!-- End .product-list-action -->
-                </div>
-                <!-- End .col-sm-6 col-lg-3 -->
-
-                <div class="col-lg-6">
-                  <div class="product-body product-action-inner">
-                    <a
-                      href="#"
-                      class="btn-product btn-wishlist"
-                      title="Add to wishlist"
-                      ><span>add to wishlist</span></a
-                    >
-                    <div class="product-cat">
-                      <a href="#"><%= product.category.CategoryName %></a>
-                    </div>
-                    <!-- End .product-cat -->
-                    <h3 class="product-title">
-                      <a href="/product-view/<%=product._id%>"
-                        ><%= product.productName%></a
-                      >
-                    </h3>
-                    <!-- End .product-title -->
-
-                    <div class="product-content">
-                      <p><%= product.productDescription.slice(0,100)%>...</p>
-                    </div>
-                    <!-- End .product-content -->
-
-                    <div class="product-nav product-nav-thumbs">
-                      <a href="#" class="active">
-                        <img
-                          src="<%= product.productImage[0] %>"
-                          alt="product desc"
-                        />
-                      </a>
-                      <!-- <a href="#">
-                        <img
-                          src="<%#= product.productImage[1] %>"
-                          alt="product desc"
-                        />
-                      </a> -->
-
-                      <!-- <a href="#">
-                        <img
-                          src="<%#= product.productImage[2] %>"
-                          alt="product desc"
-                        /> -->
-                      <!-- </a> -->
-                    </div>
-                    <!-- End .product-nav -->
-                  </div>
-                  <!-- End .product-body -->
-                </div>
-                <!-- End .col-lg-6 -->
-              </div>
-              <!-- End .row -->
-            </div>
-            <!-- End .product -->
-          </div>
-          <!-- End .products -->
-          <%})%>
-          <nav aria-label="Page navigation">
-            <ul class="pagination">
-              <li class="page-item disabled">
-                <a
-                  class="page-link page-link-prev"
-                  href="#"
-                  aria-label="Previous"
-                  tabindex="-1"
-                  aria-disabled="true"
-                >
-                  <span aria-hidden="true"
-                    ><i class="icon-long-arrow-left"></i></span
-                  >Prev
-                </a>
-              </li>
-              <li class="page-item active" aria-current="page">
-                <a class="page-link" href="#">1</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item-total">of 6</li>
-              <li class="page-item">
-                <a class="page-link page-link-next" href="#" aria-label="Next">
-                  Next
-                  <span aria-hidden="true"
-                    ><i class="icon-long-arrow-right"></i
-                  ></span>
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
-        <!-- End .col-lg-9 -->
-        <aside class="col-lg-3 order-lg-first">
-          <div class="sidebar sidebar-shop">
-            <div class="widget widget-clean">
-              <label>Filters:</label>
-              <a href="#" class="sidebar-filter-clear">Clean All</a>
-            </div>
-            <!-- End .widget widget-clean -->
+    </section>
 
-            <div class="widget widget-collapsible">
-              <h3 class="widget-title">
-                <a
-                  data-toggle="collapse"
-                  href="#widget-1"
-                  role="button"
-                  aria-expanded="true"
-                  aria-controls="widget-1"
-                >
-                  Wi-Fi SPEED
-                </a>
-              </h3>
-              <!-- End .widget-title -->
+    <%-include('../partials/user-footer.ejs') %>
 
-              <div class="collapse show" id="widget-1">
-                <div class="widget-body">
-                  <div class="filter-items filter-items-count">
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="cat-1"
-                        />
-                        <label class="custom-control-label" for="cat-1"
-                          >Ultra-Fast (> 3000mbps)</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                      <span class="item-count">3</span>
-                    </div>
-                    <!-- End .filter-item -->
+    <%-include("../partials/productListFooter.ejs")  %>
 
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="cat-2"
-                        />
-                        <label class="custom-control-label" for="cat-2"
-                          >Super-Fast (> 1800mbps)</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                      <span class="item-count">0</span>
-                    </div>
-                    <!-- End .filter-item -->
+    <script>
+        // const CategoryId = "<%= products[0]?.category._id %>";
 
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="cat-3"
-                        />
-                        <label class="custom-control-label" for="cat-3"
-                          >Fast (1200 -1800mbps)</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                      <span class="item-count">4</span>
-                    </div>
-                    <!-- End .filter-item -->
+        // function handleChange(event) {
+        //     const selectedOption = event.target.value;
+        //     console.log(selectedOption);
+        //     window.location.href = `/productsList?category=${CategoryId}&sort=${selectedOption}`;
+        // }
 
-                    <!-- End .filter-item -->
-                  </div>
-                  <!-- End .filter-items -->
-                </div>
-                <!-- End .widget-body -->
-              </div>
-              <!-- End .collapse -->
-            </div>
-            <!-- End .widget -->
+        // const priceSlider = document.querySelector("#price-slider");
+        // const priceRange = document.querySelector("#filter-price-range");
 
-            <div class="widget widget-collapsible">
-              <h3 class="widget-title">
-                <a
-                  data-toggle="collapse"
-                  href="#widget-2"
-                  role="button"
-                  aria-expanded="true"
-                  aria-controls="widget-2"
-                >
-                  Range
-                </a>
-              </h3>
-              <!-- End .widget-title -->
+        // noUiSlider.create(priceSlider, {
+        //     start: [0, 50000], // Set initial range values
+        //     connect: true, // Display a colored bar between the handles
+        //     range: {
+        //         // Set minimum and maximum values for the slider
+        //         min: 0,
+        //         max: 50000,
+        //     },
+        // });
+        // // Update the price range text when the slider is moved
+        // priceSlider.noUiSlider.on("update", function (values, handle) {
+        //     priceRange.textContent = values.join(" - ");
+        //     // Call a function to update the product list based on the new price range
+        //     updateProducts(values[0], values[1]);
+        // });
 
-              <div class="collapse show" id="widget-2">
-                <div class="widget-body">
-                  <div class="filter-items">
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="size-1"
-                        />
-                        <label class="custom-control-label" for="size-1"
-                          >1-2 Bedroom Houses</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                    </div>
-                    <!-- End .filter-item -->
+        // function updateProducts(minPrice, maxPrice) {
+        //     // Get all product cards on the page
+        //     const productCards = document.querySelectorAll(".product-card");
+        //     console.log(productCards);
+        //     // Loop through all product cards and hide those that do not fall within the specified price range
+        //     productCards.forEach((card) => {
+        //         const price = parseInt(card.dataset.price);
+        //         if (parseInt(price) < minPrice || parseInt(price) > maxPrice) {
+        //             card.style.display = "none";
+        //         } else {
+        //             card.style.display = "block";
+        //         }
+        //     });
+        // }
 
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          checked
-                          id="size-3"
-                        />
-                        <label class="custom-control-label" for="size-3"
-                          >3-5 Bedroom Houses</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                    </div>
-                    <!-- End .filter-item -->
+        function addToCart(productId, userId) {
+            if (userId) {
+                $.get(`/add-to-cart/${productId}`)
+                    .done(function (response) {
+                        if (response.status) {
+                            Swal.fire({
+                                title: "Product added to cart!",
+                                icon: "success",
+                                confirmButtonText: "OK",
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
+                            });
+                            return;
+                        }
+                        Swal.fire({
+                            title: "Out of stock!",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        });
+                    })
+                    .fail(function (error) {
+                        console.log(error);
+                    });
+            } else {
+                // User is not logged in, redirect to login page
+                window.location.href = "/login";
+                return;
+            }
+        }
+    </script>
 
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          checked
-                          id="size-4"
-                        />
-                        <label class="custom-control-label" for="size-4"
-                          >>5 Bedroom Houses</label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                    </div>
-                    <!-- End .filter-item -->
-                  </div>
-                  <!-- End .filter-items -->
-                </div>
-                <!-- End .widget-body -->
-              </div>
-              <!-- End .collapse -->
-            </div>
-            <!-- End .widget -->
-
-            <div class="widget widget-collapsible">
-              <h3 class="widget-title">
-                <a
-                  data-toggle="collapse"
-                  href="#widget-3"
-                  role="button"
-                  aria-expanded="true"
-                  aria-controls="widget-3"
-                >
-                  Colour
-                </a>
-              </h3>
-              <!-- End .widget-title -->
-
-              <div class="collapse show" id="widget-3">
-                <div class="widget-body">
-                  <div class="filter-colors">
-                    <a href="#" style="background: #333333"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                    >
-                    <a href="#" style="background: #ebebeb"
-                      ><span class="sr-only">Color Name</span></a
-                    >
-                  </div>
-                  <!-- End .filter-colors -->
-                </div>
-                <!-- End .widget-body -->
-              </div>
-              <!-- End .collapse -->
-            </div>
-            <!-- End .widget -->
-
-            <div class="widget widget-collapsible">
-              <h3 class="widget-title">
-                <a
-                  data-toggle="collapse"
-                  href="#widget-4"
-                  role="button"
-                  aria-expanded="true"
-                  aria-controls="widget-4"
-                >
-                  Model
-                </a>
-              </h3>
-              <!-- End .widget-title -->
-              <% products.forEach(function (model){%>
-              <div class="collapse show" id="widget-4">
-                <div class="widget-body">
-                  <div class="filter-items">
-                    <div class="filter-item">
-                      <div class="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          class="custom-control-input"
-                          id="brand-1"
-                        />
-                        <label class="custom-control-label" for="brand-1"
-                          ><%=model.productModel%></label
-                        >
-                      </div>
-                      <!-- End .custom-checkbox -->
-                    </div>
-                    <!-- End .filter-item -->
-                    <% })%>
-                  </div>
-                  <!-- End .filter-items -->
-                </div>
-                <!-- End .widget-body -->
-              </div>
-              <!-- End .collapse -->
-            </div>
-            <!-- End .widget -->
-
-            <div class="widget widget-collapsible">
-              <h3 class="widget-title">
-                <a
-                  data-toggle="collapse"
-                  href="#widget-5"
-                  role="button"
-                  aria-expanded="true"
-                  aria-controls="widget-5"
-                >
-                  Price
-                </a>
-              </h3>
-              <!-- End .widget-title -->
-
-              <div class="collapse show" id="widget-5">
-                <div class="widget-body">
-                  <div class="filter-price">
-                    <div class="filter-price-text">
-                      Price Range:
-                      <span id="filter-price-range"></span>
-                    </div>
-                    <!-- End .filter-price-text -->
-
-                    <div id="price-slider"></div>
-                    <!-- End #price-slider -->
-                  </div>
-                  <!-- End .filter-price -->
-                </div>
-                <!-- End .widget-body -->
-              </div>
-              <!-- End .collapse -->
-            </div>
-            <!-- End .widget -->
-          </div>
-          <!-- End .sidebar sidebar-shop -->
-        </aside>
-        <!-- End .col-lg-3 -->
-      </div>
-      <!-- End .row -->
-    </div>
-    <!-- End .container -->
-  </div>
-  <!-- End .page-content -->
-</main>
-<!-- End .main -->
 <script>
-  $(document).ready(function () {
-    const addToCartLink = $("#cart");
+    const CategoryId = "<%= products[0]?.category._id %>";
 
-    addToCartLink.click(function (event) {
-      event.preventDefault();
+    function handleChange(event) {
+        const selectedOption = event.target.value;
+        console.log(selectedOption);
+        const url = `/productsList?category=${CategoryId}&sort=${selectedOption}`;
+        window.location.href = url;
+    }
 
-      const user = addToCartLink.data("user-id");
-      if (user) {
-        const productId = addToCartLink.data("product-id");
+    function sortByPrice(products, sortOption) {
+        switch (sortOption) {
+            case "lowToHigh":
+                return products.sort((a, b) => a.productPrice - b.productPrice);
+            case "0-55":
+                return products.filter(product => product.productPrice >= 0 && product.productPrice <= 55);
+            case "55-100":
+                return products.filter(product => product.productPrice > 55 && product.productPrice <= 100);
+            default:
+                return products;
+        }
+    }
 
-        $.get(`/add-to-cart/${productId}`)
-          .done(function (response) {
-            Swal.fire({
-              title: "Product added to cart!",
-              icon: "success",
-              confirmButtonText: "OK",
-            });
-          })
-          .fail(function (error) {
-            console.log(error);
-          });
-      } else {
-        // User is not logged in, redirect to login page
-        window.location.href = "/login";
-        return;
-      }
+    // Get the initial product list
+    let products = <%= JSON.stringify(products) %>;
+
+    // Get the sorting select element
+    const sortSelect = document.getElementById("sortby");
+
+    // Add an event listener to the sorting select element
+    sortSelect.addEventListener("change", function (event) {
+        const selectedOption = event.target.value;
+        const sortedProducts = sortByPrice(products, selectedOption);
+
+        // Generate the new HTML for the sorted product list
+        const productListHTML = sortedProducts.map(product => `
+            <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="product__item">
+                    <!-- Rest of the product item HTML here -->
+                </div>
+            </div>
+        `).join('');
+
+        // Update the product list HTML
+        const productList = document.querySelector(".row");
+        productList.innerHTML = productListHTML;
     });
-  });
 </script>
-<%-include('../partials/user-footer.ejs')-%>
+
+
+    
+

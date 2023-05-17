@@ -1,19 +1,58 @@
 <%-include('../partials/customHeader.ejs') -%>
  <%-include('../partials/user-header.ejs') -%>
-<section>
-  <div class="page-header text-center" style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')">
-      <div class="container">
-          <h1 class="page-title" style="font-weight: 500; color:rgb(0, 0, 0);">Order Success. &#10003;</h1>
-      </div><!-- End .container -->
-  </div><!-- End .page-header -->
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+     <meta charset="UTF-8">
+     <title>Order Successfully Placed | My Website</title>
+     <!-- Insert necessary CSS links here -->
+ </head>
+ <body>
 
-  <div class="header-center">
-      <div class="container mt-5">
-          <a href="/" class="btn btn-outline-primary-2 mx-3"><span>Continue Shopping</span><i
-                  class="icon-refresh"></i></a>
+     <main>
+         <section class="success-message">
+             <h2>Thank you for your order!</h2>
+             <img src="/userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg" alt="Order success image">
 
-          <a href="/order" class="btn btn-outline-primary-2 mx-3"><span>View Orders</span><i
-                  class="icon-cart-plus"></i></a>
-      </div>
-  </div>
-</section>
+             <h1>Order Successfully Placed!</h1>
+             <div class="button-container">
+                 <a href="/" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Continue Shopping</a>
+                 <a href="/orders" class="btn btn-secondary"><i class="fas fa-clipboard-check"></i> View Orders</a>
+             </div>
+         </section>
+     </main>
+     <!-- Insert necessary JavaScript links here -->
+ </body>
+ </html>
+
+ <style>
+    .success-message {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 50px 0;
+	text-align: center;
+}
+
+.success-message h2 {
+	font-size: 36px;
+	margin-bottom: 30px;
+}
+
+.success-message img {
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 30px;
+}
+
+.button-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.button-container .btn {
+	margin: 10px;
+}
+
+ </style>
+ 

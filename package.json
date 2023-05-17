@@ -19,6 +19,7 @@
     "debug": "~2.6.9",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
+    "es6": "^0.0.7",
     "express": "^4.18.2",
     "express-ejs-layouts": "^2.5.1",
     "express-fileupload": "^1.4.0",
@@ -26,6 +27,7 @@
     "express-session": "^1.17.3",
     "express-validator": "^6.15.0",
     "fileupload": "^0.2.1",
+    "html2pdf.js": "^0.10.1",
     "http-errors": "~1.6.3",
     "jquery": "^3.6.4",
     "jQuery": "^1.7.4",
@@ -40,12 +42,15 @@
     "nodemon": "^2.0.22",
     "owl.carousel": "^2.3.4",
     "pagination": "^0.4.6",
+    "pdfkit": "^0.13.0",
     "razorpay": "^2.8.6",
     "slug": "^8.2.2",
     "slugify": "^1.6.6",
     "sweetalert2": "^11.4.8",
+    "tostify": "^0.0.1",
     "twilio": "^4.10.0",
     "validation": "^0.0.1",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "xlsx": "^0.18.5"
   }
 }

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var userController = require("../controllers/user-controller");
 const { isLoggedIn, isUser, isloggedInad } = require("../middleware/sessionHandling");
+const route = require("color-convert/route");
 
 //* GET home page. */
 router.get("/", userController.homePage);
@@ -26,6 +27,18 @@ router.get("/resendOTP", isLoggedIn, userController.resendOtp);
 
 router.post("/verify-mobile", isLoggedIn, userController.verifyOtp);
 
+//* forgotpassword *//
+
+router.get("/forgotpassword",isLoggedIn, userController.forgotPassword);
+
+router.post("/forgotpassword", userController.forgotPasswordPost);
+
+router.post("/verfy-otp-forForgotpassword", userController.verifyOtpforpassword);
+
+router.post("/change-password", isLoggedIn, userController.changePassword);
+
+
+
 //* product list page. */
 router.get("/productsList", userController.listProductCategory);
 
@@ -42,6 +55,8 @@ router.get("/cart", isUser, userController.cartPage);
 router.post("/remove-product-from-cart", isUser, userController.removeProductFromCart);
 
 router.post("/change-product-quantity", userController.changeProductQuantity);
+
+router.get("/get-product-quantity", userController.getProductQuantityController);
 
 router.get("/edit-profile", (req, res) => {
     let user = req.session.user;
@@ -96,6 +111,10 @@ router.post("/apply-coupon", isUser, userController.applyCoupon);
 
 router.get("/product-search", userController.search);
 
+//* filter */
+
+router.get("/data", userController.filterProducts);
+
 //* wishlist */
 
 router.post("/wishlist/add/", isUser, userController.addToWishList);
@@ -106,8 +125,19 @@ router.put("/add-to-cartFromWishL/:id", isUser, userController.addToCartFromWish
 
 router.delete("/remove-product-from-wishList", isUser, userController.removeProdctFromWishLIst);
 
+//* get wishlist and cart count */
+
 router.get("/wishlist/count",isUser, userController.getWishListCount);
 
 router.get("/cart/count", isUser, userController.getCartCount);
+
+//* getwallet */
+
+router.get("/wallet", isUser, userController.getwallet);
+
+//*download invoice *//
+
+router.get("/download-invoice/:id", isUser, userController.downloadInvoice);
+
 
 module.exports = router;

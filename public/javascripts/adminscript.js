@@ -211,7 +211,8 @@ let removeCoupon = (couponId) => {
   });
 };
 
-function createReport() {
+
+  function createReport() {
   // Show SweetAlert popup
   Swal.fire({
     title: "Select report format",
@@ -244,7 +245,7 @@ function createReport() {
           break;
         case "excel":
           // Generate Excel file
-          var fp = XLSX.utils.table_to_book(data, { sheet: "e shopee" });
+          var fp = XLSX.utils.table_to_book(data, { sheet: "2wheels" });
           XLSX.write(fp, {
             bookType: "xlsx",
             type: "base64",
@@ -257,5 +258,8 @@ function createReport() {
     },
   });
 }
+  
+
+  
 
 

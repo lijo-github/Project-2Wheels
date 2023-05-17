@@ -112,7 +112,14 @@
                   <a href="/cart" class="btn-cart" id="view-cart" ><span>view cart</span></a>
             
                 <% }else{ %>
-                  <a href="#" class="btn-cart" id="add-to-cart" data-user-id="<%=user?._id%>" data-product-id="<%=products._id %>"><span>add to cart</span></a>
+                  <% if (products.productQuantity==0) { %>
+
+                  <a href="#" class="btn-outofstock" ><span>Out of Stock</span></a>
+                  <%}else{%>
+
+                    <a href="#" class="btn-cart" id="add-to-cart" data-user-id="<%=user?._id%>" data-product-id="<%=products._id %>"><span>add to cart</span></a>
+
+                    <%}%>
 
                  <%}%>
                   <div class="details-action-wrapper">
@@ -142,9 +149,6 @@
       </div><!-- End .container -->
       </div><!-- End .page-content -->
       </main><!-- End .main -->
-      
-      
-      
       
         <!-- End .modal -->
       </div>

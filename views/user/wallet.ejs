@@ -1,0 +1,34 @@
+<%-include("../partials/customHeader.ejs") %>
+<%-include("../partials/user-header.ejs") %>
+
+<main class="main">
+  <div class="page-header text-center" style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')">
+    <div class="container">
+      <h1 class="page-title" style="font-weight: 500; color:rgb(0, 0, 0);">Wallet.</h1>
+    </div><!-- End .container -->
+  </div><!-- End .page-header -->
+  <nav aria-label="breadcrumb" class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/checkout">checkout</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Wallet</li>
+      </ol>
+    </div><!-- End .container -->
+  </nav><!-- End .breadcrumb-nav -->
+
+  <div class="page-content">
+    <div class="dashboard">
+      <div class="container">
+        <div class="walletbalancecard">
+          <h3>Wallet Balance</h3>
+            <p class="wallet-amount";">&#x20B9; <%=user?.wallet%></p>
+        </div>
+      </div>
+    </div>
+  </div><!-- End .container -->
+</div><!-- End .dashboard -->
+</div><!-- End .page-content -->
+</main><!-- End .main -->
+
+
+<%-include("../partials/user-footer.ejs") %>

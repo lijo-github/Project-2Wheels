@@ -454,4 +454,107 @@ module.exports = {
             console.error(err);
         }
     },
+    getReportDetails: async () => {
+        try {
+          // Query the orders collection based on the order_date field
+          const query = { order_status: "Delivered" };
+          const orders = await Order.find(query).populate("address");
+          return orders;
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    
+      getReport: async (startDate, endDate) => {
+        try {
+          const query = [
+            {
+              $match: {
+                order_status: "Delivered",
+              },
+            },
+            {
+              $match: {
+                $and: [
+                  { order_date: { $gte: new Date(startDate) } },
+                  { order_date: { $lte: new Date(endDate) } },
+                ],
+              },
+            },
+            {
+              $sort: {
+                date: -1,
+              },
+            },
+          ];
+    
+          const orders = await Order.aggregate(query);
+    
+          return orders;
+        } catch (err) {
+          console.error(err);
+        }
+      },
+
+      findTotalRevenue: async () => {
+        try {
+          const result = await Order.aggregate([
+            {
+              $match: {
+                order_status: "Delivered", // Filter only delivered orders
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                totalRevenue: { $sum: "$total_amount" }, // Calculate the sum of total_amount field
+              },
+            },
+          ]);
+          return result[0].totalRevenue;
+        } catch (err) {
+          console.error(err);
+        }
+      },
+      orderStatusData: async () => {
+        try {
+          const orderData = await Order.aggregate([
+            {
+              $group: {
+                _id: "$order_status",
+                count: { $sum: 1 },
+              },
+            },
+          ]);
+          const counts = {};
+          for (const order of orderData) {
+            counts[order._id] = order.count;
+          }
+    
+          return counts;
+        } catch (err) {
+          console.log(err);
+        }
+      },
+    
+      paymentStatitics: async () => {
+        try {
+          const paymentData = await Order.aggregate([
+            {
+              $group: {
+                _id: "$payment_method",
+                count: { $sum: 1 },
+              },
+            },
+          ]);
+          const counts = {};
+          for (const payment of paymentData) {
+            counts[payment._id] = payment.count;
+          }
+    
+          return counts;
+        } catch (err) {
+          console.log(err);
+        }
+      }
 };

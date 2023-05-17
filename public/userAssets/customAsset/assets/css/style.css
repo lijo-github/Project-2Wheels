@@ -7669,6 +7669,38 @@ p {
 .product.product-list .btn-product.btn-cart.disabled:before {
     display: none;
 }
+
+.btn-outofstock{
+    font-family: Poppins;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 27.2px;
+    text-decoration: none solid rgb(255, 255, 255);
+    text-align: center;
+    word-spacing: 0px;
+    background-color: white;
+    background: red;
+    color: white;
+    fill: white;
+    height: 45.4px;
+    width: 144.962px;
+    border: 1px solid red;
+    padding: 10px 15px 10px 15px;
+    min-height: auto;
+    max-width: 198px;
+    min-width: auto;
+    display: block;
+    transform: none;
+    transition: color  0.3s ease 0s;
+    outline: rgb(255, 0, 0) dashed 0.8px ;
+    box-sizing: border-box;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+
+}
+
 .product.product-list .product-nav {
     margin-bottom: 0;
 }
@@ -16304,3 +16336,32 @@ button:focus {
     content: "\f7e3";
 }
 /*# sourceMappingURL=style.css.map */
+
+
+.walletbalancecard{
+    height: 150.2px;
+    width: 300px;
+    margin: 10px 0 0 0;
+    padding: 20px 20px 20px 20px;
+    display: block;
+    font-family: Poppins, sans-serif;
+    font-size: 16px;
+    font-weight: 300px;
+    line-height: 27.2px;
+    text-decoration: none solid rgb(0, 0, 0);
+    text-align: left;
+    word-spacing: 0px;
+    background-color: #E3CD6B;
+    color: #000000;
+    transform: none;
+    box-sizing: border-box;
+    box-shadow: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+
+
+}
+.wallet-amount{
+    font-size: 27px;
+    font-weight: bold;
+
+}

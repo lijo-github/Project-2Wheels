@@ -1,0 +1,91 @@
+<footer>
+  <script>
+    const CategoryId = "<%= products[0]?.category._id %>";
+
+    function handleChange(event) {
+        const selectedOption = event.target.value;
+        console.log(selectedOption);
+        window.location.href = `/productsList?category=${CategoryId}&sort=${selectedOption}`;
+    }
+
+    // const priceSlider = document.querySelector("#price-slider");
+    // const priceRange = document.querySelector("#filter-price-range");
+
+    // noUiSlider.create(priceSlider, {
+    //     start: [0, 50000], // Set initial range values
+    //     connect: true, // Display a colored bar between the handles
+    //     range: {
+    //         // Set minimum and maximum values for the slider
+    //         min: 0,
+    //         max: 50000,
+    //     },
+    // });
+    // // Update the price range text when the slider is moved
+    // priceSlider.noUiSlider.on("update", function (values, handle) {
+    //     priceRange.textContent = values.join(" - ");
+    //     // Call a function to update the product list based on the new price range
+    //     updateProducts(values[0], values[1]);
+    // });
+
+    // function updateProducts(minPrice, maxPrice) {
+    //     // Get all product cards on the page
+    //     const productCards = document.querySelectorAll(".product-card");
+    //     console.log(productCards);
+    //     // Loop through all product cards and hide those that do not fall within the specified price range
+    //     productCards.forEach((card) => {
+    //         const price = parseInt(card.dataset.price);
+    //         if (parseInt(price) < minPrice || parseInt(price) > maxPrice) {
+    //             card.style.display = "none";
+    //         } else {
+    //             card.style.display = "block";
+    //         }
+    //     });
+    // }
+
+    function addToCart(productId, userId) {
+        if (userId) {
+            $.get(`/add-to-cart/${productId}`)
+                .done(function (response) {
+                    if (response.status) {
+                        Swal.fire({
+                            title: "Product added to cart!",
+                            icon: "success",
+                            confirmButtonText: "OK",
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                location.reload();
+                            }
+                        });
+                        return;
+                    }
+                    Swal.fire({
+                        title: "Out of stock!",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                    });
+                })
+                .fail(function (error) {
+                    console.log(error);
+                });
+        } else {
+            // User is not logged in, redirect to login page
+            window.location.href = "/login";
+            return;
+        }
+    }
+</script>
+
+<!-- Js Plugins -->
+<script src="/userAssets/ProductListStyle/js/jquery-3.3.1.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/bootstrap.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/jquery.nice-select.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/jquery.nicescroll.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/jquery.magnific-popup.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/jquery.countdown.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/jquery.slicknav.js"></script>
+<script src="/userAssets/ProductListStyle/js/mixitup.min.js"></script>
+<script src="/userAssets/ProductListStyle/js/main.js"></script>
+
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@4/dark.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+</footer>

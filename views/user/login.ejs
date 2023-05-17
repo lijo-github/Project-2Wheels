@@ -23,6 +23,9 @@
                         <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
                         <input type="password" name="password" id="password" placeholder="Password" />
                     </div>
+                
+                        <span class="social-label" style="padding-left: 55%; color: #650780;"><a href="/forgotpassword" style="font-weight: bold">Forgot Password</a></span>
+                    
                     <%if(message){%>
                     <p style="color: red"><%=message%></p>
                     <%}%>
@@ -30,6 +33,9 @@
                     <div class="form-group form-button">
                         <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />
                     </div>
+
+                    
+
                 </form>
                 <div class="social-login">
                     <span class="social-label"><a href="/otp-login" style="font-weight: bold">Or login with OTP</a></span>

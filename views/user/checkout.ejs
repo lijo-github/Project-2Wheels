@@ -5,347 +5,347 @@
     class="page-header text-center"
     style="background-image: url('userAssets/images/ethan-TmvAg60VB_w-unsplash.jpg')"
   >
-    <div class="container">
-      <h1 class="page-title" style="font-weight: 500; color:rgb(0, 0, 0);">Checkout.</h1>
-    </div>
-    <!-- End .container -->
+  <div class="container">
+    <h1 class="page-title" style="font-weight: 500">Checkout.</h1>
   </div>
-  <!-- End .page-header -->
-  <nav aria-label="breadcrumb" class="breadcrumb-nav">
-    <div class="container">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/">Home</a></li>
-        <li class="breadcrumb-item"><a href="/cart">Shopping Cart</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Checkout</li>
-      </ol>
-    </div>
-    <!-- End .container -->
-  </nav>
-  <!-- End .breadcrumb-nav -->
+  <!-- End .container -->
+</div>
+<!-- End .page-header -->
+<nav aria-label="breadcrumb" class="breadcrumb-nav">
+  <div class="container">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="/cart">Shopping Cart</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Checkout</li>
+    </ol>
+  </div>
+  <!-- End .container -->
+</nav>
+<!-- End .breadcrumb-nav -->
 
-  <div class="page-content">
-    <div class="checkout">
-      <div class="container">
-        <form method="post" id="checkout-form" action="">
+<div class="page-content">
+  <div class="checkout">
+    <div class="container">
+      <form method="post" id="checkout-form" action="">
+     
+
+        <input
+          type="text"
+          name="userId"
+          value="<%=user._id %>"
+          hidden
+        />
+        <input
+          type="text"
+          name="addressId"
+          value="<%=address?._id %>%>"
+         hidden
+        />
+        <input type="text" name="couponCode" id="couponCodeInput" hidden />
+
        
-
-          <input
-            type="text"
-            name="userId"
-            value="<%=user._id %>"
-            hidden
-          />
-          <input
-            type="text"
-            name="addressId"
-            value="<%=address?._id %>%>"
-           hidden
-          />
-          <input type="text" name="couponCode" id="couponCodeInput" hidden />
-
-         
-          <div class="row">
-            <div class="col-lg-9">
-              <h2 class="checkout-title">Billing Details</h2>
-              <!-- End .checkout-title -->
-              <div class="row">
-                <div class="col-sm-6">
-                  <label>Full Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="name"
-                    value="<%=address?.full_name %>"
-                    required
-                  />
-                </div>
-                <!-- End .col-sm-6 -->
-              </div>
-              <!-- End .row -->
-
-              <label>Street address *</label>
-              <input
-                type="text"
-                class="form-control"
-                name="Streetaddress"
-                value="<%=address?.street_name
-                 %>"
-                required
-              />
-              <input
-                type="text"
-                class="form-control"
-                name="appartments"
-                value="<%= address?.
-                apartment_number
-                
-                %>"
-          
-              />
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <label>Town / City </label>
-                  <input type="text" name ="city"class="form-control" value="<%= address?.city %>" required />
-                </div>
-                <!-- End .col-sm-6 -->
-
-                <div class="col-sm-6">
-                  <label>State/Country </label>
-                  <input type="text" name ="state" class="form-control" value="<%=address?.state
-                  %>" required/>
-                </div>
-                <!-- End .col-sm-6 -->
-              </div>
-              <!-- End .row -->
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <label>Postcode / ZIP *</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="postalcode"
-                    value="<%=address?.postal_code
-                  %>"
-                    required
-                  />
-                </div>
-                <!-- End .col-sm-6 -->
-
-                <div class="col-sm-6">
-                  <label>Phone *</label>
-                  <input
-                    type="tel"
-                    class="form-control"
-                    name="mobileNumber"
-                    value="<%=address?.mobile_Number
-                  %>"
-                    required
-                  />
-                </div>
-                <!-- End .col-sm-6 -->
-              </div>
-              <!-- End .row -->
-
-             
-              <div class="custom-control custom-checkbox">
+        <div class="row">
+          <div class="col-lg-9">
+            <h2 class="checkout-title">Billing Details</h2>
+            <!-- End .checkout-title -->
+            <div class="row">
+              <div class="col-sm-6">
+                <label>Full Name</label>
                 <input
-                  class="custom-control-input"
-                  id="checkout-diff-address"
+                  type="text"
+                  class="form-control"
+                  name="name"
+                  value="<%=address?.full_name %>"
+                  required
                 />
-                <a href="/address" class="custom-control-label" for="checkout-diff-address"
-                  >Ship to a different address?</a
-                >
               </div>
-              <label>Order notes (optional)</label>
-              <textarea
-                class="form-control"
-                cols="30"
-                rows="4"
-                placeholder="Notes about your order, e.g. special notes for delivery"
-              ></textarea>
+              <!-- End .col-sm-6 -->
             </div>
-            <!-- End .col-lg-9 -->
-            <aside class="col-lg-3">
-              <div class="checkout-discount">
-								<input type="text" class="form-control" id="couponCode" 
-									placeholder="Have Coupon? Enter here">
-								<button type="button" class="btn btn-outline-primary-2 btn-order btn-block"
-									onclick="applyCoupon('<%=subtotal%>')">Apply</button>
-								<P for="couponErr" class="text-start" id="couponErr" style="color:rgb(180, 17, 17)"></P>
-								<p for="couponSuccess" class="text-start" id="couponSuccess"
-									style="color:rgb(22, 131, 22)"></p>
-								<p><a href="/all-coupons"><small><b>All Coupons ></b></small></a></p>
-							</div><!-- End .checkout-discount -->
-              <div class="summary">
-                <h3 class="summary-title">Your Order</h3>
-                <!-- End .summary-title -->
-               
-                <table class="table table-summary">
-                  <thead>
-                    <tr>
-                      <th>Product</th>
-                      <th>Total</th>
-                    </tr>
-                  </thead>
+            <!-- End .row -->
 
-                  <% products.forEach(function(item) { %>
-                    <tr>
-                      <td>
-                        <a href="#"><%= item.product.productName %></a>
-                      </td>
-                      <td>&#x20B9;<%= item.totalPrice %></td>
-                    </tr>
-                    <% }); %>
+            <label>Street address *</label>
+            <input
+              type="text"
+              class="form-control"
+              name="Streetaddress"
+              value="<%=address?.street_name
+               %>"
+              required
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="appartments"
+              value="<%= address?.
+              apartment_number
+              
+              %>"
+        
+            />
 
-                    <tr class="summary-subtotal">
-                      <td>Subtotal:</td>
-                      <td>&#x20B9;<%= subtotal%></td>
-                    </tr>
-                    <tr class="summary-subtotal">
-                      <td>Discount:</td>
-                      <td id="couponDisAmount"></td>
-                    </tr>
-                    <!-- End .summary-subtotal -->
-                    <tr>
-                      <td>Shipping:</td>
-                      <td>Free shipping</td>
-                    </tr>
-                    <tr  class="summary-total">
-                      <td >Total:</td>
-                      <td id="totalPrice"&#x20B9;<%= subtotal%></td>
-                      
-                    </tr>
-                   
-                    <!-- End .summary-total -->
-                  </tbody>
-                </table>
-                <!-- End .table table-summary -->
-
-                <div class="accordion-summary" id="accordion-payment">
-                  
-                <h5>Payment method</h5>
-                <div class="custom-control custom-radio">
-                  <input
-                    id="cod"
-                    value="cash_on_delivery"
-                    name="paymentMethod"
-                    type="radio"
-                    class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="cod"
-                    >Cash On Delivery</label
-                  >
-                </div>
-                <div class="custom-control custom-radio">
-                  <input
-                    id="wallet"
-                    value="wallet"
-                    name="paymentMethod"
-                    type="radio"
-                    class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="wallet"
-                    >Wallet</label
-                  >
-                </div>
-                <div class="wallet-card">
-                  <h3>Wallet Balance</h3>
-                  <% if (user?.wallet > subtotal) { %>
-                    <p>Use Wallet</p>
-                    <p class="wallet-amount">&#x20B9; <%=user?.wallet%></p>
-                  <% } else { %>
-                    <p class="text-danger">Insufficient Balance</p>
-                    <p class="wallet-amount">&#x20B9; <%=user?.wallet%></p>
-                  <% } %>
-                  
-                </div>
-                <div class="custom-control custom-radio">
-                  <input
-                    id="online-payment"
-                    value="online_payment"
-                    name="paymentMethod"
-                    type="radio"
-                    class="custom-control-input"
-                  />
-                  <label class="custom-control-label" for="online-payment"
-                    >Online Payment</label
-                  >
-                </div>
-                <button id="stripe-pay-button" class="btn btn-outline-primary-2 btn-order btn-block" style="display: none;">
-                  <span class="btn-text">Pay with RazorPay</span>
-                  <span class="btn-hover-text">Proceed to Checkout</span>
-                </button>
-                <button
-                  type="submit"
-                  class="btn btn-outline-primary-2 btn-order btn-block"
-                  id="order-button"
-                  style="display: none";
-                >
-                  <span class="btn-text">Place Order</span>
-                  <span class="btn-hover-text">Proceed to Checkout</span>
-                </button>
+            <div class="row">
+              <div class="col-sm-6">
+                <label>Town / City </label>
+                <input type="text" name ="city"class="form-control" value="<%= address?.city %>" required />
               </div>
-              <!-- End .summary -->
-            </aside>
-            <!-- End .col-lg-3 -->
+              <!-- End .col-sm-6 -->
+
+              <div class="col-sm-6">
+                <label>State/Country </label>
+                <input type="text" name ="state" class="form-control" value="<%=address?.state
+                %>" required/>
+              </div>
+              <!-- End .col-sm-6 -->
+            </div>
+            <!-- End .row -->
+
+            <div class="row">
+              <div class="col-sm-6">
+                <label>Postcode / ZIP *</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="postalcode"
+                  value="<%=address?.postal_code
+                %>"
+                  required
+                />
+              </div>
+              <!-- End .col-sm-6 -->
+
+              <div class="col-sm-6">
+                <label>Phone *</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  name="mobileNumber"
+                  value="<%=address?.mobile_Number
+                %>"
+                  required
+                />
+              </div>
+              <!-- End .col-sm-6 -->
+            </div>
+            <!-- End .row -->
+
+           
+            <div class="custom-control custom-checkbox">
+              <input
+                class="custom-control-input"
+                id="checkout-diff-address"
+              />
+              <a href="/address" class="custom-control-label" for="checkout-diff-address"
+                >Ship to a different address?</a
+              >
+            </div>
+            <label>Order notes (optional)</label>
+            <textarea
+              class="form-control"
+              cols="30"
+              rows="4"
+              placeholder="Notes about your order, e.g. special notes for delivery"
+            ></textarea>
           </div>
-          <!-- End .row -->
-        </form>
-      </div>
-      <!-- End .container -->
+          <!-- End .col-lg-9 -->
+          <aside class="col-lg-3">
+            <div class="checkout-discount">
+              <input type="text" class="form-control" id="couponCode" 
+                placeholder="Have Coupon? Enter here">
+              <button type="button" class="btn btn-outline-primary-2 btn-order btn-block"
+                onclick="applyCoupon('<%=subtotal%>')">Apply</button>
+              <P for="couponErr" class="text-start" id="couponErr" style="color:rgb(180, 17, 17)"></P>
+              <p for="couponSuccess" class="text-start" id="couponSuccess"
+                style="color:rgb(22, 131, 22)"></p>
+              <p><a href="/all-coupons"><small><b>All Coupons ></b></small></a></p>
+            </div><!-- End .checkout-discount -->
+            <div class="summary">
+              <h3 class="summary-title">Your Order</h3>
+              <!-- End .summary-title -->
+             
+              <table class="table table-summary">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+
+                <% products.forEach(function(item) { %>
+                  <tr>
+                    <td>
+                      <a href="#"><%= item.product.productName %></a>
+                    </td>
+                    <td>&#x20B9;<%= item.totalPrice %></td>
+                  </tr>
+                  <% }); %>
+
+                  <tr class="summary-subtotal">
+                    <td>Subtotal:</td>
+                    <td>&#x20B9;<%= subtotal%></td>
+                  </tr>
+                  <tr class="summary-subtotal">
+                    <td>Discount:</td>
+                    <td id="couponDisAmount"></td>
+                  </tr>
+                  <!-- End .summary-subtotal -->
+                  <tr>
+                    <td>Shipping:</td>
+                    <td>Free shipping</td>
+                  </tr>
+                  <tr  class="summary-total">
+                    <td >Total:</td>
+                    <td id="totalPrice"&#x20B9;<%= subtotal%></td>
+                    
+                  </tr>
+                 
+                  <!-- End .summary-total -->
+                </tbody>
+              </table>
+              <!-- End .table table-summary -->
+
+              <div class="accordion-summary" id="accordion-payment">
+                
+              <h5>Payment method</h5>
+              <div class="custom-control custom-radio">
+                <input
+                  id="cod"
+                  value="cash_on_delivery"
+                  name="paymentMethod"
+                  type="radio"
+                  class="custom-control-input"
+                />
+                <label class="custom-control-label" for="cod"
+                  >Cash On Delivery</label
+                >
+              </div>
+              <div class="custom-control custom-radio">
+                <input
+                  id="wallet"
+                  value="wallet"
+                  name="paymentMethod"
+                  type="radio"
+                  class="custom-control-input"
+                />
+                <label class="custom-control-label" for="wallet"
+                  >Wallet</label
+                >
+              </div>
+              <div class="wallet-card">
+                <h3>Wallet Balance</h3>
+                <% if (user?.wallet > subtotal) { %>
+                  <p>Use Wallet</p>
+                  <p class="wallet-amount">&#x20B9; <%=user?.wallet%></p>
+                <% } else { %>
+                  <p class="text-danger">Insufficient Balance</p>
+                  <p class="wallet-amount">&#x20B9; <%=user?.wallet%></p>
+                <% } %>
+                
+              </div>
+              <div class="custom-control custom-radio">
+                <input
+                  id="online-payment"
+                  value="online_payment"
+                  name="paymentMethod"
+                  type="radio"
+                  class="custom-control-input"
+                />
+                <label class="custom-control-label" for="online-payment"
+                  >Online Payment</label
+                >
+              </div>
+              <button id="stripe-pay-button" class="btn btn-outline-primary-2 btn-order btn-block" style="display: none;">
+                <span class="btn-text">Pay with RazorPay</span>
+                <span class="btn-hover-text">Proceed to Checkout</span>
+              </button>
+              <button
+                type="submit"
+                class="btn btn-outline-primary-2 btn-order btn-block"
+                id="order-button"
+                style="display: none";
+              >
+                <span class="btn-text">Place Order</span>
+                <span class="btn-hover-text">Proceed to Checkout</span>
+              </button>
+            </div>
+            <!-- End .summary -->
+          </aside>
+          <!-- End .col-lg-3 -->
+        </div>
+        <!-- End .row -->
+      </form>
     </div>
-    <!-- End .checkout -->
+    <!-- End .container -->
   </div>
-  <!-- End .page-content -->
+  <!-- End .checkout -->
+</div>
+<!-- End .page-content -->
 </main>
 <!-- End .main -->
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
-  // get the radio buttons with name "paymentMethod"
+// get the radio buttons with name "paymentMethod"
 const paymentMethodRadioButtons = document.querySelectorAll('input[name="paymentMethod"]');
 
 // add event listener to each radio button
 paymentMethodRadioButtons.forEach((radioButton) => {
-  radioButton.addEventListener('change', () => {
+radioButton.addEventListener('change', () => {
 
-    if(radioButton.value==="wallet"){
-      document.getElementsByClassName("wallet-card")[0].style.display = "block";
+  if(radioButton.value==="wallet"){
+    document.getElementsByClassName("wallet-card")[0].style.display = "block";
 
-    }else{
-      document.getElementsByClassName("wallet-card")[0].style.display = "none";
+  }else{
+    document.getElementsByClassName("wallet-card")[0].style.display = "none";
 
-    }
-    // check if the selected value is "stripe"
-    if (radioButton.value === "online_payment") {
-      // show the Stripe pay button
-      document.getElementById("stripe-pay-button").style.display = "block";
-      document.getElementById("order-button").style.display = "none";
-      
+  }
+  // check if the selected value is "stripe"
+  if (radioButton.value === "online_payment") {
+    // show the Stripe pay button
+    document.getElementById("stripe-pay-button").style.display = "block";
+    document.getElementById("order-button").style.display = "none";
     
-    } else {
-      // hide the Stripe pay button
-      document.getElementById("stripe-pay-button").style.display = "none";
-      document.getElementById("order-button").style.display = "block";
+  
+  } else {
+    // hide the Stripe pay button
+    document.getElementById("stripe-pay-button").style.display = "none";
+    document.getElementById("order-button").style.display = "block";
 
-    }
-  });
+  }
+});
 });
 
-  $("#checkout-form").on("submit", (event) => {
-    event.preventDefault();
-    var totalAmount = document.getElementById('totalPrice').textContent; 
-    var code =document.getElementById('couponCode').textContent;
-  $("<input>").attr({
-    type: "hidden",
-    name: "totalAmount",
-    value:parseInt(totalAmount.slice(1,8))
-  }).appendTo("#checkout-form");
-    $.ajax({
-      url: "/place-order",
-      method: "post",
-      data: $("#checkout-form").serialize(), //send the entire data from the form
-      success: (response) => {
-        if (response.codstatus) {
-          Swal.fire({
-          title: "Order Placed!",
-          icon: "success",
+$("#checkout-form").on("submit", (event) => {
+  event.preventDefault();
+  var totalAmount = document.getElementById('totalPrice').textContent; 
+  var code =document.getElementById('couponCode').textContent;
+$("<input>").attr({
+  type: "hidden",
+  name: "totalAmount",
+  value:parseInt(totalAmount.slice(1,8))
+}).appendTo("#checkout-form");
+  $.ajax({
+    url: "/place-order",
+    method: "post",
+    data: $("#checkout-form").serialize(), //send the entire data from the form
+    success: (response) => {
+      if (response.codstatus) {
+        Swal.fire({
+        title: "Order Placed!",
+        icon: "success",
 
-         confirmButtonText: "OK",
-        }).then((results)=>{
-          if(results.isConfirmed){
-            location.href = "/order-success";
-          }
-        })
-         
-        }else{
-          razorpay(response)
+       confirmButtonText: "OK",
+      }).then((results)=>{
+        if(results.isConfirmed){
+          location.href = "/order-success";
         }
-      },
-    });
+      })
+       
+      }else{
+        razorpay(response)
+      }
+    },
   });
+});
 
 function  razorpay(order){
   var options = {

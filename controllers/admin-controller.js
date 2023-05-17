@@ -15,16 +15,23 @@ module.exports = {
         let admin = req.admin;
 
         if (admin) {
+            const totalRevenue = await adminHelper.findTotalRevenue();
             const orders = await adminHelper.getOrderDetails();
             const orderCount = orders.length;
             const products = await adminHelper.getAllProducts();
             const productsCount = products.length;
             const users = await adminHelper.getAllusers();
             const usersCount = users.length;
+            const orderData = await adminHelper.orderStatusData();
+            const paymentStatitics = await adminHelper.paymentStatitics();
             res.render("admin/dashboard", {
                 orderCount,
                 productsCount,
                 usersCount,
+                totalRevenue,
+                orderData,
+                paymentStatitics,
+
             });
         } else {
             res.redirect("admin/login");
@@ -35,13 +42,18 @@ module.exports = {
 
     adminlogin: async (req, res) => {
         if (req.session.isloggedInad) {
+            const totalRevenue = await adminHelper.findTotalRevenue();
             const orders = await adminHelper.getOrderDetails();
             const orderCount = orders.length;
             const products = await adminHelper.getAllProducts();
             const productsCount = products.length;
             const users = await adminHelper.getAllusers();
             const usersCount = users.length;
-            res.render("../views/admin/adminLandingPage", { orderCount, productsCount, usersCount, adLogErr: false });
+            const orderData = await adminHelper.orderStatusData();
+            const paymentStatitics = await adminHelper.paymentStatitics();
+            res.render("../views/admin/adminLandingPage", { orderCount, productsCount, usersCount, adLogErr: false,totalRevenue,
+                orderData,
+                paymentStatitics, });
         } else {
             res.redirect("/admin");
         }
@@ -53,11 +65,25 @@ module.exports = {
         try {
             const adminData = await adminHelper.adminLogin(req.body);
             let admin = adminData.status;
+            const totalRevenue = await adminHelper.findTotalRevenue();
+            const orders = await adminHelper.getOrderDetails();
+            const orderCount = orders.length;
+            const products = await adminHelper.getAllProducts();
+            const productsCount = products.length;
+            const users = await adminHelper.getAllusers();
+            const usersCount = users.length;
+            const orderData = await adminHelper.orderStatusData();
+            const paymentStatitics = await adminHelper.paymentStatitics();
 
             if (admin) {
                 req.session.isloggedInad = true;
                 req.session.admin = adminData.validAdmin;
-                res.render("../views/admin/adminLandingPage", { adLogErr: false });
+                res.render("../views/admin/adminLandingPage", { adLogErr: false,orderCount,
+                    productsCount,
+                    usersCount,
+                    totalRevenue,
+                    orderData,
+                    paymentStatitics, });
             } else {
                 res.redirect("/admin");
             }
@@ -423,4 +449,26 @@ module.exports = {
             console.error(err);
         }
     },
+
+    viewReport: async (req, res) => {
+        try {
+          const orders = await adminHelper.getReportDetails();
+    
+          res.render("../views/admin/view-salesreport", { orders });
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    
+      viewReportByDate: async (req, res) => {
+        try {
+          const { startDate, endDate } = req.body;
+          console.log(req.body);
+          const orders = await adminHelper.getReport(startDate, endDate);
+    
+          res.render("../views/admin/view-salesreport", { orders });
+        } catch (err) {
+          console.error(err);
+        }
+      },
 };

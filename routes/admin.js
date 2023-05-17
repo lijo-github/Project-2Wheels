@@ -75,4 +75,12 @@ router.post("/remove-coupon", isloggedInad, adminController.removeCoupon);
 
 router.get("/view-coupon", isloggedInad, adminController.viewCoupon);
 
+//* sales-report *//
+
+router.get("/sales-report", isloggedInad, adminController.viewReport);
+
+router.post("/sales-report", isloggedInad , adminController.viewReportByDate);
+
+
+
 module.exports = router;
