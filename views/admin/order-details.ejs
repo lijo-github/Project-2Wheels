@@ -256,7 +256,7 @@
         </div>
         <script>
           function updateOrderStatus(status, orderId) {
-            console.log(status, "ORder Statsu scchaggerd");
+            
             $.ajax({
               url: "/admin/update-order-status",
               method: "post",
@@ -311,9 +311,6 @@
               alert("Select Order status to update");
               return; // added return to exit the function if no radio button is selected
             }
-            console.log(orderId,'^^^^^^^^');
-            console.log(status,'&&&&&&&&&&&&');
-            console.log("hiiiiiiiiiiiiiiiiiii");
             updateOrderStatus(status, orderId);
           }
           
