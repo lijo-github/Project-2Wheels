@@ -625,9 +625,6 @@ module.exports = {
         try {
             const order = req.body;
             const payment = req.body;
-
-            console.log("payment gettttttttttttttttt", payment);
-
             const razorpayOrderId = req.body["payment[razorpay_order_id]"];
             const razorpayPaymentId = req.body["payment[razorpay_payment_id]"];
             const razorpaySecret = process.env.KEY_SECRET;
@@ -683,7 +680,6 @@ module.exports = {
         try {
             const search = req.query.search;
             const products = await userHelper.searchQuery(search, req.session.user?.id);
-            console.log(products, "nulllllllllllllllllll");
             if (products) {
                 res.render("../views/user/productList", { user: req.session.user, products });
             } else {
