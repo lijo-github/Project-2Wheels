@@ -360,7 +360,7 @@ function returnOrder(orderId) {
 
 function retrieveWalletAmount(callback) {
     $.ajax({
-        url: "/getWalletAmount",
+        url: "/wallet",
         method: "get",
         success: (response) => {
             if (response.status) {
