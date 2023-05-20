@@ -134,9 +134,9 @@ module.exports = {
             console.error(err);
         }
     },
-    getProductDetails: async (proId, userId) => {
+    getProductDetails: async (slug, userId) => {
         try {
-            const product = await Product.findById(proId);
+            const product = await Product.findOne({slug:slug});
     
           if (!product) {
             throw new Error("Product not found"); // Handle case where product does not exist
@@ -148,6 +148,7 @@ module.exports = {
           });
     
           if (cart) {
+            console.log(cart,'%^&*%^%*%*%&**%%**%*%&*%%&*%&*%&*%&*%^');
             product.isInCart = true; // Add a boolean flag to indicate if the product is in the cart
           } else {
             product.isInCart = false; // Add a boolean flag to indicate if the product is in the cart

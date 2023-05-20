@@ -43,7 +43,7 @@ router.post("/change-password", isLoggedIn, userController.changePassword);
 router.get("/productsList", userController.listProductCategory);
 
 //* product view page. */
-router.get("/product-view/:id", userController.productView);
+router.get("/product-view/:slug", userController.productView);
 
 //* add to Cart. */
 router.get("/add-to-cart/:id", isUser, userController.addToCart);

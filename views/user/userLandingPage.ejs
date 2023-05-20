@@ -266,7 +266,7 @@
                         <li class="accessory">
                             <div class="product-card">
                                 <a
-                                    href="/product-view/<%=product._id%>"
+                                    href="/product-view/<%=product.slug%>"
                                     class="card-banner img-holder has-before"
                                     style="--width: 400; --height: 300"
                                 >
@@ -310,7 +310,7 @@
                                 <div class="card-content">
                                     <h3 class="h3">
                                         <%= product.productModel%>
-                                        <a href="/product-view/<%=product._id%>" class="card-title"
+                                        <a href="/product-view/<%=product.slug%>" class="card-title"
                                             ><%= product.productName.slice(0,35) %>...</a
                                         >
                                     </h3>

@@ -352,8 +352,9 @@ module.exports = {
     //* single product view *//
 
     productView: async (req, res) => {
-        const user = req.session?.user;
+        let user = req.session?.user;
         const productQuantity = await userHelper.getProductQuantity();
+        const slug = req.params.slug;
 
         try {
             if (user) {
@@ -361,13 +362,13 @@ module.exports = {
 
                 user.wish = await userHelper.countWish(user._id);
 
-                var products = await userHelper.getProductDetails(req.params.id);
+                var products = await userHelper.getProductDetails(slug, user?._id);
 
                 console.log("product list view success");
 
                 res.render("user/product-view", { user, products, productQuantity });
             } else {
-                var products = await userHelper.getProductDetails(req.params.id);
+                var products = await userHelper.getProductDetails(slug, user?._id);
 
                 console.log("product list view success");
 
